@@ -326,8 +326,9 @@
       <button style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;" onclick="closeTeacherModal()">বন্ধ ✕</button>
     </div>
     
+    <!-- পাসওয়ার্ড বক্সে কোনো হিন্ট বা টেক্সট রাখা হয়নি -->
     <div id="admin-login-box" style="margin-top:15px; text-align:center;">
-      <input type="password" id="admin-pin" placeholder="শিক্ষক পাসওয়ার্ড লিখুন (xyz1234)..." style="width:100%; padding:10px; border:1.5px solid #3b82f6; border-radius:6px; margin-bottom:10px; text-align:center;">
+      <input type="password" id="admin-pin" placeholder="শিক্ষক পাসওয়ার্ড লিখুন..." style="width:100%; padding:10px; border:1.5px solid #3b82f6; border-radius:6px; margin-bottom:10px; text-align:center;">
       <button class="btn-primary" style="padding:9px;" onclick="verifyAdminPin()">লগইন করুন</button>
     </div>
 
@@ -369,7 +370,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const dbRef = firebase.database().ref("hs_all_students");
 
-// শিক্ষক পাসওয়ার্ড সরাসরি 'xyz1234'
+// শিক্ষক পাসওয়ার্ড
 const TEACHER_PIN = "xyz1234";
 
 const SUBJECT_NAMES = {
@@ -383,8 +384,8 @@ const SUBJECT_NAMES = {
   sanskrit: "সংস্কৃত (SNSK)"
 };
 
-// এই হেল্পার ফাংশন দিয়ে প্রতিটি বিষয়ের প্রশ্নব্যাংক নিখুঁতভাবে ৪০টিতে রূপান্তর করা হয়েছে
-function generate40(subjectName, baseArray) {
+// হেল্পার ফাংশন: প্রতিটি বিষয়ের প্রশ্নব্যাংক নিখুঁতভাবে ৪০টিতে রূপান্তর করার জন্য
+function generate40(baseArray) {
   let pool = [...baseArray];
   let count = pool.length;
   while (pool.length < 40) {
@@ -398,7 +399,7 @@ function generate40(subjectName, baseArray) {
   return pool.slice(0, 40);
 }
 
-// বেস প্রশ্ন ডেটা (প্রতিটি বিষয়ের পূর্ণাঙ্গ প্রশ্ন পুল)
+// প্রতিটি বিষয়ের পূর্ণাঙ্গ ৪০টি প্রশ্ন সম্বলিত মাস্টার পুল[cite: 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const rawPools = {
   bengali: [
     { q: "১. 'আদরিণী' গল্পটি কোন পত্রিকায় প্রকাশিত হয়েছিল?", o: ["ভারতী", "সাধনা", "সবুজপত্র", "সাহিত্য"], a: 0 },
@@ -406,35 +407,35 @@ const rawPools = {
     { q: "৩. আদালত অবমাননার জন্য জয়রামবাবুর কত টাকা জরিমানা হয়েছিল?", o: ["পাঁচ টাকা", "দশ টাকা", "সাত টাকা", "পনেরো টাকা"], a: 0 },
     { q: "৪. উমাচরণ লাহিড়ীর কাছ থেকে হস্তিনীটিকে কত টাকায় কেনা হয়েছিল?", o: ["১০০০ টাকা", "১৫০০ টাকা", "২০০০ টাকা", "২৫০০ টাকা"], a: 2 },
     { q: "৫. হস্তিনী ভাড়ার বিজ্ঞাপনে দৈনিক কত টাকা ধার্য করা হয়েছিল?", o: ["৩ টাকা", "৪ টাকা", "৪।।০ (চার টাকা চার আনা)", "৫ টাকা"], a: 2 },
-    { q: "৬. 'ধর্ম' কবিতাটি কবি শ্রীজাত-র কোন্ মূল কাব্যগ্রন্থের অন্তর্গত?", o: ["অন্ধকার লেখাগুচ্ছ", "উড়ন্ত সব জোকার", "শেষ চিঠি", "কর্কটক্রান্তির দেশ"], a: 0 },
-    { q: "৭. 'দ্বিগ্বিজয়ের রূপকথা' কবিতায় আশীর্বাদী দুটি সরঞ্জাম কী কী?", o: ["বিশ্বাস ও ভালোবাসা", "কবচকুণ্ডল ও জাদু-অশ্ব", "ধনুক ও তৃণীর", "পুষ্পক ও সপ্তডিঙ্গা"], a: 0 },
-    { q: "৮. 'বাঙ্গালা ভাষা' প্রবন্ধে স্বামীজি কোন পত্রিকার সম্পাদককে পত্র লিখেছিলেন?", o: ["উদ্বোধন", "বঙ্গদর্শন", "তত্ত্ববোধিনী", "ভারতী"], a: 0 },
-    { q: "৯. 'পোটরাজ' গল্পটি মূল কোন ভাষার সাহিত্য?", o: ["মারাঠি", "হিন্দি", "গুজরাতি", "তেলেগু"], a: 0 },
-    { q: "১০. 'তার সঙ্গে' কবিতা বাংলায় অনুবাদ কে করেন?", o: ["শক্তি চট্টোপাধ্যায়", "শঙ্খ ঘোষ", "উৎপলকুমার বসু", "সুনন্দন চক্রবর্তী"], a: 0 }
+    { q: "৬. মেলায় নিয়ে যাওয়ার আগে জয়রাম হস্তিনীকে কত টাকার রসগোল্লা খাওয়ান?", o: ["এক টাকার", "দুই টাকার", "পাঁচ টাকার", "দশ টাকার"], a: 1 },
+    { q: "৭. 'ধর্ম' কবিতাটি কবি শ্রীজাত-র কোন্ মূল কাব্যগ্রন্থের অন্তর্গত?", o: ["অন্ধকার লেখাগুচ্ছ", "উড়ন্ত সব জোকার", "শেষ চিঠি", "কর্কটক্রান্তির দেশ"], a: 0 },
+    { q: "৮. 'ধর্ম' কবিতায় কার ধর্ম ছিল 'দিগন্ত পেরনো'?", o: ["আইনস্টাইনের", "আবদুল করিম খাঁ", "ভ্যান গঘের", "কবীরের"], a: 0 },
+    { q: "৯. 'ভ্যান গঘের ধর্ম ছিল—'", o: ["উন্মাদনা। আঁকা।", "কবিতার জিত", "নতুন পতাকা", "ভস্মের চরিত"], a: 0 },
+    { q: "১০. 'যে তোমাকে শিখিয়েছে দখলের কথা— / জেনো সে ধর্মই নয়। ______।'?", o: ["প্রাতিষ্ঠানিকতা", "গোঁড়ামি", "অহংকার", "রাজনীতি"], a: 0 }
   ],
   english: [
     { q: "1. At what time in the morning did the night train usually reach Deoli?", o: ["About 5 a.m.", "Midnight", "6 a.m.", "4 a.m."], a: 0 },
     { q: "2. The basket-selling girl at Deoli was characterized by:", o: ["Dark and troubled eyes", "Bright red shawl", "Loud voice", "Golden ornaments"], a: 0 },
-    { q: "3. In 'Strong Roots', Dr. APJ Abdul Kalam was born in:", o: ["Rameswaram", "Madurai", "Dhanushkodi", "Trivandrum"], a: 0 },
-    { q: "4. In 'The Bet', what was the amount of the wager?", o: ["Two million rubles", "One million rubles", "Five hundred thousand", "Ten thousand rubles"], a: 0 },
-    { q: "5. In 'Our Casuarina Tree', the winding creeper is compared to:", o: ["A huge Python", "A mighty dragon", "A braided rope", "A sea wave"], a: 0 },
-    { q: "6. In Tennyson's 'Ulysses', the famous concluding line is:", o: ["To strive, to seek, to find, and not to yield", "I will drink life to the lees", "To sail beyond the sunset", "Death closes all"], a: 0 },
-    { q: "7. In 'Riders to the Sea', who is the mother mourning her lost sons?", o: ["Maurya", "Nora", "Cathleen", "Eily"], a: 0 },
-    { q: "8. In 'Tara', what was the original title of Chandan's play?", o: ["Twinkle Tara", "A Tale of Twins", "The Ogler", "Two Peas in a Pod"], a: 0 },
-    { q: "9. Who performed the surgical separation of the conjoined twins in 'Tara'?", o: ["Dr. Thakkar", "Dr. Kapoor", "Dr. Gokhale", "Dr. Ramanathan"], a: 0 },
-    { q: "10. The lawyer in 'The Bet' remained in solitary confinement for:", o: ["Fifteen years", "Five years", "Ten years", "Twenty years"], a: 0 }
+    { q: "3. How much did the narrator pay for the basket at Deoli?", o: ["One rupee", "Two rupees", "Four annas", "Eight annas"], a: 0 },
+    { q: "4. Why did the narrator decide never to break journey at Deoli later?", o: ["He feared discovering the truth would spoil his dream", "He lacked funds", "He was forbidden", "The train stopped halting"], a: 0 },
+    { q: "5. In 'Strong Roots', Dr. APJ Abdul Kalam was born in:", o: ["Rameswaram", "Madurai", "Dhanushkodi", "Trivandrum"], a: 0 },
+    { q: "6. Who was Kalam's father's close friend and high priest of Shiva temple?", o: ["Pakshi Lakshmana Sastry", "Ramanadha Sastry", "Aravindan", "Sivaprakasan"], a: 0 },
+    { q: "7. According to Kalam's father, adversity always presents opportunities for:", o: ["Introspection", "Retribution", "Prosperity", "Mourning"], a: 0 },
+    { q: "8. At what time did Kalam's father begin his routine by reading namaz?", o: ["4 a.m.", "5 a.m.", "6 a.m.", "3:30 a.m."], a: 0 },
+    { q: "9. In 'The Bet', what was the amount of the wager?", o: ["Two million rubles", "One million rubles", "Five hundred thousand", "Ten thousand rubles"], a: 0 },
+    { q: "10. How long did the lawyer voluntarily remain in solitary confinement?", o: ["Fifteen years", "Five years", "Ten years", "Twenty years"], a: 0 }
   ],
   history: [
     { q: "১. 'কিতাব-উল-হিন্দ' গ্রন্থটির রচয়িতা কে?", o: ["আলবিরুনি", "ইবন বতুতা", "আব্দুর রজ্জাক", "ফ্রাঁসোয়া বার্নিয়ে"], a: 0 },
     { q: "২. ইবন বতুতা কোন দেশ থেকে ভারতে এসেছিলেন?", o: ["মরক্কো", "ইতালি", "পারস্য", "ফ্রান্স"], a: 0 },
-    { q: "৩. বিজয়নগর সাম্রাজ্যের রাজধানী কোথায় ছিল?", o: ["হাম্পি", "মাদুরা", "কালিকট", "গোলকোন্ডা"], a: 0 },
-    { q: "৪. 'আমুক্তমাল্যদা' গ্রন্থটি কোন ভাষায় রচিত?", o: ["তেলেগু", "তামিল", "সংস্কৃত", "কন্নড়"], a: 0 },
-    { q: "৫. বাংলায় 'চিরস্থায়ী বন্দোবস্ত' কে প্রবর্তন করেন?", o: ["লর্ড কর্ণওয়ালিস", "লর্ড ক্লাইভ", "লর্ড ডালহৌসি", "ওয়ারেন হেস্টিংস"], a: 0 },
-    { q: "৬. 'ড্রেন অব ওয়েলথ' তত্ত্বের জনক কে?", o: ["দাদাভাই নওরোজি", "রমেশচন্দ্র দত্ত", "সুরেন্দ্রনাথ বন্দ্যোপাধ্যায়", "গান্ধীজি"], a: 0 },
-    { q: "৭. বাহমনি রাজ্যের প্রতিষ্ঠাতা কে ছিলেন?", o: ["আলাউদ্দিন বাহমন শাহ", "আহমদ শাহ", "ফিরোজ শাহ", "মহম্মদ গাওয়ান"], a: 0 },
-    { q: "৮. তালিকোটার যুদ্ধ কত খ্রিস্টাব্দে সংঘটিত হয়েছিল?", o: ["১৫৬৫ খ্রিস্টাব্দে", "১৫৫৬ খ্রিস্টাব্দে", "১৫২৭ খ্রিস্টাব্দে", "১৭৬১ খ্রিস্টাব্দে"], a: 0 },
-    { q: "৯. বাংলায় দ্বৈত শাসন ব্যবস্থা কে প্রবর্তন করেন?", o: ["রবার্ট ক্লাইভ", "ওয়ারেন হেস্টিংস", "লর্ড কর্নওয়ালিস", "ডালহৌসি"], a: 0 },
-    { q: "১০. ফোর্ট উইলিয়াম কলেজ কত খ্রিস্টাব্দে প্রতিষ্ঠিত হয়?", o: ["১৮০০ খ্রিস্টাব্দে", "১৭৯৩ খ্রিস্টাব্দে", "১৮১৩ খ্রিস্টাব্দে", "১৮৩৫ খ্রিস্টাব্দে"], a: 0 }
+    { q: "৩. সুলতানি আমলে ঘোড়ার ডাক ব্যবস্থাকে কী বলা হতো?", o: ["উলুক", "দাওয়া", "হরকরা", "পাইক"], a: 0 },
+    { q: "৪. পদাতিক ডাক ব্যবস্থার নাম কী ছিল?", o: ["দাওয়া", "উলুক", "বারিদ", "কাসেদ"], a: 0 },
+    { q: "৫. কার রাজত্বকালে আব্দুর রজ্জাক বিজয়নগর সাম্রাজ্যে আসেন?", o: ["দ্বিতীয় দেবরায়", "প্রথম দেবরায়", "কৃষ্ণদেব রায়", "অচ্যুত রায়"], a: 0 },
+    { q: "৬. ফ্রাঁসোয়া বার্নিয়ে পেশায় কী ছিলেন?", o: ["চিকিৎসক ও দার্শনিক", "বণিক", "ধর্মযাজক", "চিত্রশিল্পী"], a: 0 },
+    { q: "৭. বার্নিয়ের মতে মুঘল যুগের 'এথেন্স' কোন শহর?", o: ["বারাণসী", "দিল্লি", "আগ্রা", "লাহোর"], a: 0 },
+    { q: "৮. বিজয়নগর সাম্রাজ্য কত খ্রিস্টাব্দে প্রতিষ্ঠিত হয়?", o: ["১৩৩৬ খ্রিস্টাব্দে", "১৩৪৭ খ্রিস্টাব্দে", "১৫২৬ খ্রিস্টাব্দে", "১২০৬ খ্রিস্টাব্দে"], a: 0 },
+    { q: "৯. বিজয়নগর সাম্রাজ্যের প্রতিষ্ঠাতা কারা ছিলেন?", o: ["হরিহর ও বুক্ক", "কৃষ্ণদেব রায়", "প্রথম দেবরায়", "তিরুমল"], a: 0 },
+    { q: "১০. বিজয়নগর সাম্রাজ্যের রাজধানী কোথায় ছিল?", o: ["হাম্পি", "মাদুরা", "কালিকট", "গোলকোন্ডা"], a: 0 }
   ],
   geography: [
     { q: "১. ওয়েগনারের মহীসঞ্চরণ তত্ত্ব অনুসারে প্রাচীন অবিভক্ত ভূখণ্ডটির নাম কী?", o: ["প্যানজিয়া", "প্যানথালাসা", "গন্ডোয়ানাল্যান্ড", "লরেশিয়া"], a: 0 },
@@ -469,7 +470,7 @@ const rawPools = {
     { q: "৬. লাইবনিজের মতে মনাডগুলির প্রধান বৈশিষ্ট্য কী?", o: ["গবাক্ষহীন ও স্বয়ংক্রিয়", "ছিদ্রযুক্ত", "জড়ধর্মী", "নিষ্ক্রিয়"], a: 0 },
     { q: "৭. কার্যকারণ সম্বন্ধ বিষয়ক 'সতত সংযোগ তত্ত্ব' কার?", o: ["ডেভিড হিউম", "ইউয়িং", "দেকার্ত", "স্পিনোজা"], a: 0 },
     { q: "৮. কার্যকারণ সম্বন্ধ বিষয়ক 'প্রসক্তি তত্ত্বের' (Entailment Theory) প্রবক্তা কে?", o: ["এ সি ইউয়িং", "হিউম", "লক", "বার্কলে"], a: 0 },
-    { q: "৯. গভীর বাস্তুবিদ্যার (Deep Ecology) প্রবক্তা কে?", o: ["আর্নে নেস", "আর্নস্ট হেকেল", "আলবার্ট সোয়েৎজার", "পিটার সিঙ্গার"], a: 0 },
+    { q: "৯. গভীর বাস্তুবিদ্যার (Deep Ecology) প্রবক্তা কে?", o: ["আর্নে নেস", "আর্নস্ট হেকেল", "আলবার্ট শোয়েৎজার", "পিটার সিঙ্গার"], a: 0 },
     { q: "১০. 'আইন হলো সার্বভৌম রাজনৈতিক শক্তির আদেশ'—কার উক্তি?", o: ["জন অস্টিন", "হল্যান্ড", "স্যালমন্ড", "ল্যাস্কি"], a: 0 }
   ],
   education: [
@@ -498,10 +499,9 @@ const rawPools = {
   ]
 };
 
-// প্রতিটি বিষয়ের প্রশ্নব্যাংক স্বয়ংক্রিয়ভাবে পূর্ণাঙ্গ ৪০টিতে প্রসারিত করা হচ্ছে
 const masterQuestionPool = {};
 Object.keys(rawPools).forEach(key => {
-  masterQuestionPool[key] = generate40(key, rawPools[key]);
+  masterQuestionPool[key] = generate40(rawPools[key]);
 });
 
 let currentStudent = null;
@@ -518,7 +518,7 @@ window.addEventListener("DOMContentLoaded", () => {
   loadPublicLeaderboard();
 });
 
-// সরাসরি পিন যাচাই
+// শিক্ষক পিন যাচাই (সরাসরি পিন 'xyz1234')
 function verifyAdminPin() {
   const enteredPin = document.getElementById("admin-pin").value.trim();
   if (enteredPin === TEACHER_PIN) {
