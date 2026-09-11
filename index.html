@@ -32,7 +32,7 @@
       background: #1f2937;
       color: #ffffff;
       border: none;
-      padding: 7px 12px;
+      padding: 8px 14px;
       border-radius: 6px;
       font-size: 0.82rem;
       font-weight: bold;
@@ -190,7 +190,7 @@
 <div id="student-modal" class="modal">
   <div class="modal-content">
     <div class="modal-header">
-      <h3 style="margin:0; color:#1a73e8; font-size:0.95rem;">📋 পরীক্ষার্থীদের তালিকা ও সময়</h3>
+      <h3 style="margin:0; color:#1a73e8; font-size:0.95rem;">📋 পরীক্ষার্থীদের তালিকা ও সময় (ক্লাউড লাইভ)</h3>
       <button class="btn-close" type="button" onclick="closeStudentModal()">বন্ধ করুন ✕</button>
     </div>
     <table>
@@ -224,12 +224,13 @@
       </thead>
       <tbody id="teacher-table-body"></tbody>
     </table>
-    <button class="btn-delete-all" type="button" onclick="teacherDeleteAllRecords()">⚠️ সমস্ত পরীক্ষার্থীর রেকর্ড সম্পূর্ণ মুছে ফেলুন</button>
+    <button class="btn-delete-all" type="button" onclick="teacherDeleteAllRecords()">⚠️ সমস্ত পরীক্ষার্থীর ক্লাউড রেকর্ড সম্পূর্ণ মুছে ফেলুন</button>
   </div>
 </div>
 
 <script>
 const TEACHER_PIN = "xyz1234";
+const FIREBASE_DB_URL = "https://hs-bangal-3-2026-default-rtdb.firebaseio.com/results.json";
 
 const mockExamData = [
   { q: "১. পীরগঞ্জের বাবুদের বাড়ি নিমন্ত্রণে বেনারস ও কলকাতা থেকে কী আসার কথা ছিল?", o: ["বেনারস থেকে বাদ্যযন্ত্র, কলকাতা থেকে নর্তকী", "বেনারস থেকে বাই, কলকাতা থেকে খেমটা", "বেনারস থেকে মিষ্টি, কলকাতা থেকে ঢাক", "বেনারস থেকে খেমটা, কলকাতা থেকে বাই"], a: 1 },
@@ -409,15 +410,15 @@ function finishExam() {
     photo: currentUser.photo,
     score: userScore,
     pct: pct,
-    time: timeFormatted
+    time: timeFormatted,
+    timestamp: Date.now()
   };
 
-  // নিখুঁত পার্মানেন্ট সেভ
-  try {
-    let list = JSON.parse(localStorage.getItem("final_exam_records") || "[]");
-    list.unshift(entry);
-    localStorage.setItem("final_exam_records", JSON.stringify(list));
-  } catch(e) {}
+  fetch(FIREBASE_DB_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(entry)
+  }).catch(err => console.error("ক্লাউড সেভ এরর:", err));
 }
 
 function resetToHomeScreen() {
@@ -438,36 +439,41 @@ function resetToHomeScreen() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function populateTableUI(targetId) {
+function fetchAndRenderRecords(targetId) {
   const tbody = document.getElementById(targetId);
-  tbody.innerHTML = "";
-  let list = [];
-  try {
-    list = JSON.parse(localStorage.getItem("final_exam_records") || "[]");
-  } catch(e) {}
+  tbody.innerHTML = `<tr><td colspan="4" style="color:#666; padding:15px;">ক্লাউড থেকে ডেটা লোড হচ্ছে...</td></tr>`;
 
-  if (!list || list.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="4" style="color:#888; padding:15px;">এখনও কেউ পরীক্ষা দেয়নি।</td></tr>`;
-    return;
-  }
+  fetch(FIREBASE_DB_URL)
+    .then(res => res.json())
+    .then(data => {
+      tbody.innerHTML = "";
+      if (!data) {
+        tbody.innerHTML = `<tr><td colspan="4" style="color:#888; padding:15px;">এখনও কেউ পরীক্ষা দেয়নি।</td></tr>`;
+        return;
+      }
 
-  list.forEach((item) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td><img class="table-user-img" src="${item.photo}" alt="ছবি"></td>
-      <td style="text-align:left; padding-left:6px;">
-        <div style="font-weight:600; color:#202124;">${item.name}</div>
-        <span class="exam-time">🕒 ${item.time}</span>
-      </td>
-      <td style="color:#1a73e8; font-weight:bold;">${item.score} / ৪০</td>
-      <td style="font-weight:600;">${item.pct}%</td>
-    `;
-    tbody.appendChild(tr);
-  });
+      const list = Object.values(data).reverse();
+      list.forEach((item) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><img class="table-user-img" src="${item.photo}" alt="ছবি"></td>
+          <td style="text-align:left; padding-left:6px;">
+            <div style="font-weight:600; color:#202124;">${item.name}</div>
+            <span class="exam-time">🕒 ${item.time}</span>
+          </td>
+          <td style="color:#1a73e8; font-weight:bold;">${item.score} / ৪০</td>
+          <td style="font-weight:600;">${item.pct}%</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    })
+    .catch(() => {
+      tbody.innerHTML = `<tr><td colspan="4" style="color:#d93025; padding:15px;">ডেটা লোড করতে সমস্যা হয়েছে! ইন্টারনেট চেক করুন।</td></tr>`;
+    });
 }
 
 function openStudentModal() {
-  populateTableUI("student-table-body");
+  fetchAndRenderRecords("student-table-body");
   document.getElementById("student-modal").style.display = "flex";
 }
 function closeStudentModal() {
@@ -486,7 +492,7 @@ function checkTeacherPin() {
   const pin = document.getElementById("teacher-pin-input").value;
   if (pin === TEACHER_PIN) {
     closePasswordModal();
-    populateTableUI("teacher-table-body");
+    fetchAndRenderRecords("teacher-table-body");
     document.getElementById("teacher-modal").style.display = "flex";
   } else {
     alert("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।");
@@ -497,12 +503,13 @@ function closeTeacherModal() {
 }
 
 function teacherDeleteAllRecords() {
-  if (confirm("আপনি কি নিশ্চিত যে সমস্ত পরীক্ষার্থীর রেকর্ড মুছে ফেলতে চান?")) {
-    try {
-      localStorage.removeItem("final_exam_records");
-    } catch(e) {}
-    populateTableUI("teacher-table-body");
-    alert("সমস্ত রেকর্ড সফলভাবে ডিলিট করা হয়েছে।");
+  if (confirm("আপনি কি নিশ্চিত যে ক্লাউড থেকে সমস্ত পরীক্ষার্থীর রেকর্ড সম্পূর্ণ মুছে ফেলবেন?")) {
+    fetch(FIREBASE_DB_URL, { method: "DELETE" })
+      .then(() => {
+        fetchAndRenderRecords("teacher-table-body");
+        alert("সমস্ত রেকর্ড সফলভাবে ক্লাউড থেকে ডিলিট করা হয়েছে।");
+      })
+      .catch(() => alert("রেকর্ড ডিলিট করতে সমস্যা হয়েছে!"));
   }
 }
 </script>
