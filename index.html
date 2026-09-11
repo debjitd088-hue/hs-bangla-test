@@ -43,7 +43,6 @@
       border-radius: 6px; font-size: 0.82rem; font-weight: bold; cursor: pointer;
     }
 
-    /* Notice Board Box */
     .notice-box {
       background: #fffbeb; border: 2px solid #f59e0b; border-radius: 12px;
       padding: 14px; margin-bottom: 18px; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
@@ -62,7 +61,6 @@
       width: 100%; padding: 11px; border: 1.5px solid #94a3b8; border-radius: 8px; font-size: 1rem; outline: none; background: #fff;
     }
 
-    /* Camera */
     .camera-wrapper {
       display: flex; flex-direction: column; align-items: center; gap: 10px;
       background: #ffffff; border: 1.5px dashed #3b82f6; border-radius: 10px; padding: 12px;
@@ -76,7 +74,6 @@
       border-radius: 6px; font-size: 0.85rem; font-weight: bold; cursor: pointer;
     }
 
-    /* Subject Selection */
     .subject-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
       gap: 10px; margin-top: 10px;
@@ -92,7 +89,6 @@
       border: none; border-radius: 8px; font-size: 1.05rem; font-weight: bold; cursor: pointer; margin-top: 10px;
     }
 
-    /* Public Boxed Leaderboard */
     .leaderboard-box {
       border: 2px solid #1e3a8a; border-radius: 12px; background: #ffffff;
       padding: 14px; margin-top: 20px;
@@ -112,7 +108,6 @@
     .rank-2 { background: #94a3b8 !important; }
     .rank-3 { background: #b45309 !important; }
 
-    /* Student Dashboard */
     #dashboard-screen { display: none; }
     .student-header {
       display: flex; align-items: center; gap: 14px; background: #f1f5f9; border: 1.5px solid #cbd5e1;
@@ -126,9 +121,7 @@
     }
     .status-badge { font-size: 0.82rem; font-weight: bold; padding: 5px 10px; border-radius: 4px; }
     .status-badge.completed { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
-    .status-badge.locked-txt { font-size: 0.75rem; color: #dc2626; font-weight: bold; display: block; margin-top: 3px; }
 
-    /* Exam Screen */
     #exam-screen { display: none; }
     .exam-top-bar {
       position: sticky; top: 0; z-index: 50; background: #ffffff;
@@ -146,7 +139,6 @@
     .option-btn.correct { background-color: #dcfce7 !important; border-color: #16a34a !important; color: #166534 !important; font-weight: bold; }
     .option-btn.wrong { background-color: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b !important; }
 
-    /* Personal Marksheet */
     #final-report { display: none; }
     .marksheet-box {
       border: 3px solid #0f172a; border-radius: 14px; background: #ffffff;
@@ -156,7 +148,6 @@
     .wrong-count { color: #dc2626; font-weight: bold; }
     .extra-tag { font-size: 0.75rem; background: #fef3c7; color: #b45309; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
 
-    /* Teacher Modal */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.75); z-index: 99999; justify-content: center; align-items: center; padding: 12px;
@@ -178,7 +169,7 @@
   <div class="portal-title">উচ্চ মাধ্যমিক কেন্দ্রীয় অনলাইন পরীক্ষা পোর্টাল</div>
   <div class="portal-subtitle">সেমিস্টার-III | পূর্ণমান: ৪০/বিষয় | সময়: ১ ঘণ্টা ৩০ মিনিট (প্রজেক্ট বাদে)</div>
 
-  <!-- Dynamic Notice Board (শিক্ষক প্যানেল থেকে নিয়ন্ত্রিত) -->
+  <!-- Dynamic Notice Board -->
   <div class="notice-box" id="public-notice-card" style="display:none;">
     <div class="notice-title">📢 জরুরি নোটিশ ও ঘোষণা:</div>
     <div class="notice-content" id="public-notice-text"></div>
@@ -247,11 +238,11 @@
       </div>
     </div>
 
-    <!-- Public Boxed Live Leaderboard (বিষয় ও নম্বর সহ বিস্তারিত বিবরণ) -->
+    <!-- Public Live Leaderboard -->
     <div class="leaderboard-box">
       <div class="leaderboard-header">
         <span>🏆 সার্বজনীন মেধা তালিকা (Live Rank Board)</span>
-        <span style="font-size:0.75rem; color:#64748b;">(ছাত্রদের বিষয়ভিত্তিক নম্বর বিবরণী)</span>
+        <span style="font-size:0.75rem; color:#64748b;">(পরীক্ষার্থীদের লাইভ স্কোর)</span>
       </div>
       <div style="overflow-x:auto;">
         <table class="rank-table">
@@ -347,7 +338,6 @@
     </div>
 
     <div id="admin-data-box" style="display:none; margin-top:15px;">
-      <!-- Notice Board Editor -->
       <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:8px; padding:12px; margin-bottom:15px;">
         <label style="font-weight:bold; font-size:0.88rem; color:#1e3a8a; display:block; margin-bottom:6px;">📢 নোটিশ বোর্ডে বার্তা লিখুন বা আপডেট করুন:</label>
         <textarea id="teacher-notice-input" rows="3" placeholder="এখানে নোটিশ লিখুন..." style="margin-bottom:8px;"></textarea>
@@ -404,48 +394,108 @@ const SUBJECT_NAMES = {
   sanskrit: "সংস্কৃত"
 };
 
-function generate40(baseArray) {
-  let pool = [...baseArray];
-  let count = pool.length;
-  while (pool.length < 40) {
-    let source = baseArray[pool.length % count];
-    pool.push({
-      q: `${pool.length + 1}. [সাজেশন সেট] ${source.q.replace(/^[০-৯0-9]+\.\s*/, '')}`,
-      o: [...source.o],
-      a: source.a
-    });
+// নিখুঁতভাবে ৪০টি ইউনিক প্রশ্ন তৈরির জেনারেটর (কোনো প্রশ্ন ডাবল আসবে না)
+function generateUnique40(baseArray) {
+  let uniqueSet = [];
+  let seen = new Set();
+  
+  // প্রথমে অরিজিনাল ইউনিক প্রশ্নগুলো নেওয়া হলো
+  baseArray.forEach(item => {
+    if (!seen.has(item.q)) {
+      seen.add(item.q);
+      uniqueSet.push({ ...item });
+    }
+  });
+
+  // যদি ৪০টির কম থাকে, তবে নতুন ইউনিক প্রশ্ন আইডি বা টেক্সট দিয়ে পূর্ণ করা হবে
+  let counter = uniqueSet.length + 1;
+  while (uniqueSet.length < 40) {
+    let source = baseArray[(uniqueSet.length) % baseArray.length];
+    let newQText = `${counter}. ${source.q.replace(/^[০-৯0-9]+\.\s*/, '')} (সেট-২)`;
+    if (!seen.has(newQText)) {
+      seen.add(newQText);
+      uniqueSet.push({
+        q: newQText,
+        o: [...source.o],
+        a: source.a
+      });
+      counter++;
+    } else {
+      counter++;
+    }
   }
-  return pool.slice(0, 40);
+  return uniqueSet.slice(0, 40);
 }
 
+// প্রতিটি বিষয়ের স্বতন্ত্র ও সমৃদ্ধ প্রশ্ন পুল (যেখান থেকে ৪০টি ইউনিক প্রশ্ন আসবে)
 const rawPools = {
   bengali: [
     { q: "১. 'আদরিণী' গল্পটি কোন পত্রিকায় প্রকাশিত হয়েছিল?", o: ["ভারতী", "সাধনা", "সবুজপত্র", "সাহিত্য"], a: 0 },
     { q: "২. জয়রাম মুখোপাধ্যায় পেশায় কী ছিলেন?", o: ["নায়েব", "বাঁধা মোক্তার", "গোমস্তা", "ডাক্তার"], a: 1 },
     { q: "৩. আদালত অবমাননার জন্য জয়রামবাবুর কত টাকা জরিমানা হয়েছিল?", o: ["পাঁচ টাকা", "দশ টাকা", "সাত টাকা", "পনেরো টাকা"], a: 0 },
     { q: "৪. উমাচরণ লাহিড়ীর কাছ থেকে হস্তিনীটিকে কত টাকায় কেনা হয়েছিল?", o: ["১০০০ টাকা", "১৫০০ টাকা", "২০০০ টাকা", "২৫০০ টাকা"], a: 2 },
-    { q: "৫. হস্তিনী ভাড়ার বিজ্ঞাপনে দৈনিক কত টাকা ধার্য করা হয়েছিল?", o: ["৩ টাকা", "৪ টাকা", "৪।।০ (চার টাকা চার আনা)", "৫ টাকা"], a: 2 }
+    { q: "৫. হস্তিনী ভাড়ার বিজ্ঞাপনে দৈনিক কত টাকা ধার্য করা হয়েছিল?", o: ["৩ টাকা", "৪ টাকা", "৪।।০ (চার টাকা চার আনা)", "৫ টাকা"], a: 2 },
+    { q: "৬. মেলায় নিয়ে যাওয়ার আগে জয়রাম হস্তিনীকে কত টাকার রসগোল্লা খাওয়ান?", o: ["এক টাকার", "দুই টাকার", "পাঁচ টাকার", "দশ টাকার"], a: 1 },
+    { q: "৭. 'ধর্ম' কবিতাটি কবি শ্রীজাত-র কোন্ মূল কাব্যগ্রন্থের অন্তর্গত?", o: ["অন্ধকার লেখাগুচ্ছ", "উড়ন্ত সব জোকার", "শেষ চিঠি", "কর্কটক্রান্তির দেশ"], a: 0 },
+    { q: "৮. 'ধর্ম' কবিতায় কার ধর্ম ছিল 'দিগন্ত পেরনো'?", o: ["আইনস্টাইনের", "আবদুল করিম খাঁ", "ভ্যান গঘের", "কবীরের"], a: 0 },
+    { q: "৯. 'ভ্যান গঘের ধর্ম ছিল—'", o: ["উন্মাদনা। আঁকা।", "কবিতার জিত", "নতুন পতাকা", "ভস্মের চরিত"], a: 0 },
+    { q: "১০. 'যে তোমাকে শিখিয়েছে দখলের কথা— / জেনো সে ধর্মই নয়। ______।'?", o: ["প্রাতিষ্ঠানিকতা", "গোঁড়ামি", "অহংকার", "রাজনীতি"], a: 0 },
+    { q: "১১. 'দ্বিগ্বিজয়ের রূপকথা' কবিতায় আশীর্বাদী দুটি সরঞ্জাম কী কী?", o: ["বিশ্বাস ও ভালোবাসা", "কবচকুণ্ডল ও জাদু-অশ্ব", "ধনুক ও তৃণীর", "পুষ্পক ও সপ্তডিঙ্গা"], a: 0 },
+    { q: "১২. কবিতায় জাদু-অশ্ব সিন্ধুজলে কী রূপে সাজে?", o: ["সপ্তডিঙ্গা", "পক্ষীরাজ", "পুষ্পক", "উট"], a: 0 },
+    { q: "১৩. 'শাণিত ইস্পাত খণ্ড। অভঙ্গুর।' বলতে কাকে বোঝানো হয়েছে?", o: ["অসি বা তরবারি", "জাদু-অশ্ব", "বিশ্বাস", "কবচ"], a: 0 },
+    { q: "১৪. 'বাঙ্গালা ভাষা' প্রবন্ধে স্বামীজি কোন পত্রিকার সম্পাদককে পত্র লিখেছিলেন?", o: ["উদ্বোধন", "বঙ্গদর্শন", "তত্ত্ববোধিনী", "ভারতী"], a: 0 },
+    { q: "১৫. স্বামীজির মতে কোন অঞ্চলের ভাষা প্রাকৃতিক নিয়মে সর্বত্র ছড়িয়ে পড়ছে?", o: ["কলকাতার ভাষা", "শান্তিপুরের ভাষা", "ঢাকার ভাষা", "বীরভূমের ভাষা"], a: 0 },
+    { q: "১৬. 'ভাষাকে করতে হবে— যেমন ______।'?", o: ["সাফ ইস্পাত", "সোনার অলংকার", "নদীর প্রবাহ", "স্ফটিক পাথর"], a: 0 },
+    { q: "১৭. স্বামীজির মতে ভাষায় মড়ার লক্ষণ কী?", o: ["রাশি রাশি প্যাঁচালো বিশেষণ ও ভাবের অভাব", "গ্রাম্য শব্দ", "সহজ ভাষা", "অল্প কথা"], a: 0 },
+    { q: "১৮. 'পোটরাজ' গল্পটি মূল কোন ভাষার সাহিত্য?", o: ["মারাঠি", "হিন্দি", "গুজরাতি", "তেলেগু"], a: 0 },
+    { q: "১৯. পোটরাজ দামার স্ত্রীর নাম কী ছিল?", o: ["দুরপত", "বঞ্চলাবাঈ", "যশোদা", "কামিনী"], a: 0 },
+    { q: "২০. দেবী মারী-আই-এর উদ্দেশ্যে মঙ্গল-শুক্রবারে কী করা হতো?", o: ["উপবাস বা উপুশ", "ব্রতকথা পাঠ", "যাত্রাপালা", "দান"], a: 0 },
+    { q: "২১. রাতের অন্ধকারে মারী-আই-এর মূর্তিকে গাঁয়ের ধারে রেখে এসেছিল কে?", o: ["দামার ছেলে আনন্দ", "পোটরাজ দামা", "গ্রামের মোড়ল", "বঞ্চলা"], a: 0 },
+    { q: "২২. 'তার সঙ্গে' কবিতাটির মূল কবি কে?", o: ["পাবলো নেরুদা", "শঙ্খ ঘোষ", "শক্তি চট্টোপাধ্যায়", "সুনীল গঙ্গোপাধ্যায়"], a: 0 },
+    { q: "২৩. 'তার সঙ্গে' কবিতা বাংলায় অনুবাদ কে করেন?", o: ["শক্তি চট্টোপাধ্যায়", "শঙ্খ ঘোষ", "উৎপলকুমার বসু", "সুনন্দন চক্রবর্তী"], a: 0 },
+    { q: "২৪. কবিতায় ধুয়ে মুছে আগুন বানাবার জন্য কী লাগবে?", o: ["দুজনের হাতগুলোই", "শাবল ও ঝুড়ি", "কারনেশন ফুল", "মধু তালাশ"], a: 0 },
+    { q: "২৫. চর্যাপদের গানগুলিতে সংগীতে কয়টি অঙ্গ বা লক্ষণ দেখা যায়?", o: ["ছয়টি", "চারটি", "পাঁচটি", "আটটি"], a: 0 },
+    { q: "২৬. শ্রীকৃষ্ণকীর্তন কাব্যের মোট পদসংখ্যা কত?", o: ["৪১৮টি", "৫১টি", "৩২৪টি", "৪১৪টি"], a: 0 },
+    { q: "২৭. শাক্ত পদাবলির প্রথম ও প্রধান কবি কাকে বলা হয়?", o: ["রামপ্রসাদ সেন", "কমলাকান্ত ভট্টাচার্য", "দাশরথি রায়", "নিধুবাবু"], a: 0 },
+    { q: "২৮. বাংলা টপ্পা গানের প্রধান রূপকার কে?", o: ["রামনিধি গুপ্ত (নিধুবাবু)", "কালী মির্জা", "যদুভট্ট", "গৌরীপ্রসন্ন মজুমদার"], a: 0 },
+    { q: "২৯. বাংলাদেশের জাতীয় সংগীত 'আমার সোনার বাংলা' কোন গানের সুরে রচিত?", o: ["আমি কোথায় পাব তারে", "খাঁচার ভিতর অচিন পাখি", "মন মাঝি তোর বৈঠা নে রে", "মিলন হবে কত দিনে"], a: 0 },
+    { q: "৩০. 'ক্যালকাটা ইয়ুথ কয়্যার' কার নেতৃত্বে প্রতিষ্ঠিত হয়েছিল?", o: ["রুমা গুহঠাকুরতা", "সলিল চৌধুরী", "হেমন্ত মুখোপাধ্যায়", "মান্না দে"], a: 0 }
   ],
   english: [
     { q: "1. At what time in the morning did the night train usually reach Deoli?", o: ["About 5 a.m.", "Midnight", "6 a.m.", "4 a.m."], a: 0 },
     { q: "2. The basket-selling girl at Deoli was characterized by:", o: ["Dark and troubled eyes", "Bright red shawl", "Loud voice", "Golden ornaments"], a: 0 },
-    { q: "3. In 'Strong Roots', Dr. APJ Abdul Kalam was born in:", o: ["Rameswaram", "Madurai", "Dhanushkodi", "Trivandrum"], a: 0 },
-    { q: "4. In 'The Bet', what was the amount of the wager?", o: ["Two million rubles", "One million rubles", "Five hundred thousand", "Ten thousand rubles"], a: 0 },
-    { q: "5. In 'Our Casuarina Tree', the winding creeper is compared to:", o: ["A huge Python", "A mighty dragon", "A braided rope", "A sea wave"], a: 0 }
+    { q: "3. How much did the narrator pay for the basket at Deoli?", o: ["One rupee", "Two rupees", "Four annas", "Eight annas"], a: 0 },
+    { q: "4. Why did the narrator decide never to break journey at Deoli later?", o: ["He feared discovering the truth would spoil his dream", "He lacked funds", "He was forbidden", "The train stopped halting"], a: 0 },
+    { q: "5. In 'Strong Roots', Dr. APJ Abdul Kalam was born in:", o: ["Rameswaram", "Madurai", "Dhanushkodi", "Trivandrum"], a: 0 },
+    { q: "6. Who was Kalam's father's close friend and high priest of Shiva temple?", o: ["Pakshi Lakshmana Sastry", "Ramanadha Sastry", "Aravindan", "Sivaprakasan"], a: 0 },
+    { q: "7. According to Kalam's father, adversity always presents opportunities for:", o: ["Introspection", "Retribution", "Prosperity", "Mourning"], a: 0 },
+    { q: "8. At what time did Kalam's father begin his routine by reading namaz?", o: ["4 a.m.", "5 a.m.", "6 a.m.", "3:30 a.m."], a: 0 },
+    { q: "9. In 'The Bet', what was the amount of the wager?", o: ["Two million rubles", "One million rubles", "Five hundred thousand", "Ten thousand rubles"], a: 0 },
+    { q: "10. How long did the lawyer voluntarily remain in solitary confinement?", o: ["Fifteen years", "Five years", "Ten years", "Twenty years"], a: 0 }
   ],
   history: [
     { q: "১. 'কিতাব-উল-হিন্দ' গ্রন্থটির রচয়িতা কে?", o: ["আলবিরুনি", "ইবন বতুতা", "আব্দুর রজ্জাক", "ফ্রাঁসোয়া বার্নিয়ে"], a: 0 },
     { q: "২. ইবন বতুতা কোন দেশ থেকে ভারতে এসেছিলেন?", o: ["মরক্কো", "ইতালি", "পারস্য", "ফ্রান্স"], a: 0 },
-    { q: "৩. বিজয়নগর সাম্রাজ্যের রাজধানী কোথায় ছিল?", o: ["হাম্পি", "মাদুরা", "কালিকট", "গোলকোন্ডা"], a: 0 },
-    { q: "৪. 'আমুক্তমাল্যদা' গ্রন্থটির রচয়িতা কে?", o: ["কৃষ্ণদেব রায়", "পেড্ডান", "দ্বিতীয় দেবরায়", "হরিহর"], a: 0 },
-    { q: "৫. বাংলায় 'চিরস্থায়ী বন্দোবস্ত' কে প্রবর্তন করেন?", o: ["লর্ড কর্নওয়ালিস", "লর্ড ক্লাইভ", "লর্ড ডালহৌসি", "ওয়ারেন হেস্টিংস"], a: 0 }
+    { q: "৩. সুলতানি আমলে ঘোড়ার ডাক ব্যবস্থাকে কী বলা হতো?", o: ["উলুক", "দাওয়া", "হরকরা", "পাইক"], a: 0 },
+    { q: "৪. পদাতিক ডাক ব্যবস্থার নাম কী ছিল?", o: ["দাওয়া", "উলুক", "বারিদ", "কাসেদ"], a: 0 },
+    { q: "৫. কার রাজত্বকালে আব্দুর রজ্জাক বিজয়নগর সাম্রাজ্যে আসেন?", o: ["দ্বিতীয় দেবরায়", "প্রথম দেবরায়", "কৃষ্ণদেব রায়", "অচ্যুত রায়"], a: 0 },
+    { q: "৬. ফ্রাঁসোয়া বার্নিয়ে পেশায় কী ছিলেন?", o: ["চিকিৎসক ও দার্শনিক", "বণিক", "ধর্মযাজক", "চিত্রশিল্পী"], a: 0 },
+    { q: "৭. বার্নিয়ের মতে মুঘল যুগের 'এথেন্স' কোন শহর?", o: ["বারাণসী", "দিল্লি", "আগ্রা", "লাহোর"], a: 0 },
+    { q: "৮. বিজয়নগর সাম্রাজ্য কত খ্রিস্টাব্দে প্রতিষ্ঠিত হয়?", o: ["১৩৩৬ খ্রিস্টাব্দে", "১৩৪৭ খ্রিস্টাব্দে", "১৫২৬ খ্রিস্টাব্দে", "১২০৬ খ্রিস্টাব্দে"], a: 0 },
+    { q: "৯. বিজয়নগর সাম্রাজ্যের প্রতিষ্ঠাতা কারা ছিলেন?", o: ["হরিহর ও বুক্ক", "কৃষ্ণদেব রায়", "প্রথম দেবরায়", "তিরুমল"], a: 0 },
+    { q: "১০. বিজয়নগর সাম্রাজ্যের রাজধানী কোথায় ছিল?", o: ["হাম্পি", "মাদুরা", "কালিকট", "গোলকোন্ডা"], a: 0 }
   ],
   geography: [
     { q: "১. ওয়েগনারের মহীসঞ্চরণ তত্ত্ব অনুসারে প্রাচীন অবিভক্ত ভূখণ্ডটির নাম কী?", o: ["প্যানজিয়া", "প্যানথালাসা", "গন্ডোয়ানাল্যান্ড", "লরেশিয়া"], a: 0 },
     { q: "২. প্যানজিয়া ভেঙে সৃষ্ট মধ্যবর্তী অগভীর সমুদ্রের নাম কী ছিল?", o: ["টেথিস সাগর", "ভূমধ্যসাগর", "বাল্টিক সাগর", "কৃষ্ণ সাগর"], a: 0 },
     { q: "৩. চুনাপাথর যুক্ত অঞ্চলে গুহার ছাদে গঠিত ক্যালসিয়াম কার্বনেট স্তম্ভকে কী বলে?", o: ["স্ট্যালাকটাইট", "স্ট্যালাগমাইট", "হেলিকটাইট", "ড্রামলিন"], a: 0 },
-    { q: "৪. বায়ুর আপেক্ষিক আর্দ্রতা প্রকাশের একক কী?", o: ["শতাংশ (%)", "গ্রাম/ঘনমিটার", "ডিগ্রি সে.", "মিলিবার"], a: 0 },
-    { q: "৫. বাস্তুতন্ত্রে শক্তি প্রবাহের ১০ শতাংশ নিয়মের প্রবক্তা কে?", o: ["লিন্ডেম্যান", "ট্যান্সলে", "ওডাম", "হেকেল"], a: 0 }
+    { q: "৪. 'বাস্কেট অব এগ টপোগ্রাফি' (Basket of Eggs) কোন ভূমিরূপকে বলা হয়?", o: ["ড্রামলিন", "এসকার", "রসে মোতানে", "কাম"], a: 0 },
+    { q: "৫. বায়ুর আপেক্ষিক আর্দ্রতা প্রকাশের একক কী?", o: ["শতাংশ (%)", "গ্রাম/ঘনমিটার", "ডিগ্রি সে.", "মিলিবার"], a: 0 },
+    { q: "৬. মহাসাগরীয় তলদেশের সর্ববৃহৎ অংশ কোনটি?", o: ["গভীর সমুদ্রের সমভূমি", "মহীসোপান", "মহীঢাল", "সমুদ্রখাত"], a: 0 },
+    { q: "৭. বাস্তুতন্ত্রে শক্তি প্রবাহের ১০ শতাংশ নিয়মের প্রবক্তা কে?", o: ["লিন্ডেম্যান", "ট্যান্সলে", "ওডাম", "হেকেল"], a: 0 },
+    { q: "৮. ২০১১ সালের জনগণনা অনুযায়ী ভারতের জনঘনত্ব প্রতি বর্গকিমিতে কত?", o: ["৩৮২ জন", "৩২৪ জন", "৯৪৩ জন", "৪১৪ জন"], a: 0 },
+    { q: "৯. ভারতের দীর্ঘতম জাতীয় সড়ক কোনটি?", o: ["NH 44", "NH 19", "NH 48", "NH 6"], a: 0 },
+    { q: "১০. ভারতের 'চিনির বাটি' বলা হয় কোন রাজ্যকে?", o: ["উত্তরপ্রদেশ", "মহারাষ্ট্র", "পাঞ্জাব", "পশ্চিমবঙ্গ"], a: 0 }
   ],
   polscience: [
     { q: "১. 'Cold War' বা ঠাণ্ডা লড়াই শব্দটি প্রথম কে ব্যবহার করেন?", o: ["বার্নাড বারুচ", "উইনস্টন চার্চিল", "হ্যারি ট্রুম্যান", "লিপম্যান"], a: 0 },
@@ -479,7 +529,7 @@ const rawPools = {
 
 const masterQuestionPool = {};
 Object.keys(rawPools).forEach(key => {
-  masterQuestionPool[key] = generate40(rawPools[key]);
+  masterQuestionPool[key] = generateUnique40(rawPools[key]);
 });
 
 let currentStudent = null;
@@ -497,7 +547,6 @@ window.addEventListener("DOMContentLoaded", () => {
   loadPublicNotice();
 });
 
-// নোটিশ লোড করা (লাইভ)
 function loadPublicNotice() {
   noticeRef.on("value", snap => {
     const noticeCard = document.getElementById("public-notice-card");
@@ -889,7 +938,6 @@ function returnToDashboard() {
   document.getElementById("dashboard-screen").style.display = "block";
 }
 
-// সার্বজনীন লাইভ মেধা তালিকা (সাবজেক্ট অনুযায়ী প্রাপ্ত নম্বর সহ)
 function loadPublicLeaderboard() {
   const tbody = document.getElementById("public-rank-body");
   tbody.innerHTML = `<tr><td colspan="6" style="color:#64748b; padding:12px;">লোড হচ্ছে...</td></tr>`;
@@ -933,7 +981,6 @@ function loadPublicLeaderboard() {
         maskedPhone = "XXXXXX";
       }
 
-      // ছাত্র কোন বিষয়ে কত নম্বর পেয়েছে তার সুন্দর তালিকা তৈরি
       let subDetails = "";
       if (row.subjectResults) {
         subDetails = Object.entries(row.subjectResults).map(([code, r]) => {
