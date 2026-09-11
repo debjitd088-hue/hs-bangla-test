@@ -233,11 +233,11 @@
       </div>
     </div>
 
-    <!-- Public Boxed Live Leaderboard -->
+    <!-- Public Boxed Live Leaderboard (আংশিক পরীক্ষা দিলেও র‍্যাংকে দেখাবে, নম্বর মাস্কড থাকবে) -->
     <div class="leaderboard-box">
       <div class="leaderboard-header">
         <span>🏆 সার্বজনীন মেধা তালিকা (Live Rank Board)</span>
-        <span style="font-size:0.75rem; color:#64748b;">(Best of 5 মোট ২০০-এর মধ্যে)</span>
+        <span style="font-size:0.75rem; color:#64748b;">(পরীক্ষার্থীদের লাইভ স্কোর)</span>
       </div>
       <div style="overflow-x:auto;">
         <table class="rank-table">
@@ -246,8 +246,8 @@
               <th>র্যাংক</th>
               <th>ছবি</th>
               <th>নাম</th>
-              <th>প্রাপ্ত মোট নম্বর</th>
-              <th>শতাংশ</th>
+              <th>মোবাইল (গোপন)</th>
+              <th>মোট প্রাপ্ত নম্বর</th>
             </tr>
           </thead>
           <tbody id="public-rank-body"></tbody>
@@ -326,7 +326,6 @@
       <button style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;" onclick="closeTeacherModal()">বন্ধ ✕</button>
     </div>
     
-    <!-- পাসওয়ার্ড বক্সে কোনো হিন্ট বা টেক্সট রাখা হয়নি -->
     <div id="admin-login-box" style="margin-top:15px; text-align:center;">
       <input type="password" id="admin-pin" placeholder="শিক্ষক পাসওয়ার্ড লিখুন..." style="width:100%; padding:10px; border:1.5px solid #3b82f6; border-radius:6px; margin-bottom:10px; text-align:center;">
       <button class="btn-primary" style="padding:9px;" onclick="verifyAdminPin()">লগইন করুন</button>
@@ -344,8 +343,7 @@
               <th><input type="checkbox" id="select-all-checkbox" onchange="toggleSelectAll(this)"></th>
               <th>ছবি</th>
               <th>নাম ও ফোন</th>
-              <th>সেরা ৫ নম্বর</th>
-              <th>শতাংশ</th>
+              <th>মোট প্রাপ্ত নম্বর</th>
               <th>একক ডিলিট</th>
             </tr>
           </thead>
@@ -370,7 +368,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const dbRef = firebase.database().ref("hs_all_students");
 
-// শিক্ষক পাসওয়ার্ড
 const TEACHER_PIN = "xyz1234";
 
 const SUBJECT_NAMES = {
@@ -384,7 +381,6 @@ const SUBJECT_NAMES = {
   sanskrit: "সংস্কৃত (SNSK)"
 };
 
-// হেল্পার ফাংশন: প্রতিটি বিষয়ের প্রশ্নব্যাংক নিখুঁতভাবে ৪০টিতে রূপান্তর করার জন্য
 function generate40(baseArray) {
   let pool = [...baseArray];
   let count = pool.length;
@@ -399,7 +395,6 @@ function generate40(baseArray) {
   return pool.slice(0, 40);
 }
 
-// প্রতিটি বিষয়ের পূর্ণাঙ্গ ৪০টি প্রশ্ন সম্বলিত মাস্টার পুল[cite: 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const rawPools = {
   bengali: [
     { q: "১. 'আদরিণী' গল্পটি কোন পত্রিকায় প্রকাশিত হয়েছিল?", o: ["ভারতী", "সাধনা", "সবুজপত্র", "সাহিত্য"], a: 0 },
@@ -459,7 +454,7 @@ const rawPools = {
     { q: "৭. ভারত ও চিনের মধ্যে ঐতিহাসিক 'পঞ্চশীল চুক্তি' কবে স্বাক্ষরিত হয়?", o: ["১৯৫৪ সালে", "১৯৫০ সালে", "১৯৬২ সালে", "১৯৭১ সালে"], a: 0 },
     { q: "৮. আন্তর্জাতিক বিচারালয় (ICJ) কোথায় অবস্থিত?", o: ["হেগ (নেদারল্যান্ডস)", "নিউ ইয়র্ক", "জেনেভা", "প্যারিস"], a: 0 },
     { q: "৯. স্বাধীন ভারতে রাজ্য পুনর্গঠন আইন কবে পাস হয়েছিল?", o: ["১৯৫৬ সালে", "১৯৫০ সালে", "১৯৫২ সালে", "১৯৬২ সালে"], a: 0 },
-    { q: "১০. পোখরানে ভারতের প্রথম পরমাণু পরীক্ষা কবে হয়েছিল?", o: ["১৮ মে ১৯৭৪ (স্মাইলিং বুদ্ধ)", "১৯৯৮ সালে", "১৯৭১ সালে", "১৯৮০ সালে"], a: 0 }
+    { q: "১০. পোখরানে ভারতের প্রথম পরমাণু পরীক্ষা কবে হয়েছিল?", o: ["১৮ মে ১৯৭৪ (স্মাইলিং বুদ্ধ)", "১৯ ১৯৯৮ সালে", "১৯৭১ সালে", "১৯৮০ সালে"], a: 0 }
   ],
   philosophy: [
     { q: "১. 'দ্রব্য = ঈশ্বর = প্রকৃতি'—এটি কোন দার্শনিকের মতবাদ?", o: ["স্পিনোজা", "দেকার্ত", "লাইবনিজ", "লক"], a: 0 },
@@ -518,7 +513,7 @@ window.addEventListener("DOMContentLoaded", () => {
   loadPublicLeaderboard();
 });
 
-// শিক্ষক পিন যাচাই (সরাসরি পিন 'xyz1234')
+// সরাসরি পিন যাচাই
 function verifyAdminPin() {
   const enteredPin = document.getElementById("admin-pin").value.trim();
   if (enteredPin === TEACHER_PIN) {
@@ -843,8 +838,13 @@ function submitExamSubject() {
   if (!currentStudent.subjectResults) currentStudent.subjectResults = {};
   currentStudent.subjectResults[currentExamSubject] = subjectResult;
 
+  // আংশিক বা সম্পূর্ণ পরীক্ষার মোট প্রাপ্ত নম্বর হিসাব
+  let totalScoreSoFar = 0;
+  Object.values(currentStudent.subjectResults).forEach(r => totalScoreSoFar += r.score);
+
   const updates = {};
   updates[`hs_all_students/${currentStudentKey}/subjectResults/${currentExamSubject}`] = subjectResult;
+  updates[`hs_all_students/${currentStudentKey}/totalScoreSoFar`] = totalScoreSoFar;
 
   if (Object.keys(currentStudent.subjectResults).length === 6) {
     const resArr = Object.entries(currentStudent.subjectResults).map(([code, r]) => ({ code, score: r.score }));
@@ -918,7 +918,7 @@ function returnToDashboard() {
   document.getElementById("dashboard-screen").style.display = "block";
 }
 
-// পাবলিক লাইভ র‍্যাংক বোর্ড
+// সার্বজনীন লাইভ মেধা তালিকা (আংশিক পরীক্ষা দিলেও র‍্যাংকে দেখাবে, নম্বর মাস্কড থাকবে)
 function loadPublicLeaderboard() {
   const tbody = document.getElementById("public-rank-body");
   tbody.innerHTML = `<tr><td colspan="5" style="color:#64748b; padding:12px;">মেধা তালিকা লোড হচ্ছে...</td></tr>`;
@@ -930,35 +930,48 @@ function loadPublicLeaderboard() {
       return;
     }
 
-    const completedStudents = [];
+    const studentsList = [];
     snap.forEach(c => {
       const val = c.val();
-      if (val.isCompleted && val.best5Total !== undefined) {
-        completedStudents.push(val);
+      // যে স্টুডেন্ট অন্তত একটি পরীক্ষা দিয়েছে (subjectResults আছে) তাকেই র্যাংকে দেখাবে
+      if (val.subjectResults && Object.keys(val.subjectResults).length > 0) {
+        let currentTotal = 0;
+        Object.values(val.subjectResults).forEach(r => currentTotal += r.score);
+        val.displayScore = val.best5Total !== undefined ? val.best5Total : currentTotal;
+        studentsList.push(val);
       }
     });
 
-    if (completedStudents.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5" style="padding:12px; color:#64748b;">এখনও কোনো ছাত্রের ৬টি বিষয় সম্পন্ন হয়নি।</td></tr>`;
+    if (studentsList.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="padding:12px; color:#64748b;">এখনও কেউ পরীক্ষা দেয়নি।</td></tr>`;
       return;
     }
 
-    completedStudents.sort((a, b) => b.best5Total - a.best5Total);
+    // মোট প্রাপ্ত নম্বর অনুযায়ী সাজানো (Rank 1, Rank 2...)
+    studentsList.sort((a, b) => b.displayScore - a.displayScore);
 
-    completedStudents.forEach((row, index) => {
+    studentsList.forEach((row, index) => {
       const rank = index + 1;
       let badgeClass = "rank-badge";
       if (rank === 1) badgeClass += " rank-1";
       else if (rank === 2) badgeClass += " rank-2";
       else if (rank === 3) badgeClass += " rank-3";
 
+      // মোবাইল নম্বর মাস্কিং (যেমন: 98XXXXXX12)
+      let maskedPhone = row.phone;
+      if (maskedPhone && maskedPhone.length === 10) {
+        maskedPhone = maskedPhone.substring(0, 2) + "XXXXXX" + maskedPhone.substring(8);
+      } else {
+        maskedPhone = "XXXXXX";
+      }
+
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td><span class="${badgeClass}">#${rank}</span></td>
         <td><img src="${row.photo}" style="width:36px; height:36px; border-radius:50%; object-fit:cover;"></td>
         <td style="text-align:left; font-weight:bold;">${row.name}</td>
-        <td style="font-weight:bold; color:#1e3a8a;">${row.best5Total} / ২০০</td>
-        <td style="font-weight:bold; color:#16a34a;">${row.percentage}%</td>
+        <td style="font-family:monospace; color:#475569;">${maskedPhone}</td>
+        <td style="font-weight:bold; color:#1e3a8a;">${row.displayScore} নম্বর</td>
       `;
       tbody.appendChild(tr);
     });
@@ -990,6 +1003,12 @@ function loadTeacherRecords() {
     snap.forEach(child => {
       const row = child.val();
       const key = child.key;
+      let currentTotal = 0;
+      if (row.subjectResults) {
+        Object.values(row.subjectResults).forEach(r => currentTotal += r.score);
+      }
+      const showScore = row.best5Total !== undefined ? row.best5Total : currentTotal;
+
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td><input type="checkbox" class="student-select-cb" value="${key}"></td>
@@ -999,8 +1018,7 @@ function loadTeacherRecords() {
           <span style="color:#1d4ed8; font-weight:bold;">📞 ${row.phone}</span><br>
           <small style="color:#64748b;">${row.completedAt || 'পরীক্ষা চলমান'}</small>
         </td>
-        <td style="font-weight:bold; color:#1e3a8a;">${row.best5Total !== undefined ? row.best5Total : '--'}/২০০</td>
-        <td style="font-weight:bold; color:#16a34a;">${row.percentage !== undefined ? row.percentage + '%' : '--'}</td>
+        <td style="font-weight:bold; color:#1e3a8a;">${showScore} নম্বর</td>
         <td>
           <button style="background:#dc2626; color:white; border:none; padding:5px 8px; border-radius:4px; font-size:0.75rem; cursor:pointer;" onclick="deleteSingleStudent('${key}', '${row.phone}')">ডিলিট ✕</button>
         </td>
