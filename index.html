@@ -43,6 +43,14 @@
       border-radius: 6px; font-size: 0.82rem; font-weight: bold; cursor: pointer;
     }
 
+    /* Notice Board Box */
+    .notice-box {
+      background: #fffbeb; border: 2px solid #f59e0b; border-radius: 12px;
+      padding: 14px; margin-bottom: 18px; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
+    }
+    .notice-title { font-weight: bold; color: #b45309; font-size: 0.95rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+    .notice-content { font-size: 0.9rem; color: #78350f; line-height: 1.4; white-space: pre-line; }
+
     .boxed-panel {
       background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 12px;
       padding: 18px; margin-bottom: 18px;
@@ -50,7 +58,7 @@
 
     .form-group { margin-bottom: 14px; text-align: left; }
     .form-group label { display: block; font-weight: 600; font-size: 0.92rem; margin-bottom: 6px; color: #334155; }
-    .form-group input[type="text"], .form-group input[type="tel"], .form-group input[type="password"] {
+    .form-group input[type="text"], .form-group input[type="tel"], .form-group input[type="password"], .form-group textarea {
       width: 100%; padding: 11px; border: 1.5px solid #94a3b8; border-radius: 8px; font-size: 1rem; outline: none; background: #fff;
     }
 
@@ -138,7 +146,7 @@
     .option-btn.correct { background-color: #dcfce7 !important; border-color: #16a34a !important; color: #166534 !important; font-weight: bold; }
     .option-btn.wrong { background-color: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b !important; }
 
-    /* Personal Four-Corner Box Result */
+    /* Personal Marksheet */
     #final-report { display: none; }
     .marksheet-box {
       border: 3px solid #0f172a; border-radius: 14px; background: #ffffff;
@@ -169,6 +177,12 @@
 
   <div class="portal-title">উচ্চ মাধ্যমিক কেন্দ্রীয় অনলাইন পরীক্ষা পোর্টাল</div>
   <div class="portal-subtitle">সেমিস্টার-III | পূর্ণমান: ৪০/বিষয় | সময়: ১ ঘণ্টা ৩০ মিনিট (প্রজেক্ট বাদে)</div>
+
+  <!-- Dynamic Notice Board (শিক্ষক প্যানেল থেকে নিয়ন্ত্রিত) -->
+  <div class="notice-box" id="public-notice-card" style="display:none;">
+    <div class="notice-title">📢 জরুরি নোটিশ ও ঘোষণা:</div>
+    <div class="notice-content" id="public-notice-text"></div>
+  </div>
 
   <!-- Entry Screen -->
   <div id="registration-screen">
@@ -233,11 +247,11 @@
       </div>
     </div>
 
-    <!-- Public Boxed Live Leaderboard (আংশিক পরীক্ষা দিলেও র‍্যাংকে দেখাবে, নম্বর মাস্কড থাকবে) -->
+    <!-- Public Boxed Live Leaderboard (বিষয় ও নম্বর সহ বিস্তারিত বিবরণ) -->
     <div class="leaderboard-box">
       <div class="leaderboard-header">
         <span>🏆 সার্বজনীন মেধা তালিকা (Live Rank Board)</span>
-        <span style="font-size:0.75rem; color:#64748b;">(পরীক্ষার্থীদের লাইভ স্কোর)</span>
+        <span style="font-size:0.75rem; color:#64748b;">(ছাত্রদের বিষয়ভিত্তিক নম্বর বিবরণী)</span>
       </div>
       <div style="overflow-x:auto;">
         <table class="rank-table">
@@ -247,7 +261,8 @@
               <th>ছবি</th>
               <th>নাম</th>
               <th>মোবাইল (গোপন)</th>
-              <th>মোট প্রাপ্ত নম্বর</th>
+              <th>বিষয়ভিত্তিক প্রাপ্ত নম্বর</th>
+              <th>মোট</th>
             </tr>
           </thead>
           <tbody id="public-rank-body"></tbody>
@@ -322,7 +337,7 @@
 <div id="teacher-modal" class="modal">
   <div class="modal-content">
     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #cbd5e1; padding-bottom:8px;">
-      <h3 style="margin:0; color:#1e3a8a;">👨‍🏫 শিক্ষক প্যানেল (ম্যানেজমেন্ট)</h3>
+      <h3 style="margin:0; color:#1e3a8a;">👨‍🏫 শিক্ষক প্যানেল (ম্যানেজমেন্ট ও নোটিশ)</h3>
       <button style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;" onclick="closeTeacherModal()">বন্ধ ✕</button>
     </div>
     
@@ -332,8 +347,15 @@
     </div>
 
     <div id="admin-data-box" style="display:none; margin-top:15px;">
+      <!-- Notice Board Editor -->
+      <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:8px; padding:12px; margin-bottom:15px;">
+        <label style="font-weight:bold; font-size:0.88rem; color:#1e3a8a; display:block; margin-bottom:6px;">📢 নোটিশ বোর্ডে বার্তা লিখুন বা আপডেট করুন:</label>
+        <textarea id="teacher-notice-input" rows="3" placeholder="এখানে নোটিশ লিখুন..." style="margin-bottom:8px;"></textarea>
+        <button class="btn-primary" style="padding:8px; font-size:0.85rem;" onclick="saveTeacherNotice()">নোটিশ পাবলিশ করুন</button>
+      </div>
+
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <span style="font-size:0.85rem; font-weight:bold; color:#334155;">সিলেক্ট করে ডিলিট করুন:</span>
+        <span style="font-size:0.85rem; font-weight:bold; color:#334155;">ছাত্রছাত্রীদের সাবজেক্ট ও নম্বর তালিকা:</span>
         <button style="background:#dc2626; color:white; border:none; padding:6px 12px; border-radius:4px; font-size:0.78rem; font-weight:bold; cursor:pointer;" onclick="deleteSelectedStudents()">🗑️ নির্বাচিতগুলো ডিলিট</button>
       </div>
       <div style="overflow-x: auto;">
@@ -343,7 +365,7 @@
               <th><input type="checkbox" id="select-all-checkbox" onchange="toggleSelectAll(this)"></th>
               <th>ছবি</th>
               <th>নাম ও ফোন</th>
-              <th>মোট প্রাপ্ত নম্বর</th>
+              <th>বিষয়ভিত্তিক নম্বর</th>
               <th>একক ডিলিট</th>
             </tr>
           </thead>
@@ -367,18 +389,19 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const dbRef = firebase.database().ref("hs_all_students");
+const noticeRef = firebase.database().ref("hs_portal_notice");
 
 const TEACHER_PIN = "xyz1234";
 
 const SUBJECT_NAMES = {
-  bengali: "বাংলা (BNGA)",
-  english: "English B (ENGB)",
-  history: "ইতিহাস (HIST)",
-  geography: "ভূগোল (GEGR)",
-  polscience: "রাষ্ট্রবিজ্ঞান (POLS)",
-  philosophy: "দর্শন (PHIL)",
-  education: "শিক্ষাবিজ্ঞান (EDCN)",
-  sanskrit: "সংস্কৃত (SNSK)"
+  bengali: "বাংলা",
+  english: "English B",
+  history: "ইতিহাস",
+  geography: "ভূগোল",
+  polscience: "রাষ্ট্রবিজ্ঞান",
+  philosophy: "দর্শন",
+  education: "শিক্ষাবিজ্ঞান",
+  sanskrit: "সংস্কৃত"
 };
 
 function generate40(baseArray) {
@@ -401,96 +424,56 @@ const rawPools = {
     { q: "২. জয়রাম মুখোপাধ্যায় পেশায় কী ছিলেন?", o: ["নায়েব", "বাঁধা মোক্তার", "গোমস্তা", "ডাক্তার"], a: 1 },
     { q: "৩. আদালত অবমাননার জন্য জয়রামবাবুর কত টাকা জরিমানা হয়েছিল?", o: ["পাঁচ টাকা", "দশ টাকা", "সাত টাকা", "পনেরো টাকা"], a: 0 },
     { q: "৪. উমাচরণ লাহিড়ীর কাছ থেকে হস্তিনীটিকে কত টাকায় কেনা হয়েছিল?", o: ["১০০০ টাকা", "১৫০০ টাকা", "২০০০ টাকা", "২৫০০ টাকা"], a: 2 },
-    { q: "৫. হস্তিনী ভাড়ার বিজ্ঞাপনে দৈনিক কত টাকা ধার্য করা হয়েছিল?", o: ["৩ টাকা", "৪ টাকা", "৪।।০ (চার টাকা চার আনা)", "৫ টাকা"], a: 2 },
-    { q: "৬. মেলায় নিয়ে যাওয়ার আগে জয়রাম হস্তিনীকে কত টাকার রসগোল্লা খাওয়ান?", o: ["এক টাকার", "দুই টাকার", "পাঁচ টাকার", "দশ টাকার"], a: 1 },
-    { q: "৭. 'ধর্ম' কবিতাটি কবি শ্রীজাত-র কোন্ মূল কাব্যগ্রন্থের অন্তর্গত?", o: ["অন্ধকার লেখাগুচ্ছ", "উড়ন্ত সব জোকার", "শেষ চিঠি", "কর্কটক্রান্তির দেশ"], a: 0 },
-    { q: "৮. 'ধর্ম' কবিতায় কার ধর্ম ছিল 'দিগন্ত পেরনো'?", o: ["আইনস্টাইনের", "আবদুল করিম খাঁ", "ভ্যান গঘের", "কবীরের"], a: 0 },
-    { q: "৯. 'ভ্যান গঘের ধর্ম ছিল—'", o: ["উন্মাদনা। আঁকা।", "কবিতার জিত", "নতুন পতাকা", "ভস্মের চরিত"], a: 0 },
-    { q: "১০. 'যে তোমাকে শিখিয়েছে দখলের কথা— / জেনো সে ধর্মই নয়। ______।'?", o: ["প্রাতিষ্ঠানিকতা", "গোঁড়ামি", "অহংকার", "রাজনীতি"], a: 0 }
+    { q: "৫. হস্তিনী ভাড়ার বিজ্ঞাপনে দৈনিক কত টাকা ধার্য করা হয়েছিল?", o: ["৩ টাকা", "৪ টাকা", "৪।।০ (চার টাকা চার আনা)", "৫ টাকা"], a: 2 }
   ],
   english: [
     { q: "1. At what time in the morning did the night train usually reach Deoli?", o: ["About 5 a.m.", "Midnight", "6 a.m.", "4 a.m."], a: 0 },
     { q: "2. The basket-selling girl at Deoli was characterized by:", o: ["Dark and troubled eyes", "Bright red shawl", "Loud voice", "Golden ornaments"], a: 0 },
-    { q: "3. How much did the narrator pay for the basket at Deoli?", o: ["One rupee", "Two rupees", "Four annas", "Eight annas"], a: 0 },
-    { q: "4. Why did the narrator decide never to break journey at Deoli later?", o: ["He feared discovering the truth would spoil his dream", "He lacked funds", "He was forbidden", "The train stopped halting"], a: 0 },
-    { q: "5. In 'Strong Roots', Dr. APJ Abdul Kalam was born in:", o: ["Rameswaram", "Madurai", "Dhanushkodi", "Trivandrum"], a: 0 },
-    { q: "6. Who was Kalam's father's close friend and high priest of Shiva temple?", o: ["Pakshi Lakshmana Sastry", "Ramanadha Sastry", "Aravindan", "Sivaprakasan"], a: 0 },
-    { q: "7. According to Kalam's father, adversity always presents opportunities for:", o: ["Introspection", "Retribution", "Prosperity", "Mourning"], a: 0 },
-    { q: "8. At what time did Kalam's father begin his routine by reading namaz?", o: ["4 a.m.", "5 a.m.", "6 a.m.", "3:30 a.m."], a: 0 },
-    { q: "9. In 'The Bet', what was the amount of the wager?", o: ["Two million rubles", "One million rubles", "Five hundred thousand", "Ten thousand rubles"], a: 0 },
-    { q: "10. How long did the lawyer voluntarily remain in solitary confinement?", o: ["Fifteen years", "Five years", "Ten years", "Twenty years"], a: 0 }
+    { q: "3. In 'Strong Roots', Dr. APJ Abdul Kalam was born in:", o: ["Rameswaram", "Madurai", "Dhanushkodi", "Trivandrum"], a: 0 },
+    { q: "4. In 'The Bet', what was the amount of the wager?", o: ["Two million rubles", "One million rubles", "Five hundred thousand", "Ten thousand rubles"], a: 0 },
+    { q: "5. In 'Our Casuarina Tree', the winding creeper is compared to:", o: ["A huge Python", "A mighty dragon", "A braided rope", "A sea wave"], a: 0 }
   ],
   history: [
     { q: "১. 'কিতাব-উল-হিন্দ' গ্রন্থটির রচয়িতা কে?", o: ["আলবিরুনি", "ইবন বতুতা", "আব্দুর রজ্জাক", "ফ্রাঁসোয়া বার্নিয়ে"], a: 0 },
     { q: "২. ইবন বতুতা কোন দেশ থেকে ভারতে এসেছিলেন?", o: ["মরক্কো", "ইতালি", "পারস্য", "ফ্রান্স"], a: 0 },
-    { q: "৩. সুলতানি আমলে ঘোড়ার ডাক ব্যবস্থাকে কী বলা হতো?", o: ["উলুক", "দাওয়া", "হরকরা", "পাইক"], a: 0 },
-    { q: "৪. পদাতিক ডাক ব্যবস্থার নাম কী ছিল?", o: ["দাওয়া", "উলুক", "বারিদ", "কাসেদ"], a: 0 },
-    { q: "৫. কার রাজত্বকালে আব্দুর রজ্জাক বিজয়নগর সাম্রাজ্যে আসেন?", o: ["দ্বিতীয় দেবরায়", "প্রথম দেবরায়", "কৃষ্ণদেব রায়", "অচ্যুত রায়"], a: 0 },
-    { q: "৬. ফ্রাঁসোয়া বার্নিয়ে পেশায় কী ছিলেন?", o: ["চিকিৎসক ও দার্শনিক", "বণিক", "ধর্মযাজক", "চিত্রশিল্পী"], a: 0 },
-    { q: "৭. বার্নিয়ের মতে মুঘল যুগের 'এথেন্স' কোন শহর?", o: ["বারাণসী", "দিল্লি", "আগ্রা", "লাহোর"], a: 0 },
-    { q: "৮. বিজয়নগর সাম্রাজ্য কত খ্রিস্টাব্দে প্রতিষ্ঠিত হয়?", o: ["১৩৩৬ খ্রিস্টাব্দে", "১৩৪৭ খ্রিস্টাব্দে", "১৫২৬ খ্রিস্টাব্দে", "১২০৬ খ্রিস্টাব্দে"], a: 0 },
-    { q: "৯. বিজয়নগর সাম্রাজ্যের প্রতিষ্ঠাতা কারা ছিলেন?", o: ["হরিহর ও বুক্ক", "কৃষ্ণদেব রায়", "প্রথম দেবরায়", "তিরুমল"], a: 0 },
-    { q: "১০. বিজয়নগর সাম্রাজ্যের রাজধানী কোথায় ছিল?", o: ["হাম্পি", "মাদুরা", "কালিকট", "গোলকোন্ডা"], a: 0 }
+    { q: "৩. বিজয়নগর সাম্রাজ্যের রাজধানী কোথায় ছিল?", o: ["হাম্পি", "মাদুরা", "কালিকট", "গোলকোন্ডা"], a: 0 },
+    { q: "৪. 'আমুক্তমাল্যদা' গ্রন্থটির রচয়িতা কে?", o: ["কৃষ্ণদেব রায়", "পেড্ডান", "দ্বিতীয় দেবরায়", "হরিহর"], a: 0 },
+    { q: "৫. বাংলায় 'চিরস্থায়ী বন্দোবস্ত' কে প্রবর্তন করেন?", o: ["লর্ড কর্নওয়ালিস", "লর্ড ক্লাইভ", "লর্ড ডালহৌসি", "ওয়ারেন হেস্টিংস"], a: 0 }
   ],
   geography: [
     { q: "১. ওয়েগনারের মহীসঞ্চরণ তত্ত্ব অনুসারে প্রাচীন অবিভক্ত ভূখণ্ডটির নাম কী?", o: ["প্যানজিয়া", "প্যানথালাসা", "গন্ডোয়ানাল্যান্ড", "লরেশিয়া"], a: 0 },
     { q: "২. প্যানজিয়া ভেঙে সৃষ্ট মধ্যবর্তী অগভীর সমুদ্রের নাম কী ছিল?", o: ["টেথিস সাগর", "ভূমধ্যসাগর", "বাল্টিক সাগর", "কৃষ্ণ সাগর"], a: 0 },
     { q: "৩. চুনাপাথর যুক্ত অঞ্চলে গুহার ছাদে গঠিত ক্যালসিয়াম কার্বনেট স্তম্ভকে কী বলে?", o: ["স্ট্যালাকটাইট", "স্ট্যালাগমাইট", "হেলিকটাইট", "ড্রামলিন"], a: 0 },
-    { q: "৪. 'বাস্কেট অব এগ টপোগ্রাফি' (Basket of Eggs) কোন ভূমিরূপকে বলা হয়?", o: ["ড্রামলিন", "এসকার", "রসে মোতানে", "কাম"], a: 0 },
-    { q: "৫. বায়ুর আপেক্ষিক আর্দ্রতা প্রকাশের একক কী?", o: ["শতাংশ (%)", "গ্রাম/ঘনমিটার", "ডিগ্রি সে.", "মিলিবার"], a: 0 },
-    { q: "৬. মহাসাগরীয় তলদেশের সর্ববৃহৎ অংশ কোনটি?", o: ["গভীর সমুদ্রের সমভূমি", "মহীসোপান", "মহীঢাল", "সমুদ্রখাত"], a: 0 },
-    { q: "৭. বাস্তুতন্ত্রে শক্তি প্রবাহের ১০ শতাংশ নিয়মের প্রবক্তা কে?", o: ["লিন্ডেম্যান", "ট্যান্সলে", "ওডাম", "হেকেল"], a: 0 },
-    { q: "৮. ২০১১ সালের জনগণনা অনুযায়ী ভারতের জনঘনত্ব প্রতি বর্গকিমিতে কত?", o: ["৩৮২ জন", "৩২৪ জন", "৯৪৩ জন", "৪১৪ জন"], a: 0 },
-    { q: "৯. ভারতের দীর্ঘতম জাতীয় সড়ক কোনটি?", o: ["NH 44", "NH 19", "NH 48", "NH 6"], a: 0 },
-    { q: "১০. ভারতের 'চিনির বাটি' বলা হয় কোন রাজ্যকে?", o: ["উত্তরপ্রদেশ", "মহারাষ্ট্র", "পাঞ্জাব", "পশ্চিমবঙ্গ"], a: 0 }
+    { q: "৪. বায়ুর আপেক্ষিক আর্দ্রতা প্রকাশের একক কী?", o: ["শতাংশ (%)", "গ্রাম/ঘনমিটার", "ডিগ্রি সে.", "মিলিবার"], a: 0 },
+    { q: "৫. বাস্তুতন্ত্রে শক্তি প্রবাহের ১০ শতাংশ নিয়মের প্রবক্তা কে?", o: ["লিন্ডেম্যান", "ট্যান্সলে", "ওডাম", "হেকেল"], a: 0 }
   ],
   polscience: [
     { q: "১. 'Cold War' বা ঠাণ্ডা লড়াই শব্দটি প্রথম কে ব্যবহার করেন?", o: ["বার্নাড বারুচ", "উইনস্টন চার্চিল", "হ্যারি ট্রুম্যান", "লিপম্যান"], a: 0 },
     { q: "২. ন্যাটো (NATO) সামরিক জোটটি কার নেতৃত্বে গড়ে উঠেছিল?", o: ["মার্কিন যুক্তরাষ্ট্র", "সোভিয়েত ইউনিয়ন", "গ্রেট ব্রিটেন", "ফ্রান্স"], a: 0 },
     { q: "৩. সম্মিলিত জাতিপুঞ্জ (UN) কবে প্রতিষ্ঠিত হয়?", o: ["২৪ অক্টোবর ১৯৪৫", "১০ জানুয়ারি ১৯২০", "১৫ আগস্ট ১৯৪৭", "২৬ জানুয়ারি ১৯৫০"], a: 0 },
     { q: "৪. নিরাপত্তা পরিষদে স্থায়ী সদস্য রাষ্ট্রের সংখ্যা কত?", o: ["৫টি", "১০টি", "১৫টি", "৭টি"], a: 0 },
-    { q: "৫. ভারতে দলত্যাগ বিরোধী আইন কত সালে পাস হয়?", o: ["১৯৮৫ সালে", "১৯৭৬ সালে", "১৯৭৮ সালে", "১৯৯২ সালে"], a: 0 },
-    { q: "৬. জোটনিরপেক্ষ আন্দোলনের (NAM) প্রথম শীর্ষ সম্মেলন কোথায় অনুষ্ঠিত হয়েছিল?", o: ["বেলগ্রেডে (১৯৬১)", "বান্দুং-এ", "দিল্লিতে", "কায়রোতে"], a: 0 },
-    { q: "৭. ভারত ও চিনের মধ্যে ঐতিহাসিক 'পঞ্চশীল চুক্তি' কবে স্বাক্ষরিত হয়?", o: ["১৯৫৪ সালে", "১৯৫০ সালে", "১৯৬২ সালে", "১৯৭১ সালে"], a: 0 },
-    { q: "৮. আন্তর্জাতিক বিচারালয় (ICJ) কোথায় অবস্থিত?", o: ["হেগ (নেদারল্যান্ডস)", "নিউ ইয়র্ক", "জেনেভা", "প্যারিস"], a: 0 },
-    { q: "৯. স্বাধীন ভারতে রাজ্য পুনর্গঠন আইন কবে পাস হয়েছিল?", o: ["১৯৫৬ সালে", "১৯৫০ সালে", "১৯৫২ সালে", "১৯৬২ সালে"], a: 0 },
-    { q: "১০. পোখরানে ভারতের প্রথম পরমাণু পরীক্ষা কবে হয়েছিল?", o: ["১৮ মে ১৯৭৪ (স্মাইলিং বুদ্ধ)", "১৯ ১৯৯৮ সালে", "১৯৭১ সালে", "১৯৮০ সালে"], a: 0 }
+    { q: "৫. ভারতে দলত্যাগ বিরোধী আইন কত সালে পাস হয়?", o: ["১৯৮৫ সালে", "১৯৭৬ সালে", "১৯৭৮ সালে", "১৯৯২ সালে"], a: 0 }
   ],
   philosophy: [
     { q: "১. 'দ্রব্য = ঈশ্বর = প্রকৃতি'—এটি কোন দার্শনিকের মতবাদ?", o: ["স্পিনোজা", "দেকার্ত", "লাইবনিজ", "লক"], a: 0 },
     { q: "২. দেকার্তের মতে দেহ ও মনের সংযোগস্থল কোন গ্রন্থি?", o: ["পিনিয়াল গ্রন্থি", "পিটুইটারি", "থাইরয়েড", "অ্যাড্রিনাল"], a: 0 },
     { q: "৩. 'অস্তিত্ব প্রত্যক্ষ নির্ভর' (Esse est percipi)—কার বক্তব্য?", o: ["বার্কলে", "লক", "হিউম", "কান্ট"], a: 0 },
     { q: "৪. অদ্বৈত বেদান্ত দর্শনের প্রধান ভাষ্যকার কে?", o: ["শঙ্করাচার্য", "রামানুজ", "মাধবাচার্য", "নিম্বার্ক"], a: 0 },
-    { q: "৫. 'Practical Ethics' গ্রন্থটির রচয়িতা কে?", o: ["পিটার সিঙ্গার", "ইমানুয়েল কান্ট", "জন স্টুয়ার্ট মিল", "বেন্থাম"], a: 0 },
-    { q: "৬. লাইবনিজের মতে মনাডগুলির প্রধান বৈশিষ্ট্য কী?", o: ["গবাক্ষহীন ও স্বয়ংক্রিয়", "ছিদ্রযুক্ত", "জড়ধর্মী", "নিষ্ক্রিয়"], a: 0 },
-    { q: "৭. কার্যকারণ সম্বন্ধ বিষয়ক 'সতত সংযোগ তত্ত্ব' কার?", o: ["ডেভিড হিউম", "ইউয়িং", "দেকার্ত", "স্পিনোজা"], a: 0 },
-    { q: "৮. কার্যকারণ সম্বন্ধ বিষয়ক 'প্রসক্তি তত্ত্বের' (Entailment Theory) প্রবক্তা কে?", o: ["এ সি ইউয়িং", "হিউম", "লক", "বার্কলে"], a: 0 },
-    { q: "৯. গভীর বাস্তুবিদ্যার (Deep Ecology) প্রবক্তা কে?", o: ["আর্নে নেস", "আর্নস্ট হেকেল", "আলবার্ট শোয়েৎজার", "পিটার সিঙ্গার"], a: 0 },
-    { q: "১০. 'আইন হলো সার্বভৌম রাজনৈতিক শক্তির আদেশ'—কার উক্তি?", o: ["জন অস্টিন", "হল্যান্ড", "স্যালমন্ড", "ল্যাস্কি"], a: 0 }
+    { q: "৫. 'Practical Ethics' গ্রন্থটির রচয়িতা কে?", o: ["পিটার সিঙ্গার", "ইমানুয়েল কান্ট", "জন স্টুয়ার্ট মিল", "বেন্থাম"], a: 0 }
   ],
   education: [
     { q: "১. স্বাধীন ভারতের প্রথম শিক্ষা কমিশন কোনটি?", o: ["বিশ্ববিদ্যালয় শিক্ষা কমিশন", "মাধ্যমিক শিক্ষা কমিশন", "কোঠারি কমিশন", "জাতীয় শিক্ষানীতি"], a: 0 },
     { q: "২. গ্রামীণ বিশ্ববিদ্যালয়ের সুপারিশ কোন কমিশন করে?", o: ["রাধাকৃষ্ণন কমিশন", "মুদালিয়ার কমিশন", "কোঠারি কমিশন", "হান্টার কমিশন"], a: 0 },
     { q: "৩. বিশ্ববিদ্যালয় মঞ্জুরি কমিশন (UGC) কত সালে প্রতিষ্ঠিত হয়?", o: ["১৯৫৩ সালে (বিধিবদ্ধ ১৯৫৬)", "১৯৪৮ সালে", "১৯৬৪ সালে", "১৯৬৮ সালে"], a: 0 },
-    { q: "৪. মাধ্যমিক শিক্ষা কমিশনের (মুদালিয়ার কমিশন) সভাপতি কে ছিলেন?", o: ["ড. লক্ষণস্বামী মুদালিয়ার", "রাধাকৃষ্ণন", "কোঠারি", "জাকির হোসেন"], a: 0 },
-    { q: "৫. কোঠারি কমিশনের রিপোর্টের মূল শিরোনাম কী ছিল?", o: ["Education and National Development", "Learning to be", "Learning: The Treasure Within", "Challenge of Education"], a: 0 },
-    { q: "৬. 'ভারতের ভাগ্য তার শ্রেণিকক্ষেই নির্ধারিত হচ্ছে'—কোন কমিশনের সূচনা বাক্য?", o: ["কোঠারি কমিশন", "রাধাকৃষ্ণন কমিশন", "মুদালিয়ার কমিশন", "জাতীয় শিক্ষানীতি ১৯৮৬"], a: 0 },
-    { q: "৭. প্রাথমিক বিদ্যালয়ের ন্যূনতম পরিকাঠামো উন্নয়নের জন্য কোন কর্মসূচি চালু হয়?", o: ["অপারেশন ব্ল্যাকবোর্ড", "সর্বশিক্ষা অভিযান", "মিড-ডে মিল", "দীক্ষা"], a: 0 },
-    { q: "৮. NEP 2020-এর প্রস্তাবিত নতুন প্রাতিষ্ঠানিক শিক্ষা কাঠামোটি কী?", o: ["5 + 3 + 3 + 4", "10 + 2 + 3", "5 + 3 + 2 + 2", "4 + 4 + 2 + 2"], a: 0 },
-    { q: "৯. বিশ্বভারতী কবে কেন্দ্রীয় বিশ্ববিদ্যালয়ের মর্যাদা পায়?", o: ["১৯৫১ সালে", "১৯২১ সালে", "১৯৪৭ সালে", "১৯৫৬ সালে"], a: 0 },
-    { q: "১০. দৃষ্টিহীনদের পাঠদানের জন্য ব্রেইল পদ্ধতিতে কয়টি বিন্দু থাকে?", o: ["৬টি বিন্দু", "৪টি বিন্দু", "৮টি বিন্দু", "১০টি বিন্দু"], a: 0 }
+    { q: "৪. কোঠারি কমিশনের রিপোর্টের মূল শিরোনাম কী ছিল?", o: ["Education and National Development", "Learning to be", "Learning: The Treasure Within", "Challenge of Education"], a: 0 },
+    { q: "৫. দৃষ্টিহীনদের পাঠদানের জন্য ব্রেইল পদ্ধতিতে কয়টি বিন্দু থাকে?", o: ["৬টি বিন্দু", "৪টি বিন্দু", "৮টি বিন্দু", "১০টি বিন্দু"], a: 0 }
   ],
   sanskrit: [
     { q: "১. 'রাজবাহনচরিতম্' গদ্যাংশের মূল উৎস কোন্টি?", o: ["দশকুমারচরিতম্", "স্বপ্নবাসবদত্তম্", "অভিজ্ঞানশকুন্তলম্", "কাদম্বরী"], a: 0 },
     { q: "২. 'দশকুমারচরিতম্' গদ্যকাব্যটির রচয়িতা কে?", o: ["দণ্ডী", "বাণভট্ট", "সুবন্ধু", "ভাস"], a: 0 },
     { q: "৩. 'যোগঃ কর্মসু কৌশলম্'—কথাটি কোন ধর্মগ্রন্থের অন্তর্গত?", o: ["শ্রীমদ্ভগবদ্গীতা", "মহাভারত", "উপনিষদ", "মনুসংহিতা"], a: 0 },
     { q: "৪. শ্রীমদ্ভগবদ্গীতা মহাভারতের কোন পর্বের অংশ?", o: ["ভীষ্ম পর্ব", "শান্তি পর্ব", "আদি পর্ব", "বন পর্ব"], a: 0 },
-    { q: "৫. 'দুর্বাসসঃ অভিশাপঃ' নাট্যাংশটি কোন অঙ্কের অন্তর্গত?", o: ["চতুর্থ অঙ্ক", "তৃতীয় অঙ্ক", "প্রথম অঙ্ক", "পঞ্চম অঙ্ক"], a: 0 },
-    { q: "৬. 'অভিজ্ঞানশকুন্তলম্' নাটকের রচয়িতা কে?", o: ["মহাকবি কালিদাস", "ভাস", "ভবভূতি", "শূদ্রক"], a: 0 },
-    { q: "৭. দুষ্যন্ত ও শকুন্তলার বিবাহ কোন বিধিতে সম্পন্ন হয়েছিল?", o: ["গান্ধর্ব মতে", "ব্রাহ্ম মতে", "প্রাজাপত্য মতে", "রাক্ষস মতে"], a: 0 },
-    { q: "৮. আশ্রমে অতিথিরূপে কে এসে অবহেলিত হয়ে শকুন্তলাকে অভিশাপ দেন?", o: ["ঋষি দুর্বাসা", "মহর্ষি কথ", "মারীচ", "বশিষ্ঠ"], a: 0 },
-    { q: "৯. সংস্কৃতে অপত্য অর্থে ব্যবহৃত প্রত্যয় কোনটি?", o: ["অণ্", "মতুপ্", "তরপ্", "তমপ্"], a: 0 },
-    { q: "১০. 'স্বতন্ত্রঃ কর্তা' সূত্রটি কোন কারক নির্দেশ করে?", o: ["কর্তৃকারক", "কর্মকারক", "করণকারক", "অধিকরণ"], a: 0 }
+    { q: "৫. 'দুর্বাসসঃ অভিশাপঃ' নাট্যাংশটি কোন অঙ্কের অন্তর্গত?", o: ["চতুর্থ অঙ্ক", "তৃতীয় অঙ্ক", "প্রথম অঙ্ক", "পঞ্চম অঙ্ক"], a: 0 }
   ]
 };
 
@@ -511,54 +494,70 @@ let liveStream = null;
 window.addEventListener("DOMContentLoaded", () => {
   checkActiveSession();
   loadPublicLeaderboard();
+  loadPublicNotice();
 });
 
-// সরাসরি পিন যাচাই
+// নোটিশ লোড করা (লাইভ)
+function loadPublicNotice() {
+  noticeRef.on("value", snap => {
+    const noticeCard = document.getElementById("public-notice-card");
+    const noticeText = document.getElementById("public-notice-text");
+    const val = snap.val();
+    if (val && val.trim() !== "") {
+      noticeText.innerText = val;
+      noticeCard.style.display = "block";
+    } else {
+      noticeCard.style.display = "none";
+    }
+  });
+}
+
 function verifyAdminPin() {
   const enteredPin = document.getElementById("admin-pin").value.trim();
   if (enteredPin === TEACHER_PIN) {
     document.getElementById("admin-login-box").style.display = "none";
     document.getElementById("admin-data-box").style.display = "block";
     loadTeacherRecords();
+    noticeRef.once("value", snap => {
+      if(snap.val()) document.getElementById("teacher-notice-input").value = snap.val();
+    });
   } else {
-    alert("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।");
+    alert("ভুল পাসওয়ার্ড!");
   }
 }
 
-// মোবাইল নম্বর প্রথম যাচাই
+function saveTeacherNotice() {
+  const text = document.getElementById("teacher-notice-input").value.trim();
+  noticeRef.set(text).then(() => {
+    alert("নোটিশ সফলভাবে পাবলিশ করা হয়েছে!");
+  });
+}
+
 function checkPhoneStatus() {
   const phone = document.getElementById("student-phone").value.trim();
   const msg = document.getElementById("phone-msg");
 
   if (!phone || phone.length !== 10 || isNaN(phone)) {
-    alert("দয়া করে সঠিক ১০ সংখ্যার মোবাইল নম্বর দিন!");
+    alert("সঠিক ১০ সংখ্যার মোবাইল নম্বর দিন!");
     return;
   }
 
   msg.innerText = "যাচাই করা হচ্ছে...";
-  msg.style.color = "#1d4ed8";
-
   dbRef.orderByChild("phone").equalTo(phone).once("value").then(snapshot => {
     if (snapshot.exists()) {
       snapshot.forEach(child => {
         currentStudentKey = child.key;
         currentStudent = child.val();
       });
-
       if (!currentStudent.subjectResults) currentStudent.subjectResults = {};
       localStorage.setItem("hs_student_key", currentStudentKey);
-      alert(`স্বাগতম ${currentStudent.name}! আপনার প্রোফাইল লোড হয়েছে। বাকি পরীক্ষা দিন।`);
       renderDashboard();
     } else {
-      msg.innerText = "নম্বরটি নতুন! নিচের নাম, ছবি ও বিষয় নির্বাচন সম্পন্ন করুন।";
+      msg.innerText = "নম্বরটি নতুন! নাম, ছবি ও বিষয় নির্বাচন করুন।";
       msg.style.color = "#16a34a";
       document.getElementById("new-student-form").style.display = "block";
       initCamera();
     }
-  }).catch(err => {
-    console.error(err);
-    alert("ইন্টারনেট সমস্যা!");
-    msg.innerText = "ত্রুটি ঘটেছে!";
   });
 }
 
@@ -578,7 +577,6 @@ function captureLivePhoto() {
   canvas.width = 240;
   canvas.height = 240;
   ctx.drawImage(video, 0, 0, 240, 240);
-  
   video.style.display = "none";
   canvas.style.display = "block";
   document.getElementById("btn-snap").style.display = "none";
@@ -597,26 +595,21 @@ function validateSubjectCount() {
   const helper = document.getElementById("subj-helper");
   helper.innerText = `ঐচ্ছিক তালিকা থেকে ৪টি বিষয় বেছে নিন (সিলেক্টেড: ${checkboxes.length}/4)।`;
   if (checkboxes.length > 4) {
-    alert("আপনি সর্বোচ্চ ৪টি ঐচ্ছিক বিষয় বেছে নিতে পারবেন!");
+    alert("সর্বোচ্চ ৪টি ঐচ্ছিক বিষয় বেছে নেওয়া যাবে!");
     event.target.checked = false;
     validateSubjectCount();
   }
 }
 
-// নতুন রেজিস্ট্রেশন
 function registerNewStudent() {
   const name = document.getElementById("student-name").value.trim();
   const phone = document.getElementById("student-phone").value.trim();
   const canvas = document.getElementById("captured-canvas");
   const optChecks = document.querySelectorAll('input[name="opt-subj"]:checked');
 
-  if (!name) { alert("আপনার পুরো নাম লিখুন!"); return; }
-  if (canvas.style.display === "none") { alert("বাধ্যতামূলক: লাইভ ক্যামেরা দিয়ে ছবি তুলুন!"); return; }
-  if (optChecks.length !== 4) { alert("ঐচ্ছিক তালিকা থেকে ঠিক ৪টি বিষয় বেছে নিন!"); return; }
-
-  const registerBtn = document.getElementById("btn-register");
-  registerBtn.innerText = "সংরক্ষণ হচ্ছে...";
-  registerBtn.disabled = true;
+  if (!name) { alert("নাম লিখুন!"); return; }
+  if (canvas.style.display === "none") { alert("ছবি তুলুন!"); return; }
+  if (optChecks.length !== 4) { alert("৪টি বিষয় সিলেক্ট করুন!"); return; }
 
   const photoBase64 = canvas.toDataURL("image/jpeg", 0.90);
   const selected = ["bengali", "english"];
@@ -629,8 +622,7 @@ function registerNewStudent() {
     subjects: selected,
     subjectResults: {},
     isCompleted: false,
-    registeredAt: new Date().toLocaleDateString('bn-IN') + ", " + new Date().toLocaleTimeString('bn-IN', { hour: '2-digit', minute: '2-digit' }),
-    timestamp: firebase.database.ServerValue.TIMESTAMP
+    registeredAt: new Date().toLocaleDateString('bn-IN')
   };
 
   const newRef = dbRef.push();
@@ -640,10 +632,6 @@ function registerNewStudent() {
     localStorage.setItem("hs_student_key", currentStudentKey);
     if (liveStream) liveStream.getTracks().forEach(t => t.stop());
     renderDashboard();
-  }).catch(err => {
-    console.error(err);
-    alert("ডেটা সেভ হতে সমস্যা হয়েছে!");
-    registerBtn.disabled = false;
   });
 }
 
@@ -665,8 +653,6 @@ function checkActiveSession() {
 
 function logoutStudent() {
   localStorage.removeItem("hs_student_key");
-  currentStudent = null;
-  currentStudentKey = null;
   location.reload();
 }
 
@@ -699,7 +685,6 @@ function renderDashboard() {
       <div style="text-align:right;">
         ${isDone ? `
           <span class="status-badge completed">সম্পন্ন ✔ (${res.score}/৪০)</span>
-          <span class="status-badge locked-txt">লকড (পরীক্ষা শেষ)</span>
         ` : `
           <button class="btn-primary" style="padding:7px 15px; font-size:0.85rem;" onclick="startSubjectExam('${code}')">পরীক্ষা দিন</button>
         `}
@@ -713,7 +698,6 @@ function renderDashboard() {
   }
 }
 
-// Fisher-Yates র্যান্ডমাইজেশন ও অপশন অদলবদল (প্রত্যেক পরীক্ষার্থীর প্রশ্ন আলাদা)
 function shuffle(array) {
   let m = array.length, t, i;
   while (m) {
@@ -727,7 +711,7 @@ function shuffle(array) {
 
 function startSubjectExam(subjectCode) {
   if (currentStudent.subjectResults && currentStudent.subjectResults[subjectCode] !== undefined) {
-    alert("⚠️ এই বিষয়ের পরীক্ষা ইতিমধ্যে সম্পন্ন ও লক হয়ে গেছে! এটি আর দেওয়া যাবে না।");
+    alert("এই পরীক্ষা দেওয়া হয়ে গেছে!");
     return;
   }
 
@@ -754,7 +738,6 @@ function startSubjectExam(subjectCode) {
   startTimer();
 }
 
-// তক্ষণাৎ ফিডব্যাক ও লক (Immediate Feedback & Lock)
 function renderExamQuestions() {
   const container = document.getElementById("questions-container");
   container.innerHTML = "";
@@ -807,7 +790,6 @@ function startTimer() {
 
     if (timeRemaining <= 0) {
       clearInterval(timerInterval);
-      alert("সময় সমাপ্ত! এই বিষয়ের পরীক্ষা জমা হচ্ছে।");
       submitExamSubject();
     }
   }, 1000);
@@ -838,7 +820,6 @@ function submitExamSubject() {
   if (!currentStudent.subjectResults) currentStudent.subjectResults = {};
   currentStudent.subjectResults[currentExamSubject] = subjectResult;
 
-  // আংশিক বা সম্পূর্ণ পরীক্ষার মোট প্রাপ্ত নম্বর হিসাব
   let totalScoreSoFar = 0;
   Object.values(currentStudent.subjectResults).forEach(r => totalScoreSoFar += r.score);
 
@@ -849,29 +830,19 @@ function submitExamSubject() {
   if (Object.keys(currentStudent.subjectResults).length === 6) {
     const resArr = Object.entries(currentStudent.subjectResults).map(([code, r]) => ({ code, score: r.score }));
     resArr.sort((a, b) => b.score - a.score);
-
     const best5 = resArr.slice(0, 5);
     const total5 = best5.reduce((acc, curr) => acc + curr.score, 0);
-    const pct = ((total5 / 200) * 100).toFixed(1);
-
     updates[`hs_all_students/${currentStudentKey}/best5Total`] = total5;
-    updates[`hs_all_students/${currentStudentKey}/percentage`] = pct;
     updates[`hs_all_students/${currentStudentKey}/isCompleted`] = true;
-    updates[`hs_all_students/${currentStudentKey}/completedAt`] = new Date().toLocaleDateString('bn-IN') + ", " + new Date().toLocaleTimeString('bn-IN', { hour: '2-digit', minute: '2-digit' });
   }
 
   firebase.database().ref().update(updates).then(() => {
-    alert(`✔ ${SUBJECT_NAMES[currentExamSubject]} পরীক্ষা সফলভাবে জমা হয়েছে! প্রাপ্ত নম্বর: ${correct}/৪০। এই বিষয়টি স্থায়ীভাবে লক হয়ে গেল।`);
+    alert(`✔ পরীক্ষা জমা হয়েছে! প্রাপ্ত নম্বর: ${correct}/৪০`);
     renderDashboard();
     loadPublicLeaderboard();
-  }).catch(err => {
-    console.error(err);
-    alert("ডেটা সেভ হতে সমস্যা হয়েছে!");
-    renderDashboard();
   });
 }
 
-// চারকোনা ব্যক্তিগত মার্কশিট
 function renderFinalMarksheet() {
   document.getElementById("dashboard-screen").style.display = "none";
   document.getElementById("final-report").style.display = "block";
@@ -903,7 +874,7 @@ function renderFinalMarksheet() {
       <td class="correct-count">${item.correct}</td>
       <td class="wrong-count">${item.wrong}</td>
       <td style="font-weight:bold; color:#1e3a8a;">${item.score}</td>
-      <td>${isExtra ? `<span class="extra-tag">অতিরিক্ত (Extra)</span>` : `<span style="color:#16a34a; font-weight:bold;">গণনাযুক্ত ✔</span>`}</td>
+      <td>${isExtra ? `<span class="extra-tag">অতিরিক্ত</span>` : `<span style="color:#16a34a; font-weight:bold;">গণনাযুক্ত ✔</span>`}</td>
     `;
     tbody.appendChild(tr);
   });
@@ -918,22 +889,21 @@ function returnToDashboard() {
   document.getElementById("dashboard-screen").style.display = "block";
 }
 
-// সার্বজনীন লাইভ মেধা তালিকা (আংশিক পরীক্ষা দিলেও র‍্যাংকে দেখাবে, নম্বর মাস্কড থাকবে)
+// সার্বজনীন লাইভ মেধা তালিকা (সাবজেক্ট অনুযায়ী প্রাপ্ত নম্বর সহ)
 function loadPublicLeaderboard() {
   const tbody = document.getElementById("public-rank-body");
-  tbody.innerHTML = `<tr><td colspan="5" style="color:#64748b; padding:12px;">মেধা তালিকা লোড হচ্ছে...</td></tr>`;
+  tbody.innerHTML = `<tr><td colspan="6" style="color:#64748b; padding:12px;">লোড হচ্ছে...</td></tr>`;
 
   dbRef.once("value").then(snap => {
     tbody.innerHTML = "";
     if (!snap.exists()) {
-      tbody.innerHTML = `<tr><td colspan="5" style="padding:12px; color:#64748b;">এখনও কোনো ফলাফল নেই।</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="6" style="padding:12px; color:#64748b;">কোনো ডেটা নেই।</td></tr>`;
       return;
     }
 
     const studentsList = [];
     snap.forEach(c => {
       const val = c.val();
-      // যে স্টুডেন্ট অন্তত একটি পরীক্ষা দিয়েছে (subjectResults আছে) তাকেই র্যাংকে দেখাবে
       if (val.subjectResults && Object.keys(val.subjectResults).length > 0) {
         let currentTotal = 0;
         Object.values(val.subjectResults).forEach(r => currentTotal += r.score);
@@ -943,11 +913,10 @@ function loadPublicLeaderboard() {
     });
 
     if (studentsList.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5" style="padding:12px; color:#64748b;">এখনও কেউ পরীক্ষা দেয়নি।</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="6" style="padding:12px; color:#64748b;">কেউ পরীক্ষা দেয়নি।</td></tr>`;
       return;
     }
 
-    // মোট প্রাপ্ত নম্বর অনুযায়ী সাজানো (Rank 1, Rank 2...)
     studentsList.sort((a, b) => b.displayScore - a.displayScore);
 
     studentsList.forEach((row, index) => {
@@ -957,12 +926,19 @@ function loadPublicLeaderboard() {
       else if (rank === 2) badgeClass += " rank-2";
       else if (rank === 3) badgeClass += " rank-3";
 
-      // মোবাইল নম্বর মাস্কিং (যেমন: 98XXXXXX12)
       let maskedPhone = row.phone;
       if (maskedPhone && maskedPhone.length === 10) {
         maskedPhone = maskedPhone.substring(0, 2) + "XXXXXX" + maskedPhone.substring(8);
       } else {
         maskedPhone = "XXXXXX";
+      }
+
+      // ছাত্র কোন বিষয়ে কত নম্বর পেয়েছে তার সুন্দর তালিকা তৈরি
+      let subDetails = "";
+      if (row.subjectResults) {
+        subDetails = Object.entries(row.subjectResults).map(([code, r]) => {
+          return `<b>${SUBJECT_NAMES[code] || code}:</b> ${r.score}/৪০`;
+        }).join(" | ");
       }
 
       const tr = document.createElement("tr");
@@ -971,14 +947,14 @@ function loadPublicLeaderboard() {
         <td><img src="${row.photo}" style="width:36px; height:36px; border-radius:50%; object-fit:cover;"></td>
         <td style="text-align:left; font-weight:bold;">${row.name}</td>
         <td style="font-family:monospace; color:#475569;">${maskedPhone}</td>
-        <td style="font-weight:bold; color:#1e3a8a;">${row.displayScore} নম্বর</td>
+        <td style="text-align:left; font-size:0.82rem; color:#334155;">${subDetails}</td>
+        <td style="font-weight:bold; color:#1e3a8a; white-space:nowrap;">${row.displayScore} নম্বর</td>
       `;
       tbody.appendChild(tr);
     });
   });
 }
 
-// শিক্ষক প্যানেল
 function openTeacherModal() {
   document.getElementById("teacher-modal").style.display = "flex";
 }
@@ -991,23 +967,25 @@ function closeTeacherModal() {
 
 function loadTeacherRecords() {
   const tbody = document.getElementById("admin-records-body");
-  tbody.innerHTML = `<tr><td colspan="6" style="color:#64748b; padding:12px;">লোড হচ্ছে...</td></tr>`;
+  tbody.innerHTML = `<tr><td colspan="5" style="color:#64748b; padding:12px;">লোড হচ্ছে...</td></tr>`;
 
   dbRef.once("value").then(snap => {
     tbody.innerHTML = "";
     if (!snap.exists()) {
-      tbody.innerHTML = `<tr><td colspan="6" style="padding:12px;">কোনো রেকর্ড নেই।</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" style="padding:12px;">কোনো রেকর্ড নেই।</td></tr>`;
       return;
     }
 
     snap.forEach(child => {
       const row = child.val();
       const key = child.key;
-      let currentTotal = 0;
+
+      let subDetails = "";
       if (row.subjectResults) {
-        Object.values(row.subjectResults).forEach(r => currentTotal += r.score);
+        subDetails = Object.entries(row.subjectResults).map(([code, r]) => {
+          return `<b>${SUBJECT_NAMES[code]}:</b> ${r.score}/40`;
+        }).join(", ");
       }
-      const showScore = row.best5Total !== undefined ? row.best5Total : currentTotal;
 
       const tr = document.createElement("tr");
       tr.innerHTML = `
@@ -1015,10 +993,9 @@ function loadTeacherRecords() {
         <td><img src="${row.photo}" style="width:38px; height:38px; border-radius:50%; object-fit:cover;"></td>
         <td style="text-align:left;">
           <b>${row.name}</b><br>
-          <span style="color:#1d4ed8; font-weight:bold;">📞 ${row.phone}</span><br>
-          <small style="color:#64748b;">${row.completedAt || 'পরীক্ষা চলমান'}</small>
+          <span style="color:#1d4ed8; font-weight:bold;">📞 ${row.phone}</span>
         </td>
-        <td style="font-weight:bold; color:#1e3a8a;">${showScore} নম্বর</td>
+        <td style="text-align:left; font-size:0.82rem;">${subDetails || 'পরীক্ষা শুরু করেনি'}</td>
         <td>
           <button style="background:#dc2626; color:white; border:none; padding:5px 8px; border-radius:4px; font-size:0.75rem; cursor:pointer;" onclick="deleteSingleStudent('${key}', '${row.phone}')">ডিলিট ✕</button>
         </td>
@@ -1034,9 +1011,8 @@ function toggleSelectAll(masterCb) {
 }
 
 function deleteSingleStudent(key, phone) {
-  if (confirm(`আপনি কি এই পরীক্ষার্থীকে (${phone}) ডিলিট করতে চান? ডিলিট করলে সে এই নম্বর দিয়ে পুনরায় প্রথম থেকে পরীক্ষা দিতে পারবে।`)) {
+  if (confirm(`ডিলিট করতে চান (${phone})?`)) {
     dbRef.child(key).remove().then(() => {
-      alert("পরীক্ষার্থী সফলভাবে অপসারিত হয়েছে!");
       loadTeacherRecords();
       loadPublicLeaderboard();
     });
@@ -1045,22 +1021,14 @@ function deleteSingleStudent(key, phone) {
 
 function deleteSelectedStudents() {
   const selectedCbs = document.querySelectorAll(".student-select-cb:checked");
-  if (selectedCbs.length === 0) {
-    alert("অনুগ্রহ করে অন্তত একজন পরীক্ষার্থীকে সিলেক্ট করুন!");
-    return;
-  }
-
-  if (confirm(`আপনি কি নির্বাচিত ${selectedCbs.length} জন পরীক্ষার্থীর রেকর্ড ডিলিট করতে চান?`)) {
+  if (selectedCbs.length === 0) { alert("সিলেক্ট করুন!"); return; }
+  if (confirm("সিলেক্ট করা রেকর্ডগুলো ডিলিট করতে চান?")) {
     const promises = [];
-    selectedCbs.forEach(cb => {
-      promises.push(dbRef.child(cb.value).remove());
-    });
-
+    selectedCbs.forEach(cb => promises.push(dbRef.child(cb.value).remove()));
     Promise.all(promises).then(() => {
-      alert("নির্বাচিত সকল রেকর্ড সফলভাবে ডিলিট হয়েছে!");
       loadTeacherRecords();
       loadPublicLeaderboard();
-    }).catch(e => console.error(e));
+    });
   }
 }
 </script>
