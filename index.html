@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>উচ্চ মাধ্যমিক বাংলা মক টেস্ট (সেমিস্টার-III)</title>
+  
+  <!-- Firebase Official SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -191,7 +196,7 @@
 <div id="student-modal" class="modal">
   <div class="modal-content">
     <div class="modal-header">
-      <h3 style="margin:0; color:#1a73e8; font-size:0.95rem;">📋 পরীক্ষার্থীদের তালিকা ও সময় (লাইভ)</h3>
+      <h3 style="margin:0; color:#1a73e8; font-size:0.95rem;">📋 পরীক্ষার্থীদের তালিকা ও সময় (লাইভ ক্লাউড)</h3>
       <button class="btn-close" type="button" onclick="closeStudentModal()">বন্ধ করুন ✕</button>
     </div>
     <table>
@@ -230,8 +235,22 @@
 </div>
 
 <script>
+// আপনার নিজস্ব ফায়ারবেস কনফিগারেশন
+const firebaseConfig = {
+  apiKey: "AIzaSyCJm8-SnL0NJi0sJQ58zZ7itli4dK_q7i0",
+  authDomain: "hs-bangal-3-2026.firebaseapp.com",
+  databaseURL: "https://hs-bangal-3-2026-default-rtdb.firebaseio.com",
+  projectId: "hs-bangal-3-2026",
+  storageBucket: "hs-bangal-3-2026.firebasestorage.app",
+  messagingSenderId: "962440862779",
+  appId: "1:962440862779:web:f8982cc5660df2514ad01e"
+};
+
+// ফায়ারবেস ইনিশিয়ালাইজেশন
+firebase.initializeApp(firebaseConfig);
+const dbRef = firebase.database().ref("exam_results");
+
 const TEACHER_PIN = "xyz1234";
-const FIREBASE_DB_URL = "https://hs-bangal-3-2026-default-rtdb.firebaseio.com/results";
 
 const mockExamData = [
   { q: "১. পীরগঞ্জের বাবুদের বাড়ি নিমন্ত্রণে বেনারস ও কলকাতা থেকে কী আসার কথা ছিল?", o: ["বেনারস থেকে বাদ্যযন্ত্র, কলকাতা থেকে নর্তকী", "বেনারস থেকে বাই, কলকাতা থেকে খেমটা", "বেনারস থেকে মিষ্টি, কলকাতা থেকে ঢাক", "বেনারস থেকে খেমটা, কলকাতা থেকে বাই"], a: 1 },
@@ -282,7 +301,6 @@ let userScore = 0;
 let totalTimeSec = 90 * 60;
 let timerInterval = null;
 
-// অতি ক্ষুদ্র ছবি কমপ্রেশন (যাতে ফায়ারবেস আটকায় না)
 function processPhoto(event) {
   const file = event.target.files[0];
   if (!file) return;
@@ -291,11 +309,11 @@ function processPhoto(event) {
     const img = new Image();
     img.onload = function() {
       const canvas = document.createElement("canvas");
-      canvas.width = 30;
-      canvas.height = 30;
+      canvas.width = 32;
+      canvas.height = 32;
       const ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0, 30, 30);
-      currentUser.photo = canvas.toDataURL("image/jpeg", 0.3);
+      ctx.drawImage(img, 0, 0, 32, 32);
+      currentUser.photo = canvas.toDataURL("image/jpeg", 0.4);
       const prev = document.getElementById("preview-img");
       prev.src = currentUser.photo;
       prev.style.display = "block";
@@ -406,7 +424,7 @@ function finishExam() {
   document.getElementById("result-time-text").innerText = `জমা দেওয়ার সময়: ${timeFormatted}`;
 
   const syncMsg = document.getElementById("cloud-sync-status");
-  syncMsg.innerText = "ফলাফল ক্লাউডে জমা হচ্ছে...";
+  syncMsg.innerText = "ফলাফল ক্লাউডে সংরক্ষিত হচ্ছে...";
   syncMsg.style.color = "#1a73e8";
 
   const entry = {
@@ -415,23 +433,20 @@ function finishExam() {
     score: Number(userScore),
     pct: String(pct),
     time: String(timeFormatted),
-    created: Date.now()
+    timestamp: firebase.database.ServerValue.TIMESTAMP
   };
 
-  fetch(`${FIREBASE_DB_URL}.json`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(entry)
-  })
-  .then(res => res.json())
-  .then(() => {
-    syncMsg.innerText = "ক্লাউডে ফলাফল সফলভাবে সংরক্ষিত হয়েছে ✔";
-    syncMsg.style.color = "#34a853";
-  })
-  .catch(() => {
-    syncMsg.innerText = "সতর্কতা: ক্লাউডে সেভ হতে পারেনি, ইন্টারনেট চেক করুন!";
-    syncMsg.style.color = "#d93025";
-  });
+  // অফিশিয়াল SDK পুশ
+  dbRef.push(entry)
+    .then(() => {
+      syncMsg.innerText = "ক্লাউডে ফলাফল সফলভাবে সংরক্ষিত হয়েছে ✔";
+      syncMsg.style.color = "#34a853";
+    })
+    .catch((err) => {
+      console.error(err);
+      syncMsg.innerText = "ক্লাউড সংরক্ষণে সমস্যা! Firebase Rules চেক করুন।";
+      syncMsg.style.color = "#d93025";
+    });
 }
 
 function resetToHomeScreen() {
@@ -452,26 +467,31 @@ function resetToHomeScreen() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// লাইভ ডেটা ফেচ ও রেন্ডার
 function fetchAndRenderRecords(targetId) {
   const tbody = document.getElementById(targetId);
   tbody.innerHTML = `<tr><td colspan="4" style="color:#666; padding:15px;">ক্লাউড থেকে ডেটা লোড হচ্ছে...</td></tr>`;
 
-  fetch(`${FIREBASE_DB_URL}.json?cache_bypass=${Date.now()}`)
-    .then(res => res.json())
-    .then(data => {
+  dbRef.once("value")
+    .then((snapshot) => {
       tbody.innerHTML = "";
-      if (!data) {
+      if (!snapshot.exists()) {
         tbody.innerHTML = `<tr><td colspan="4" style="color:#888; padding:15px;">কোনো রেকর্ড নেই (সব খালি)।</td></tr>`;
         return;
       }
 
-      // সম্পূর্ণ ফিল্টার করা হচ্ছে যাতে কোনোদিন undefined না আসে
-      const list = Object.values(data)
-        .filter(item => item && typeof item === 'object' && item.name && item.name !== 'undefined')
-        .reverse();
+      const list = [];
+      snapshot.forEach((child) => {
+        const val = child.val();
+        if (val && val.name && val.name !== "undefined") {
+          list.push({ key: child.key, ...val });
+        }
+      });
+
+      list.reverse();
 
       if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="color:#888; padding:15px;">কোনো রেকর্ড নেই।</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4" style="color:#888; padding:15px;">কোনো বৈধ রেকর্ড নেই।</td></tr>`;
         return;
       }
 
@@ -483,14 +503,15 @@ function fetchAndRenderRecords(targetId) {
             <div style="font-weight:600; color:#202124;">${item.name}</div>
             <span class="exam-time">🕒 ${item.time || ''}</span>
           </td>
-          <td style="color:#1a73e8; font-weight:bold;">${item.score} / ৪০</td>
-          <td style="font-weight:600;">${item.pct}%</td>
+          <td style="color:#1a73e8; font-weight:bold;">${item.score !== undefined ? item.score : 0} / ৪০</td>
+          <td style="font-weight:600;">${item.pct !== undefined ? item.pct : 0}%</td>
         `;
         tbody.appendChild(tr);
       });
     })
-    .catch(() => {
-      tbody.innerHTML = `<tr><td colspan="4" style="color:#d93025; padding:15px;">ডেটা লোড করা যায়নি! ইন্টারনেট চেক করুন।</td></tr>`;
+    .catch((err) => {
+      console.error(err);
+      tbody.innerHTML = `<tr><td colspan="4" style="color:#d93025; padding:15px;">ক্লাউড ডেটা লোড করা যায়নি!</td></tr>`;
     });
 }
 
@@ -524,15 +545,18 @@ function closeTeacherModal() {
   document.getElementById("teacher-modal").style.display = "none";
 }
 
-// ১০০% নিশ্চিত ডিলিট ইঞ্জিন
+// সমস্ত ক্লাউড ডেটা ডিলিট করার ফাংশন
 function teacherDeleteAllRecords() {
   if (confirm("আপনি কি নিশ্চিত যে ক্লাউড থেকে সমস্ত পরীক্ষার্থীর রেকর্ড সম্পূর্ণ মুছে ফেলতে চান?")) {
-    fetch(`${FIREBASE_DB_URL}.json`, { method: "DELETE" })
+    dbRef.remove()
       .then(() => {
         alert("সমস্ত রেকর্ড সফলভাবে ক্লাউড থেকে মুছে ফেলা হয়েছে!");
         fetchAndRenderRecords("teacher-table-body");
       })
-      .catch(() => alert("রেকর্ড ডিলিট করতে সমস্যা হয়েছে! Firebase Rules চেক করুন।"));
+      .catch((err) => {
+        console.error(err);
+        alert("রেকর্ড ডিলিট করতে সমস্যা হয়েছে!");
+      });
   }
 }
 </script>
