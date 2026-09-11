@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>উচ্চ মাধ্যমিক বাংলা মক টেস্ট (সেমিস্টার-III)</title>
+  <title>উচ্চ মাধ্যমিক সেমিস্টার-৩ কেন্দ্রীয় পরীক্ষা ও লাইভ র্যাংক পোর্টাল</title>
   
   <!-- Firebase Official SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -13,229 +13,351 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Bengali", sans-serif;
-      background-color: #f4f6f9;
-      color: #202124;
-      padding: 10px 8px;
-      width: 100%;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      padding: 12px 10px;
       min-height: 100vh;
     }
     .container {
       width: 100%;
-      max-width: 650px;
+      max-width: 760px;
       margin: 0 auto;
       background: #ffffff;
-      padding: 16px 12px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      padding: 22px 16px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     }
-    .top-admin-nav {
+    .top-nav {
       display: flex;
-      justify-content: flex-end;
-      margin-bottom: 10px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      border-bottom: 1.5px solid #e2e8f0;
+      padding-bottom: 10px;
     }
-    .btn-teacher-login {
-      background: #1f2937;
-      color: #ffffff;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-size: 0.82rem;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    h1 { text-align: center; color: #1a73e8; font-size: 1.28rem; margin-bottom: 4px; line-height: 1.3; }
-    .subtitle { text-align: center; color: #5f6368; margin-bottom: 16px; font-size: 0.85rem; }
+    .portal-title { font-size: 1.35rem; color: #1e3a8a; font-weight: bold; text-align: center; }
+    .portal-subtitle { font-size: 0.86rem; color: #64748b; text-align: center; margin-bottom: 16px; }
     
-    #start-screen {
-      background: #eef4fe;
-      padding: 15px;
-      border-radius: 10px;
-      border: 1px solid #d2e3fc;
-      text-align: center;
-    }
-    .input-group { margin-bottom: 12px; text-align: left; }
-    .input-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
-    .input-group input[type="text"] {
-      width: 100%; padding: 10px; border: 1.5px solid #dadce0; border-radius: 6px; font-size: 0.95rem; outline: none;
-    }
-    .input-group input[type="file"] {
-      width: 100%; padding: 7px; font-size: 0.85rem; background: #fff; border-radius: 6px; border: 1px dashed #1a73e8;
-    }
-    #preview-img {
-      width: 60px; height: 60px; border-radius: 50%; object-fit: cover;
-      margin: 8px auto 0; display: none; border: 2px solid #1a73e8;
-    }
-    .btn-start {
-      width: 100%; padding: 12px; background: #1a73e8; color: white;
-      border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 5px;
-    }
-    .btn-view-history {
-      width: 100%; padding: 10px; background: #ffffff; color: #1a73e8;
-      border: 1.5px solid #1a73e8; border-radius: 6px; font-size: 0.9rem; font-weight: 600;
-      cursor: pointer; margin-top: 10px;
+    .btn-admin {
+      background: #0f172a; color: white; border: none; padding: 7px 14px;
+      border-radius: 6px; font-size: 0.82rem; font-weight: bold; cursor: pointer;
     }
 
-    #top-bar {
-      display: none; position: sticky; top: 0; z-index: 99;
-      background: #ffffff; padding: 10px 12px; border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.12); margin-bottom: 15px;
-      justify-content: space-between; align-items: center;
+    .boxed-panel {
+      background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 12px;
+      padding: 18px; margin-bottom: 18px;
     }
-    .user-tag { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.88rem; }
-    .user-tag img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
-    .timer-box { font-size: 1rem; font-weight: bold; color: #d93025; background: #fce8e6; padding: 5px 10px; border-radius: 6px; }
 
-    #quiz-area { display: none; }
-    .question-card {
-      background: #ffffff; border: 1px solid #e0e0e0;
-      padding: 12px; border-radius: 8px; margin-bottom: 12px;
+    .form-group { margin-bottom: 14px; text-align: left; }
+    .form-group label { display: block; font-weight: 600; font-size: 0.92rem; margin-bottom: 6px; color: #334155; }
+    .form-group input[type="text"], .form-group input[type="tel"] {
+      width: 100%; padding: 11px; border: 1.5px solid #94a3b8; border-radius: 8px; font-size: 1rem; outline: none; background: #fff;
     }
-    .question-title { font-weight: 600; font-size: 0.94rem; margin-bottom: 10px; line-height: 1.38; }
-    .options { display: flex; flex-direction: column; gap: 8px; }
+
+    /* Camera */
+    .camera-wrapper {
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      background: #ffffff; border: 1.5px dashed #3b82f6; border-radius: 10px; padding: 12px;
+    }
+    #camera-feed, #captured-canvas {
+      width: 220px; height: 220px; object-fit: cover; border-radius: 12px; border: 2px solid #1e3a8a;
+    }
+    #captured-canvas { display: none; }
+    .btn-camera {
+      background: #2563eb; color: white; border: none; padding: 8px 18px;
+      border-radius: 6px; font-size: 0.85rem; font-weight: bold; cursor: pointer;
+    }
+
+    /* Subject Selection */
+    .subject-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px; margin-top: 10px;
+    }
+    .subject-card {
+      background: white; border: 1.5px solid #cbd5e1; border-radius: 8px;
+      padding: 10px; display: flex; align-items: center; gap: 8px; font-size: 0.88rem; font-weight: 600;
+    }
+    .subject-card.locked { background: #e0f2fe; border-color: #38bdf8; color: #0369a1; }
+    
+    .btn-primary {
+      width: 100%; padding: 13px; background: #1d4ed8; color: white;
+      border: none; border-radius: 8px; font-size: 1.05rem; font-weight: bold; cursor: pointer; margin-top: 10px;
+    }
+
+    /* Public Boxed Leaderboard */
+    .leaderboard-box {
+      border: 2px solid #1e3a8a; border-radius: 12px; background: #ffffff;
+      padding: 14px; margin-top: 20px;
+    }
+    .leaderboard-header {
+      font-size: 1.05rem; font-weight: bold; color: #1e3a8a; display: flex;
+      justify-content: space-between; align-items: center; margin-bottom: 12px;
+    }
+    .rank-table { width: 100%; border-collapse: collapse; }
+    .rank-table th, .rank-table td { padding: 9px 6px; border: 1px solid #e2e8f0; font-size: 0.85rem; text-align: center; }
+    .rank-table th { background: #f1f5f9; }
+    .rank-badge {
+      display: inline-block; width: 26px; height: 26px; line-height: 26px;
+      border-radius: 50%; font-weight: bold; color: white; background: #64748b; font-size: 0.8rem;
+    }
+    .rank-1 { background: #eab308 !important; }
+    .rank-2 { background: #94a3b8 !important; }
+    .rank-3 { background: #b45309 !important; }
+
+    /* Student Dashboard */
+    #dashboard-screen { display: none; }
+    .student-header {
+      display: flex; align-items: center; gap: 14px; background: #f1f5f9; border: 1.5px solid #cbd5e1;
+      padding: 12px; border-radius: 10px; margin-bottom: 15px;
+    }
+    .student-header img { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; border: 2px solid #1d4ed8; }
+    .dash-subj-card {
+      display: flex; justify-content: space-between; align-items: center;
+      background: #ffffff; border: 1.5px solid #e2e8f0; padding: 12px 14px;
+      border-radius: 10px; margin-bottom: 10px;
+    }
+    .status-badge { font-size: 0.82rem; font-weight: bold; padding: 5px 10px; border-radius: 4px; }
+    .status-badge.completed { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+    .status-badge.locked-txt { font-size: 0.75rem; color: #dc2626; font-weight: bold; display: block; margin-top: 3px; }
+
+    /* Exam Screen */
+    #exam-screen { display: none; }
+    .exam-top-bar {
+      position: sticky; top: 0; z-index: 50; background: #ffffff;
+      padding: 10px 14px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
+      border-left: 4px solid #1d4ed8;
+    }
+    .timer { font-size: 1.05rem; font-weight: bold; color: #b91c1c; background: #fee2e2; padding: 6px 12px; border-radius: 6px; }
+    .question-card { background: white; border: 1px solid #cbd5e1; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+    .question-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; line-height: 1.4; }
     .option-btn {
-      width: 100%; padding: 10px 12px; border: 1px solid #dadce0; border-radius: 6px;
-      background-color: #f8f9fa; text-align: left; font-size: 0.88rem; cursor: pointer;
+      width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px;
+      background: #f8fafc; text-align: left; font-size: 0.88rem; cursor: pointer; margin-bottom: 8px;
     }
-    .option-btn.correct { background-color: #e8f0fe !important; border-color: #1a73e8 !important; color: #1a73e8 !important; font-weight: bold; }
-    .option-btn.wrong { background-color: #fce8e6 !important; border-color: #d93025 !important; color: #d93025 !important; }
+    .option-btn.selected { background: #e0e7ff !important; border-color: #4f46e5 !important; font-weight: bold; color: #312e81; }
 
-    #btn-submit-exam {
-      display: block; width: 100%; padding: 12px; background: #34a853;
-      color: white; border: none; border-radius: 6px; font-size: 1rem; font-weight: bold;
-      cursor: pointer; margin-top: 15px;
+    /* Personal Four-Corner Box Result */
+    #final-report { display: none; }
+    .marksheet-box {
+      border: 3px solid #0f172a; border-radius: 14px; background: #ffffff;
+      padding: 20px 14px; text-align: center;
     }
+    .correct-count { color: #16a34a; font-weight: bold; }
+    .wrong-count { color: #dc2626; font-weight: bold; }
+    .extra-tag { font-size: 0.75rem; background: #fef3c7; color: #b45309; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
 
-    #result-card {
-      display: none; text-align: center; background: #eef4fe;
-      border: 1.5px solid #1a73e8; padding: 20px 14px; border-radius: 10px; margin-top: 10px;
-    }
-    #result-img { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 2px solid #1a73e8; margin-bottom: 10px; }
-
+    /* Teacher Modal */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7); z-index: 999999; justify-content: center; align-items: center;
-      padding: 10px;
+      background: rgba(0,0,0,0.75); z-index: 99999; justify-content: center; align-items: center; padding: 12px;
     }
     .modal-content {
-      background: white; border-radius: 10px; width: 100%; max-width: 500px;
-      max-height: 85vh; overflow-y: auto; padding: 15px;
-    }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e0e0e0; padding-bottom: 8px; }
-    .btn-close { background: #d93025; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th, td { padding: 8px 4px; border: 1px solid #e8eaed; text-align: center; font-size: 0.82rem; }
-    th { background: #f1f3f4; }
-    .table-user-img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
-    .exam-time { font-size: 0.72rem; color: #5f6368; display: block; }
-    .btn-delete-all {
-      background: #d93025; color: white; border: none; padding: 10px;
-      border-radius: 6px; font-weight: bold; font-size: 0.85rem; cursor: pointer; margin-top: 14px; width: 100%;
+      background: white; border-radius: 12px; width: 100%; max-width: 680px;
+      max-height: 85vh; overflow-y: auto; padding: 18px;
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <div class="top-admin-nav">
-    <button class="btn-teacher-login" type="button" onclick="showTeacherPasswordModal()">👨‍🏫 টিচার / হেড লগইন</button>
+  <div class="top-nav">
+    <div style="font-size: 0.85rem; font-weight: bold; color: #1e3a8a;">WBCHSE Semester-III Portal</div>
+    <button class="btn-admin" onclick="openTeacherModal()">👨‍🏫 শিক্ষক প্যানেল</button>
   </div>
 
-  <h1>উচ্চ মাধ্যমিক বাংলা (সেমিস্টার-III)</h1>
-  <p class="subtitle">পূর্ণমান: ৪০ | সময়: ১ ঘণ্টা ৩০ মিনিট</p>
+  <div class="portal-title">উচ্চ মাধ্যমিক কেন্দ্রীয় অনলাইন পরীক্ষা পোর্টাল</div>
+  <div class="portal-subtitle">সেমিস্টার-III | পূর্ণমান: ৪০/বিষয় | সময়: ১ ঘণ্টা ৩০ মিনিট (প্রজেক্ট বাদে)</div>
 
-  <div id="start-screen">
-    <h3 style="font-size:1.05rem; margin-bottom:10px;">পরীক্ষার্থীর তথ্য প্রদান করুন</h3>
-    <div class="input-group">
-      <label for="user-name">আপনার পুরো নাম:</label>
-      <input type="text" id="user-name" placeholder="নাম লিখুন..." autocomplete="off">
+  <!-- Entry Screen -->
+  <div id="registration-screen">
+    <div class="boxed-panel">
+      <!-- Step 1: Mobile Number Entry First -->
+      <div class="form-group">
+        <label for="student-phone">১. মোবাইল নম্বর প্রবেশ করান (১০ সংখ্যা):</label>
+        <div style="display:flex; gap:8px;">
+          <input type="tel" id="student-phone" placeholder="মোবাইল নম্বর লিখুন..." maxlength="10" autocomplete="off">
+          <button type="button" class="btn-primary" style="width:auto; margin:0; padding:10px 18px; white-space:nowrap;" onclick="checkPhoneStatus()">যাচাই করুন</button>
+        </div>
+        <small id="phone-msg" style="color:#64748b; font-size:0.8rem; margin-top:4px; display:block;">আগে রেজিস্ট্রেশন করা থাকলে সরাসরি বাকি পরীক্ষা দিতে পারবেন, নতুন হলে ফর্ম পূরণ হবে।</small>
+      </div>
+
+      <!-- Step 2: New Student Details (Initially Hidden) -->
+      <div id="new-student-form" style="display:none; border-top:1.5px dashed #cbd5e1; padding-top:15px; margin-top:10px;">
+        <div class="form-group">
+          <label for="student-name">২. পরীক্ষার্থীর পুরো নাম:</label>
+          <input type="text" id="student-name" placeholder="আপনার নাম লিখুন..." autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label>৩. বাধ্যতামূলক লাইভ ছবি (Live Camera HD Photo):</label>
+          <div class="camera-wrapper">
+            <video id="camera-feed" autoplay playsinline></video>
+            <canvas id="captured-canvas"></canvas>
+            <button type="button" class="btn-camera" id="btn-snap" onclick="captureLivePhoto()">📸 ছবি তুলুন</button>
+            <button type="button" class="btn-camera" id="btn-retake" style="display:none; background:#475569;" onclick="retakePhoto()">🔄 আবার তুলুন</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>৪. বিষয় নির্বাচন (মোট ৬টি বিষয়: ২টি আবশ্যিক + ৪টি ঐচ্ছিক):</label>
+          <div class="subject-grid">
+            <label class="subject-card locked">
+              <input type="checkbox" checked disabled value="bengali"> বাংলা (আবশ্যিক)
+            </label>
+            <label class="subject-card locked">
+              <input type="checkbox" checked disabled value="english"> English B (আবশ্যিক)
+            </label>
+            <label class="subject-card">
+              <input type="checkbox" name="opt-subj" value="history" onchange="validateSubjectCount()"> ইতিহাস
+            </label>
+            <label class="subject-card">
+              <input type="checkbox" name="opt-subj" value="geography" onchange="validateSubjectCount()"> ভূগোল
+            </label>
+            <label class="subject-card">
+              <input type="checkbox" name="opt-subj" value="polscience" onchange="validateSubjectCount()"> রাষ্ট্রবিজ্ঞান
+            </label>
+            <label class="subject-card">
+              <input type="checkbox" name="opt-subj" value="philosophy" onchange="validateSubjectCount()"> দর্শন
+            </label>
+            <label class="subject-card">
+              <input type="checkbox" name="opt-subj" value="education" onchange="validateSubjectCount()"> শিক্ষাবিজ্ঞান
+            </label>
+            <label class="subject-card">
+              <input type="checkbox" name="opt-subj" value="sanskrit" onchange="validateSubjectCount()"> সংস্কৃত
+            </label>
+          </div>
+          <small id="subj-helper" style="color: #64748b; font-size: 0.8rem; margin-top: 4px; display: block;">ঐচ্ছিক তালিকা থেকে ৪টি বিষয় বেছে নিন (সিলেক্টেড: 0/4)।</small>
+        </div>
+
+        <button class="btn-primary" type="button" id="btn-register" onclick="registerNewStudent()">রেজিস্ট্রেশন সম্পন্ন করে বিষয়ের পরীক্ষা দিন</button>
+      </div>
     </div>
-    <div class="input-group">
-      <label for="user-photo">ছবি আপলোড করুন:</label>
-      <input type="file" id="user-photo" accept="image/*" onchange="processPhoto(event)">
-      <img id="preview-img" alt="ছবি প্রিভিউ">
+
+    <!-- Public Boxed Live Leaderboard (সকলের জন্য দৃশ্যমান মেধা তালিকা) -->
+    <div class="leaderboard-box">
+      <div class="leaderboard-header">
+        <span>🏆 সার্বজনীন মেধা তালিকা (Live Rank Board)</span>
+        <span style="font-size:0.75rem; color:#64748b;">(Best of 5 মোট ২০০-এর মধ্যে)</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="rank-table">
+          <thead>
+            <tr>
+              <th>র্যাংক</th>
+              <th>ছবি</th>
+              <th>নাম</th>
+              <th>প্রাপ্ত মোট নম্বর</th>
+              <th>শতাংশ</th>
+            </tr>
+          </thead>
+          <tbody id="public-rank-body"></tbody>
+        </table>
+      </div>
     </div>
-    <button class="btn-start" type="button" onclick="startMockTest()">টেস্ট শুরু করুন</button>
-    <button class="btn-view-history" type="button" onclick="openStudentModal()">📋 পরীক্ষার্থীদের স্কোর ও সময় দেখুন</button>
   </div>
 
-  <div id="top-bar">
-    <div class="user-tag">
-      <img id="bar-user-img" src="" alt="ছবি">
-      <span id="bar-user-name"></span>
+  <!-- Student Dashboard (Save & Resume) -->
+  <div id="dashboard-screen">
+    <div class="student-header">
+      <img id="dash-photo" src="" alt="ছবি">
+      <div style="flex:1;">
+        <div id="dash-name" style="font-weight: bold; font-size: 1.1rem; color: #0f172a;"></div>
+        <div id="dash-phone" style="font-size: 0.85rem; color: #475569; font-weight: 600;"></div>
+        <div style="font-size: 0.78rem; color: #16a34a; font-weight: bold; margin-top:2px;">পোর্টালে সংরক্ষিত | জমা দেওয়া বিষয় ছাড়া বাকি বিষয় দিতে পারবেন</div>
+      </div>
+      <button style="background:#e2e8f0; border:none; padding:6px 10px; border-radius:6px; font-size:0.78rem; font-weight:bold; cursor:pointer;" onclick="logoutStudent()">লগআউট</button>
     </div>
-    <div class="timer-box" id="timer-display">০১:৩০:০০</div>
+    <h3 style="font-size: 0.98rem; margin-bottom: 12px; color: #1e3a8a;">আপনার ৬টি বিষয়ের পরীক্ষার তালিকা (যেটি দেবেন বেছে নিন):</h3>
+    <div id="dash-subject-list"></div>
+    <button class="btn-primary" id="btn-view-final-sheet" style="display:none; background:#16a34a; margin-top:15px;" onclick="renderFinalMarksheet()">📄 চূড়ান্ত চারকোনা মার্কশিট ও র্যাংক কার্ড দেখুন</button>
   </div>
 
-  <div id="quiz-area">
-    <div id="questions-box"></div>
-    <button id="btn-submit-exam" type="button" onclick="finishExam()">পরীক্ষা সম্পূর্ণ করুন ও ফলাফল জমা দিন</button>
+  <!-- Exam Interface -->
+  <div id="exam-screen">
+    <div class="exam-top-bar">
+      <div>
+        <h4 id="exam-current-subject" style="color:#1e3a8a; margin:0;"></h4>
+        <div style="font-size:0.75rem; color:#64748b;">Class 12 Semester III | ৪০ নম্বর</div>
+      </div>
+      <div class="timer" id="exam-timer">০১:৩০:০০</div>
+    </div>
+    <div id="questions-container"></div>
+    <button class="btn-primary" style="background:#16a34a; margin-top: 15px;" onclick="submitExamSubject()">এই বিষয়ের পরীক্ষা সমাপ্ত ও চিরতরে লক করুন</button>
   </div>
 
-  <div id="result-card">
-    <img id="result-img" src="" alt="ছবি">
-    <h2 id="result-name" style="font-size:1.15rem;"></h2>
-    <p id="result-score" style="font-size: 1.15rem; font-weight: bold; color: #1a73e8; margin: 8px 0;"></p>
-    <p id="result-time-text" style="font-size: 0.85rem; color: #555; margin-bottom: 8px;"></p>
-    <p id="cloud-sync-status" style="font-size: 0.85rem; font-weight: bold; margin-bottom: 12px;"></p>
-    <button type="button" onclick="openStudentModal()" class="btn-view-history" style="max-width: 250px; margin: 6px auto;">সকলের স্কোর দেখুন</button><br>
-    <button type="button" onclick="resetToHomeScreen()" style="padding: 10px 18px; background:#1a73e8; color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer; margin-top:8px; font-size:0.95rem;">নতুন পরীক্ষা শুরু করুন (হোম পেজ)</button>
+  <!-- Four-Corner Box Marksheet Screen -->
+  <div id="final-report">
+    <div class="marksheet-box">
+      <img id="report-photo" style="width:85px; height:85px; border-radius:50%; object-fit:cover; border:3px solid #0f172a; margin-bottom:8px;" src="" alt="ছবি">
+      <h2 id="report-name" style="font-size:1.25rem; color:#0f172a; margin-bottom: 2px;"></h2>
+      <div style="font-size:0.85rem; color:#64748b; margin-bottom: 15px;">উচ্চ মাধ্যমিক কাউন্সিল নিয়মাবলি অনুযায়ী 'Best of 5' চূড়ান্ত ফলাফল</div>
+
+      <div style="overflow-x:auto;">
+        <table class="rank-table" style="margin-bottom: 15px;">
+          <thead>
+            <tr>
+              <th>বিষয়</th>
+              <th>মোট</th>
+              <th>সঠিক</th>
+              <th>ভুল</th>
+              <th>প্রাপ্ত নম্বর</th>
+              <th>অবস্থা</th>
+            </tr>
+          </thead>
+          <tbody id="report-table-body"></tbody>
+        </table>
+      </div>
+
+      <div style="background:#f8fafc; border:2px solid #0f172a; border-radius:10px; padding:12px; margin-bottom:14px;">
+        <h3 id="best-5-score" style="color:#0f172a; font-size:1.25rem; margin-bottom: 4px;"></h3>
+        <p id="best-5-percentage" style="color:#16a34a; font-weight:bold; font-size:1rem;"></p>
+      </div>
+
+      <button class="btn-primary" style="background:#334155;" onclick="returnToDashboard()">ড্যাশবোর্ডে ফিরে যান</button>
+    </div>
   </div>
 </div>
 
-<div id="password-modal" class="modal">
-  <div class="modal-content" style="max-width: 320px; text-align: center;">
-    <h3 style="margin-bottom: 10px; font-size: 1rem;">শিক্ষক লগইন পিন দিন</h3>
-    <input type="password" id="teacher-pin-input" placeholder="পাসওয়ার্ড লিখুন..." style="width: 100%; padding: 10px; border: 1.5px solid #1a73e8; border-radius: 6px; font-size: 1rem; margin-bottom: 12px; text-align: center;">
-    <div style="display: flex; gap: 8px;">
-      <button type="button" onclick="checkTeacherPin()" style="flex: 1; padding: 9px; background: #1a73e8; color: white; border: none; border-radius: 6px; font-weight: bold;">লগইন</button>
-      <button type="button" onclick="closePasswordModal()" style="flex: 1; padding: 9px; background: #666; color: white; border: none; border-radius: 6px; font-weight: bold;">বাতিল</button>
-    </div>
-  </div>
-</div>
-
-<div id="student-modal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3 style="margin:0; color:#1a73e8; font-size:0.95rem;">📋 পরীক্ষার্থীদের তালিকা ও সময় (লাইভ ক্লাউড)</h3>
-      <button class="btn-close" type="button" onclick="closeStudentModal()">বন্ধ করুন ✕</button>
-    </div>
-    <table>
-      <thead>
-        <tr>
-          <th>ছবি</th>
-          <th>নাম ও সময়</th>
-          <th>স্কোর</th>
-          <th>শতকরা</th>
-        </tr>
-      </thead>
-      <tbody id="student-table-body"></tbody>
-    </table>
-  </div>
-</div>
-
+<!-- Teacher / Admin Modal -->
 <div id="teacher-modal" class="modal">
   <div class="modal-content">
-    <div class="modal-header">
-      <h3 style="margin:0; color:#d93025; font-size:0.95rem;">👨‍🏫 শিক্ষক প্যানেল</h3>
-      <button class="btn-close" type="button" onclick="closeTeacherModal()">লগআউট ✕</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #cbd5e1; padding-bottom:8px;">
+      <h3 style="margin:0; color:#1e3a8a;">👨‍🏫 শিক্ষক প্যানেল (ম্যানেজমেন্ট)</h3>
+      <button style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;" onclick="closeTeacherModal()">বন্ধ ✕</button>
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th>ছবি</th>
-          <th>নাম ও সময়</th>
-          <th>স্কোর</th>
-          <th>শতকরা</th>
-        </tr>
-      </thead>
-      <tbody id="teacher-table-body"></tbody>
-    </table>
-    <button class="btn-delete-all" type="button" onclick="teacherDeleteAllRecords()">⚠️ সমস্ত পরীক্ষার্থীর ক্লাউড রেকর্ড সম্পূর্ণ মুছে ফেলুন</button>
+    
+    <div id="admin-login-box" style="margin-top:15px; text-align:center;">
+      <input type="password" id="admin-pin" placeholder="শিক্ষক পিন দিন (xyz1234)..." style="width:100%; padding:10px; border:1.5px solid #3b82f6; border-radius:6px; margin-bottom:10px; text-align:center;">
+      <button class="btn-primary" style="padding:9px;" onclick="verifyAdminPin()">লগইন করুন</button>
+    </div>
+
+    <div id="admin-data-box" style="display:none; margin-top:15px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <span style="font-size:0.85rem; font-weight:bold; color:#334155;">সিলেক্ট করে ডিলিট করুন:</span>
+        <button style="background:#dc2626; color:white; border:none; padding:6px 12px; border-radius:4px; font-size:0.78rem; font-weight:bold; cursor:pointer;" onclick="deleteSelectedStudents()">🗑️ নির্বাচিতগুলো ডিলিট</button>
+      </div>
+      <div style="overflow-x: auto;">
+        <table class="rank-table" style="width:100%;">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="select-all-checkbox" onchange="toggleSelectAll(this)"></th>
+              <th>ছবি</th>
+              <th>নাম ও ফোন</th>
+              <th>সেরা ৫ নম্বর</th>
+              <th>শতাংশ</th>
+              <th>একক ডিলিট</th>
+            </tr>
+          </thead>
+          <tbody id="admin-records-body"></tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
-// আপনার নিজস্ব ফায়ারবেস কনফিগারেশন
+// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyCJm8-SnL0NJi0sJQ58zZ7itli4dK_q7i0",
   authDomain: "hs-bangal-3-2026.firebaseapp.com",
@@ -245,318 +367,625 @@ const firebaseConfig = {
   messagingSenderId: "962440862779",
   appId: "1:962440862779:web:f8982cc5660df2514ad01e"
 };
-
-// ফায়ারবেস ইনিশিয়ালাইজেশন
 firebase.initializeApp(firebaseConfig);
-const dbRef = firebase.database().ref("exam_results");
+const dbRef = firebase.database().ref("hs_all_students");
 
-const TEACHER_PIN = "xyz1234";
+const SUBJECT_NAMES = {
+  bengali: "বাংলা (BNGA)",
+  english: "English B (ENGB)",
+  history: "ইতিহাস (HIST)",
+  geography: "ভূগোল (GEGR)",
+  polscience: "রাষ্ট্রবিজ্ঞান (POLS)",
+  philosophy: "দর্শন (PHIL)",
+  education: "শিক্ষাবিজ্ঞান (EDCN)",
+  sanskrit: "সংস্কৃত (SNSK)"
+};
 
-const mockExamData = [
-  { q: "১. পীরগঞ্জের বাবুদের বাড়ি নিমন্ত্রণে বেনারস ও কলকাতা থেকে কী আসার কথা ছিল?", o: ["বেনারস থেকে বাদ্যযন্ত্র, কলকাতা থেকে নর্তকী", "বেনারস থেকে বাই, কলকাতা থেকে খেমটা", "বেনারস থেকে মিষ্টি, কলকাতা থেকে ঢাক", "বেনারস থেকে খেমটা, কলকাতা থেকে বাই"], a: 1 },
-  { q: "২. জয়রাম মোক্তার কত বছর ধরে মেজবাবুদের এস্টেটের বাঁধা মোক্তার ছিলেন?", o: ["দশ বছর", "পনেরো বছর", "বিশ বছর", "পঁচিশ বছর"], a: 2 },
-  { q: "৩. প্রথম জীবনে জয়রামের সঙ্গে সম্বল হিসেবে কেবল কী ছিল?", o: ["একটি ছাতা ও লাঠি", "একটি ক্যাম্বিসের ব্যাগ এবং একটি পিতলের ঘটি", "একটি চামড়ার ব্যাগ ও গীতা", "কিছু পুরোনো আইনের বই"], a: 1 },
-  { q: "৪. পাঁচ টাকা আদালত অবমাননার জরিমানা রদ করতে জয়রাম হাইকোর্টে কত ব্যয় করেছিলেন?", o: ["৫০০ টাকা", "১০০০ টাকা", "১২০০ টাকা", "১৭০০ টাকা"], a: 3 },
-  { q: "৫. উমাচরণ লাহিড়ীর কাছ থেকে হস্তিনীটিকে কত টাকায় কেনা হয়েছিল?", o: ["১০০০ টাকা", "১৫০০ টাকা", "২০০০ টাকা", "২৫০০ টাকা"], a: 2 },
-  { q: "৬. হস্তী ভাড়ার বিজ্ঞাপনে রোজ মোট কত টাকা ধার্য করা হয়েছিল?", o: ["৩ টাকা", "৪ টাকা", "৪।।০ (চার টাকা চার আনা)", "৫ টাকা"], a: 2 },
-  { q: "৭. কল্যাণীর জন্য দেখা পাত্রটি কোথায় কী পড়ত?", o: ["প্রেসিডেন্সি কলেজে বি.এ.", "রাজসাহী কলেজে এল.এ.", "ঢাকা কলেজে এফ.এ.", "মেডিক্যাল কলেজে"], a: 1 },
-  { q: "৮. মেলায় যাওয়ার আগে জয়রাম হস্তিনীকে কত টাকার রসগোল্লা খাইয়েছিলেন?", o: ["এক টাকার", "দুই টাকার", "পাঁচ টাকার", "দশ টাকার"], a: 1 },
-  { q: "৯. বামুনহাটে বিক্রি না হওয়া পশুরা সেখান থেকে দশ ক্রোশ উত্তরে কোন্ মেলায় যায়?", o: ["বীরপুর মেলা", "রসুলগঞ্জ মেলা", "পীরগঞ্জ মেলা", "রায়গঞ্জ মেলা"], a: 1 },
-  { q: "১০. আদরিণীর মৃত্যুর পর জয়রাম মোক্তার মহাশয় কত দিন জীবিত ছিলেন?", o: ["এক মাস", "দুই মাস মাত্র", "ছয় মাস", "এক বছর"], a: 1 },
-  { q: "১১. শ্রীজাত রচিত 'ধর্ম' কবিতাটি কোন্ কাব্যগ্রন্থ থেকে গৃহীত?", o: ["উড়ন্ত সব জোকার", "অন্ধকার লেখাগুচ্ছ", "কর্কটক্রান্তির দেশ", "শেষ চিঠি"], a: 1 },
-  { q: "১২. 'ধর্ম' কবিতায় কার ধর্ম ছিল 'দিগন্ত পেরনো'?", o: ["আবদুল করিম খাঁ", "আইনস্টাইন", "কবীর", "ভ্যান গঘ"], a: 1 },
-  { q: "১৩. 'ভ্যান গঘের ধর্ম ছিল—'", o: ["উন্মাদনা। আঁকা।", "কবিতার জিত", "নতুন পতাকা", "ভস্মের চরিত"], a: 0 },
-  { q: "১৪. 'যে তোমাকে শিখিয়েছে দখলের কথা— / জেনো সে ধর্মই নয়। ______।' (শূন্যস্থান পূরণ)", o: ["গোঁড়ামি", "অহংকার", "প্রাতিষ্ঠানিকতা", "রাজনীতি"], a: 2 },
-  { q: "১৫. কবি নবনীতা দেবসেনের জন্ম কোন্ গৃহে হয়েছিল?", o: ["শান্তিনিকেতন", "ভালোবাসা", "উদ্বোধন", "আনন্দভবন"], a: 1 },
-  { q: "১৬. কবির আশীর্বাদী জাদু-অশ্বের নাম কী রাখা হয়েছিল?", o: ["ভালোবাসা", "সাহস", "বিশ্বাস", "মুক্তি"], a: 2 },
-  { q: "১৭. 'হৃদয়ের খাপে ভরা মন্ত্রপূতঃ অসি'-র নাম কী?", o: ["বিশ্বাস", "ভালোবাসা", "শক্তি", "স্নেহ"], a: 1 },
-  { q: "১৮. কবি তাঁর দুটি সরঞ্জাম নিয়ে নিশ্চিত কোথায় পৌঁছাবেন?", o: ["সোনার কেল্লায়", "রূপকথার দেশে", "তৃয়াহর খজুরের দ্বীপে", "সপ্তডিঙ্গার তীরে"], a: 2 },
-  { q: "১৯. স্বামী বিবেকানন্দ কোন্ পত্রিকার সম্পাদককে পত্র লিখেছিলেন যা থেকে 'বাঙ্গালা ভাষা' অংশটি সংকলিত?", o: ["বঙ্গদর্শন", "উদ্বোধন", "তত্ত্ববোধিনী", "ভারতী"], a: 1 },
-  { q: "২০. স্বামীজীর মতে, প্রাকৃতিক নিয়মে কোন্ অঞ্চলের ভাষা সর্বত্র ছড়িয়ে পড়ছে ও জয়ী হচ্ছে?", o: ["ঢাকার ভাষা", "শান্তিপুরের ভাষা", "কলকেতার ভাষা", "বীরভূমের ভাষা"], a: 2 },
-  { q: "২১. 'ভাষাকে করতে হবে— যেমন ______।' (শূন্যস্থান পূরণ)", o: ["সোনার অলংকার", "সাফ ইস্পাত", "নদীর প্রবাহ", "স্ফটিক পাথর"], a: 1 },
-  { q: "২২. স্বামীজীর মতে মড়ার লক্ষণ কী?", o: ["সহজ সরল ভাষার অভাব ও রাশি রাশি প্যাঁচালো বিশেষণ", "অতিরিক্ত রাগ", "শান্ত হয়ে থাকা", "গ্রাম্য ভাষা ব্যবহার"], a: 0 },
-  { q: "২৩. 'পোটরাজ' গল্পটির মূল লেখক কে এবং কোন্ ভাষার সাহিত্যিক?", o: ["পাবলো নেরুদা (স্প্যানিশ)", "শঙ্কররাও খারাট (মারাঠি)", "সুনন্দন চক্রবর্তী (বাংলা)", "প্রেমচন্দ (হিন্দি)"], a: 1 },
-  { q: "২৪. পোটরাজ দামার স্ত্রীর নাম কী?", o: ["বঞ্চলাবাঈ", "দুরপত", "যশোদা", "কামিনী"], a: 1 },
-  { q: "২৫. দেবী মারী-আই-এর উদ্দেশ্যে মঙ্গল-শুক্রবারে কী করা হতো?", o: ["ব্রতকথা পাঠ", "উপবাস বা উপুশ", "নৃত্য পরিবেশন", "যাত্রাপালা"], a: 1 },
-  { q: "২৬. দামার ছেলে আনন্দ কোন্ স্কুলে পড়াশোনা করত?", o: ["প্রাথমিক স্কুল", "সংস্কৃত টোল", "হাইস্কুলে (ইংরেজি পড়ত)", "কলেজে"], a: 2 },
-  { q: "২৭. মারী-আই-এর মূর্তিকে রাতের অন্ধকারে গোপনে গাঁয়ের ধারে রেখে এসেছিল কে?", o: ["দামা পোটরাজ", "গ্রামের মোড়ল", "আনন্দ", "বঞ্চলা"], a: 2 },
-  { q: "২৮. পাবলো নেরুদা কোন দেশের কবি ছিলেন?", o: ["ফ্রান্স", "চিলি", "আমেরিকা", "মেক্সিকো"], a: 1 },
-  { q: "২৯. 'তার সঙ্গে' কবিতাটির বাংলা অনুবাদ কে করেছেন?", o: ["শঙ্খ ঘোষ", "শক্তি চট্টোপাধ্যায়", "সুনীল গঙ্গোপাধ্যায়", "উৎপলকুমার বসু"], a: 1 },
-  { q: "৩০. কবিতায় 'ধুয়ে মুছে আগুন বানাবার জন্যে' কীসের প্রয়োজন বলা হয়েছে?", o: ["শাবল ও ঝুড়ি", "দুজনের হাতগুলো", "কারনেশন ফুল", "মধু তালাশ"], a: 1 },
-  { q: "৩১. চর্যাপদের গানগুলিতে সংগীতে কয়টি অঙ্গ বা লক্ষণ দেখা যায়?", o: ["চারটি", "পাঁচটি", "ছয়টি", "আটটি"], a: 2 },
-  { q: "৩২. 'শ্রীকৃষ্ণকীর্তন' কাব্যে মোট কতগুলি পদের উল্লেখ পাওয়া যায়?", o: ["৫১টি", "৩২৪টি", "৪১৮টি", "৫০টি"], a: 2 },
-  { q: "৩৩. শাক্ত পদাবলি বা শ্যামাসংগীতের প্রথম ও প্রধান কবি কাকে বলা হয়?", o: ["কমলাকান্ত ভট্টাচার্য", "রামপ্রসাদ সেন", "দাশরথি রায়", "নিধুবাবু"], a: 1 },
-  { q: "৩৪. বাংলা টপ্পা গানকে জনপ্রিয় করে তোলার প্রধান রূপকার কে?", o: ["রামনিধি গুপ্ত (নিধুবাবু)", "কালী মীর্জা", "যদুভট্ট", "গৌরীপ্রসন্ন মজুমদার"], a: 0 },
-  { q: "৩৫. 'আমার সোনার বাংলা' গানটি কোন্ বাউল গানের সুরে রচিত?", o: ["আমি কোথায় পাব তারে", "খাঁচার ভিতর অচিন পাখি", "মন মাঝি তোর বৈঠা নে রে", "মিলন হবে কত দিনে"], a: 0 },
-  { q: "৩৬. 'ক্যালকাটা ইয়ুথ কয়্যার' কার নেতৃত্বে ও অনুপ্রেরণায় প্রতিষ্ঠিত হয়েছিল?", o: ["সলিল চৌধুরী ও রুমা গুহঠাকুরতা", "হেমন্ত মুখোপাধ্যায়", "মান্না দে", "জ্যোতিরিন্দ্র মৈত্র"], a: 0 },
-  { q: "৩৭. ডা. নীলরতন সরকারের উল্লেখযোগ্য চিকিৎসা গবেষণা কোনটি ছিল?", o: ["ধাত্রীসহায়", "সিরোসিস অব লিভার ইন চিলড্রেন", "অক্ষিতত্ত্ব", "ম্যালেরিয়া তত্ত্ব"], a: 1 },
-  { q: "৩৮. এদেশের প্রথম বিলিতি ডিগ্রিধারী (LRCP, LRCS) ভারতীয় মহিলা চিকিৎসক কে?", o: ["চন্দ্রমুখী বসু", "কাদম্বিনী (বসু) গঙ্গোপাধ্যায়", "কামিনী রায়", "সরলা দেবী"], a: 1 },
-  { q: "৩৯. 'ইন্ডিয়ান অ্যাসোসিয়েশন ফর দ্য কালটিভেশন অফ সায়েন্স' কে প্রতিষ্ঠা করেন?", o: ["ডা. রাধাগোবিন্দ কর", "ডা. মহেন্দ্রলাল সরকার", "আচার্য প্রফুল্লচন্দ্র রায়", "জগদীশচন্দ্র বসু"], a: 1 },
-  { q: "৪০. কিংবদন্তী চক্ষুবিশেষজ্ঞ সি ম্যাকনামারার বই অনুবাদ করে 'অক্ষিতত্ত্ব' গ্রন্থ রচনা করেন কে?", o: ["লালমাধব মুখোপাধ্যায়", "বনবিহারী মুখোপাধ্যায়", "সুরেশপ্রসাদ সর্বাধিকারী", "দুর্গাদাস কর"], a: 0 }
-];
+// প্রশ্নব্যাংক
+const masterQuestionPool = {
+  bengali: [
+    { q: "১. 'আদরিণী' গল্পটি কোন পত্রিকায় প্রকাশিত হয়েছিল?", o: ["ভারতী", "সাধনা", "সবুজপত্র", "সাহিত্য"], a: 0 },
+    { q: "২. জয়রাম মুখোপাধ্যায় পেশায় কী ছিলেন?", o: ["নায়েব", "বাঁধা মোক্তার", "গোমস্তা", "ডাক্তার"], a: 1 },
+    { q: "৩. আদালত অবমাননার জন্য জয়রামবাবুর কত টাকা জরিমানা হয়েছিল?", o: ["পাঁচ টাকা", "দশ টাকা", "সাত টাকা", "পনেরো টাকা"], a: 0 },
+    { q: "৪. উমাচরণ লাহিড়ীর কাছ থেকে হস্তিনীটিকে কত টাকায় কেনা হয়েছিল?", o: ["১০০০ টাকা", "১৫০০ টাকা", "২০০০ টাকা", "২৫০০ টাকা"], a: 2 },
+    { q: "৫. হস্তিনী ভাড়ার বিজ্ঞাপনে দৈনিক কত টাকা ধার্য করা হয়েছিল?", o: ["৩ টাকা", "৪ টাকা", "৪।।০ (চার টাকা চার আনা)", "৫ টাকা"], a: 2 },
+    { q: "৬. 'ধর্ম' কবিতাটি কবি শ্রীজাত-র কোন্ মূল কাব্যগ্রন্থের অন্তর্গত?", o: ["অন্ধকার লেখাগুচ্ছ", "উড়ন্ত সব জোকার", "শেষ চিঠি", "কর্কটক্রান্তির দেশ"], a: 0 },
+    { q: "৭. 'ধর্ম' কবিতায় কার ধর্ম ছিল 'দিগন্ত পেরনো'?", o: ["আইনস্টাইনের", "আবদুল করিম খাঁ", "ভ্যান গঘের", "কবীরের"], a: 0 },
+    { q: "৮. 'ভ্যান গঘের ধর্ম ছিল—'", o: ["উন্মাদনা। আঁকা।", "কবিতার জিত", "নতুন পতাকা", "ভস্মের চরিত"], a: 0 },
+    { q: "৯. 'দ্বিগ্বিজয়ের রূপকথা' কবিতায় আশীর্বাদী দুটি সরঞ্জাম কী কী?", o: ["বিশ্বাস ও ভালোবাসা", "কবচকুণ্ডল ও জাদু-অশ্ব", "ধনুক ও তৃণীর", "পুষ্পক ও সপ্তডিঙ্গা"], a: 0 },
+    { q: "১০. 'বাঙ্গালা ভাষা' প্রবন্ধে স্বামীজির মতে কোন ভাষা প্রাকৃতিক নিয়মে জয়ী হচ্ছে?", o: ["কলকাতার ভাষা", "শান্তিপুরের ভাষা", "ঢাকার ভাষা", "বীরভূমের ভাষা"], a: 0 },
+    { q: "১১. 'পোটরাজ' গল্পটি মূল কোন ভাষার সাহিত্য?", o: ["মারাঠি", "হিন্দি", "গুজরাতি", "তেলেগু"], a: 0 },
+    { q: "১২. পোটরাজ দামার স্ত্রীর নাম কী ছিল?", o: ["দুরপত", "বঞ্চলাবাঈ", "যশোদা", "কামিনী"], a: 0 },
+    { q: "১৩. 'তার সঙ্গে' কবিতায় ধুয়ে মুছে আগুন বানাবার জন্য কী লাগবে?", o: ["দুজনের হাতগুলোই", "শাবল ও ঝুড়ি", "কারনেশন ফুল", "মধু তালাশ"], a: 0 },
+    { q: "১৪. শ্রীকৃষ্ণকীর্তন কাব্যের মোট পদসংখ্যা কত?", o: ["৪১৮টি", "৫১টি", "৩২৪টি", "৪১৪টি"], a: 0 },
+    { q: "১৫. বাংলা টপ্পা গানের প্রধান রূপকার কে?", o: ["রামনিধি গুপ্ত (নিধুবাবু)", "কালী মির্জা", "যদুভট্ট", "গৌরীপ্রসন্ন মজুমদার"], a: 0 }
+  ],
+  english: [
+    { q: "1. At what time did the night train usually arrive at Deoli?", o: ["About 5 a.m.", "Midnight", "6 a.m.", "4 a.m."], a: 0 },
+    { q: "2. The basket-selling girl at Deoli was characterized by:", o: ["Dark and troubled eyes", "Bright red shawl", "Loud assertive voice", "Shiny gold ornaments"], a: 0 },
+    { q: "3. Dr. APJ Abdul Kalam's ancestral house was built in:", o: ["Mid 19th century", "Early 20th century", "Late 18th century", "Colonial period"], a: 0 },
+    { q: "4. According to Jainulabdeen, adversity always presents opportunities for:", o: ["Introspection", "Retribution", "Prosperity", "Mourning"], a: 0 },
+    { q: "5. In 'The Bet', the amount of money wagered was:", o: ["Two million rubles", "One million rubles", "Five hundred thousand", "Ten thousand rubles"], a: 0 },
+    { q: "6. During his confinement, the lawyer ultimately rejected:", o: ["Material wealth and worldly pleasures", "Books and reading", "Spiritual theology", "Wine and music"], a: 0 },
+    { q: "7. In 'Our Casuarina Tree', the tree is dear to Toru Dutt's soul because:", o: ["She played beneath it with beloved companions", "Its vast height", "Its flowers and beauty", "It is sacred in mythology"], a: 0 },
+    { q: "8. In Tennyson's 'Ulysses', the famous concluding line is:", o: ["To strive, to seek, to find, and not to yield", "I will drink life to the lees", "To sail beyond the sunset", "Death closes all"], a: 0 },
+    { q: "9. In 'Riders to the Sea', how did Bartley die?", o: ["The grey pony knocked him into the sea", "His boat capsized", "Fell from the pier", "Freezing gale"], a: 0 }
+  ],
+  history: [
+    { q: "১. 'কিতাব-উল-হিন্দ' গ্রন্থটির রচয়িতা কে?", o: ["আলবিরুনি", "ইবন বতুতা", "আব্দুর রজ্জাক", "ফ্রাঁসোয়া বার্নিয়ে"], a: 0 },
+    { q: "২. ইবন বতুতা কোন দেশ থেকে ভারতে এসেছিলেন?", o: ["মরক্কো", "ইতালি", "পারস্য", "ফ্রান্স"], a: 0 },
+    { q: "৩. বিজয়নগর সাম্রাজ্যের রাজধানী কোথায় ছিল?", o: ["হাম্পি", "মাদুরা", "কালিকট", "গোলকোন্ডা"], a: 0 },
+    { q: "৪. 'আমুক্তমাল্যদা' গ্রন্থটি কোন ভাষায় রচিত?", o: ["তেলেগু", "তামিল", "সংস্কৃত", "কন্নড়"], a: 0 },
+    { q: "৫. বাংলায় 'চিরস্থায়ী বন্দোবস্ত' কে প্রবর্তন করেন?", o: ["লর্ড কর্নওয়ালিস", "লর্ড ক্লাইভ", "লর্ড ডালহৌসি", "ওয়ারেন হেস্টিংস"], a: 0 },
+    { q: "৬. 'ড্রেন অব ওয়েলথ' (Drain of Wealth) তত্ত্বের জনক কে?", o: ["দাদাভাই নওরোজি", "রমেশচন্দ্র দত্ত", "সুরেন্দ্রনাথ বন্দ্যোপাধ্যায়", "গান্ধীজি"], a: 0 }
+  ],
+  geography: [
+    { q: "১. প্যানজিয়া ভেঙে লরেশিয়া ও গন্ডোয়ানাল্যান্ডের মাঝে সৃষ্ট অগভীর সমুদ্রটির নাম কী?", o: ["টেথিস সাগর", "ব্ল্যাক সি", "লোহিত সাগর", "ভূমধ্যসাগর"], a: 0 },
+    { q: "২. চুনাপাথরযুক্ত অঞ্চলে গুহার ছাদে ঝুলন্ত ক্যালসিয়াম কার্বনেট স্তম্ভকে কী বলে?", o: ["স্ট্যালাকটাইট", "স্ট্যালাগমাইট", "হেলিকটাইট", "ড্রামলিন"], a: 0 },
+    { q: "৩. ২০১১ সালের জনগণনা অনুযায়ী ভারতের জনঘনত্ব প্রতি বর্গকিমিতে কত?", o: ["৩৮২ জন", "৩২৪ জন", "৪১৪ জন", "৯৪৩ জন"], a: 0 },
+    { q: "৪. ভারতের শ্বেত বিপ্লবের জনক কাকে বলা হয়?", o: ["ড. ভার্গিস কুরিয়ান", "এম এস স্বামীনাথন", "নরম্যান বোরলগ", "হীরালাল চৌধুরী"], a: 0 },
+    { q: "৫. বাস্তুতন্ত্রে শক্তি প্রবাহের ১০% সূত্রের প্রবক্তা কে?", o: ["লিন্ডেম্যান", "ট্যান্সলে", "ওডাম", "হেকেল"], a: 0 }
+  ],
+  polscience: [
+    { q: "১. 'Cold War' বা ঠাণ্ডা লড়াই শব্দটি প্রথম কে ব্যবহার করেন?", o: ["বার্নাড বারুচ", "উইনস্টন চার্চিল", "হ্যারি ট্রুম্যান", "লিপম্যান"], a: 0 },
+    { q: "২. ন্যাটো (NATO) সামরিক জোটটি কার নেতৃত্বে গঠিত হয়েছিল?", o: ["মার্কিন যুক্তরাষ্ট্র", "সোভিয়েত ইউনিয়ন", "গ্রেট ব্রিটেন", "ফ্রান্স"], a: 0 },
+    { q: "৩. সম্মিলিত জাতিপুঞ্জ (UN) কবে প্রতিষ্ঠিত হয়?", o: ["২৪ অক্টোবর ১৯৪৫", "১০ জানুয়ারি ১৯২০", "১৫ আগস্ট ১৯৪৭", "২৬ জানুয়ারি ১৯৫০"], a: 0 },
+    { q: "৪. নিরাপত্তা পরিষদে স্থায়ী সদস্য রাষ্ট্রের সংখ্যা কত?", o: ["৫টি", "১০টি", "১৫টি", "৭টি"], a: 0 },
+    { q: "৫. ভারতে দলত্যাগ বিরোধী আইন কত সালে পাস হয়?", o: ["১৯৮৫ সালে", "১৯৭৬ সালে", "১৯৭৮ সালে", "১৯৯২ সালে"], a: 0 }
+  ],
+  philosophy: [
+    { q: "১. 'দ্রব্য = ঈশ্বর = প্রকৃতি'—এটি কোন দার্শনিকের মতবাদ?", o: ["স্পিনোজা", "দেকার্ত", "লাইবনিজ", "লক"], a: 0 },
+    { q: "২. দেকার্তের মতে দেহ ও মনের সংযোগস্থল কোন গ্রন্থি?", o: ["পিনিয়াল গ্রন্থি", "পিটুইটারি", "থাইরয়েড", "অ্যাড্রিনাল"], a: 0 },
+    { q: "৩. 'অস্তিত্ব প্রত্যক্ষ নির্ভর' (Esse est percipi)—কার বক্তব্য?", o: ["বার্কলে", "লক", "হিউম", "কান্ট"], a: 0 },
+    { q: "৪. অদ্বৈত বেদান্ত দর্শনের প্রধান ভাষ্যকার কে?", o: ["শঙ্করাচার্য", "রামানুজ", "মাধবাচার্য", "নিম্বার্ক"], a: 0 },
+    { q: "৫. 'Practical Ethics' গ্রন্থটির রচয়িতা কে?", o: ["পিটার সিঙ্গার", "ইমানুয়েল কান্ট", "জন স্টুয়ার্ট মিল", "বেন্থাম"], a: 0 }
+  ],
+  education: [
+    { q: "১. স্বাধীন ভারতের প্রথম বিশ্ববিদ্যালয় শিক্ষা কমিশনের সভাপতি কে ছিলেন?", o: ["ড. সর্বপল্লী রাধাকৃষ্ণন", "ড. লক্ষণস্বামী মুদালিয়ার", "ড. ডি এস কোঠারি", "ড. জাকির হোসেন"], a: 0 },
+    { q: "২. কোঠারি কমিশনের সুপারিশ অনুযায়ী শিক্ষা কাঠামোটি কী ছিল?", o: ["10 + 2 + 3", "8 + 4 + 3", "5 + 3 + 2", "11 + 3"], a: 0 },
+    { q: "৩. 'অপারেশন ব্ল্যাকবোর্ড' কর্মসূচিটি কোন স্তরের শিক্ষার সাথে যুক্ত?", o: ["প্রাথমিক শিক্ষা", "মাধ্যমিক শিক্ষা", "উচ্চশিক্ষা", "বয়স্ক শিক্ষা"], a: 0 },
+    { q: "৪. 'নঈ তালিম' বা বুনিয়াদি শিক্ষার প্রবর্তক কে?", o: ["মহাত্মা গান্ধী", "রবীন্দ্রনাথ ঠাকুর", "স্বামী বিবেকানন্দ", "রুশো"], a: 0 },
+    { q: "৫. দৃষ্টিহীনদের পাঠদানের জন্য ব্রেইল লিপিতে কয়টি বিন্দু ব্যবহার করা হয়?", o: ["৬টি", "৪টি", "৮টি", "১০টি"], a: 0 }
+  ],
+  sanskrit: [
+    { q: "১. 'রাজবাহনচরিতম্' গদ্যাংশের মূল উৎস কোন্টি?", o: ["দশকুমারচরিতম্", "স্বপ্নবাসবদত্তম্", "অভিজ্ঞানশকুন্তলম্", "কাদম্বরী"], a: 0 },
+    { q: "২. 'দুর্বাসসঃ অভিশাপঃ' নাট্যাংশটি কোন অঙ্কের অন্তর্গত?", o: ["চতুর্থ অঙ্ক", "তৃতীয় অঙ্ক", "প্রথম অঙ্ক", "পঞ্চম অঙ্ক"], a: 0 },
+    { q: "৩. শকুন্তলাকে কে অভিশাপ দিয়েছিলেন?", o: ["ঋষি দুর্বাসা", "মহর্ষি কথ", "মারীচ", "বিশ্বামিত্র"], a: 0 },
+    { q: "৪. 'দশগীতিকাসূত্র' ও 'আর্যাষ্টশতক' কার রচনা?", o: ["আর্যভট্ট", "বরাহমিহির", "ব্রহ্মগুপ্ত", "ভাস"], a: 0 },
+    { q: "৫. 'উপকৃষ্ণম্' পদটিতে কোন্ সমাস হয়েছে?", o: ["অব্যয়ীভাব", "তৎপুরুষ", "দ্বন্দ্ব", "বহুব্রীহি"], a: 0 }
+  ]
+};
 
-const DEFAULT_AVATAR = "https://cdn-icons-png.flaticon.com/512/847/847969.png";
-let currentUser = { name: "", photo: DEFAULT_AVATAR };
-let userScore = 0;
-let totalTimeSec = 90 * 60;
+let currentStudent = null;
+let currentStudentKey = null;
+let currentExamSubject = null;
+let currentQuestions = [];
+let studentAnswers = {};
 let timerInterval = null;
+let timeRemaining = 90 * 60;
+let liveStream = null;
 
-function processPhoto(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const img = new Image();
-    img.onload = function() {
-      const canvas = document.createElement("canvas");
-      canvas.width = 32;
-      canvas.height = 32;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0, 32, 32);
-      currentUser.photo = canvas.toDataURL("image/jpeg", 0.4);
-      const prev = document.getElementById("preview-img");
-      prev.src = currentUser.photo;
-      prev.style.display = "block";
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
+window.addEventListener("DOMContentLoaded", () => {
+  checkActiveSession();
+  loadPublicLeaderboard();
+});
 
-function startMockTest() {
-  const nameVal = document.getElementById("user-name").value.trim();
-  if (!nameVal) {
-    alert("দয়া করে আপনার পুরো নাম লিখুন!");
+// মোবাইল নম্বর প্রথম যাচাই (রেজিস্টার্ড কি না)
+function checkPhoneStatus() {
+  const phone = document.getElementById("student-phone").value.trim();
+  const msg = document.getElementById("phone-msg");
+
+  if (!phone || phone.length !== 10 || isNaN(phone)) {
+    alert("দয়া করে সঠিক ১০ সংখ্যার মোবাইল নম্বর দিন!");
     return;
   }
-  currentUser.name = nameVal;
 
-  document.getElementById("start-screen").style.display = "none";
-  document.getElementById("top-bar").style.display = "flex";
-  document.getElementById("quiz-area").style.display = "block";
+  msg.innerText = "যাচাই করা হচ্ছে...";
+  msg.style.color = "#1d4ed8";
 
-  document.getElementById("bar-user-name").innerText = currentUser.name;
-  document.getElementById("bar-user-img").src = currentUser.photo;
+  dbRef.orderByChild("phone").equalTo(phone).once("value").then(snapshot => {
+    if (snapshot.exists()) {
+      // আগেই রেজিস্টার করা আছে: সরাসরি ডেটা নিয়ে ড্যাশবোর্ডে যাবে (নাম, ছবি, বিষয় আর দিতে হবে না)
+      snapshot.forEach(child => {
+        currentStudentKey = child.key;
+        currentStudent = child.val();
+      });
 
-  renderQuestions();
+      if (!currentStudent.subjectResults) currentStudent.subjectResults = {};
+      localStorage.setItem("hs_student_key", currentStudentKey);
+      alert(`স্বাগতম ${currentStudent.name}! আপনার আগের প্রোফাইল লোড হয়েছে। বাকি পরীক্ষা সম্পন্ন করুন।`);
+      renderDashboard();
+    } else {
+      // নতুন ছাত্র: রেজিস্ট্রেশন ফর্ম খুলে ক্যামেরা অন হবে
+      msg.innerText = "নম্বরটি নতুন! অনুগ্রহ করে নিচের নাম, ছবি ও বিষয় নির্বাচন সম্পন্ন করুন।";
+      msg.style.color = "#16a34a";
+      document.getElementById("new-student-form").style.display = "block";
+      initCamera();
+    }
+  }).catch(err => {
+    console.error(err);
+    alert("ইন্টারনেট সংযোগ চেক করুন!");
+    msg.innerText = "ত্রুটি ঘটেছে!";
+  });
+}
+
+function initCamera() {
+  navigator.mediaDevices.getUserMedia({ video: { width: 480, height: 480 }, audio: false })
+    .then(stream => {
+      liveStream = stream;
+      document.getElementById("camera-feed").srcObject = stream;
+    })
+    .catch(err => console.warn("ক্যামেরা অন হয়নি:", err));
+}
+
+function captureLivePhoto() {
+  const video = document.getElementById("camera-feed");
+  const canvas = document.getElementById("captured-canvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = 240;
+  canvas.height = 240;
+  ctx.drawImage(video, 0, 0, 240, 240);
+  
+  video.style.display = "none";
+  canvas.style.display = "block";
+  document.getElementById("btn-snap").style.display = "none";
+  document.getElementById("btn-retake").style.display = "inline-block";
+}
+
+function retakePhoto() {
+  document.getElementById("camera-feed").style.display = "block";
+  document.getElementById("captured-canvas").style.display = "none";
+  document.getElementById("btn-snap").style.display = "inline-block";
+  document.getElementById("btn-retake").style.display = "none";
+}
+
+function validateSubjectCount() {
+  const checkboxes = document.querySelectorAll('input[name="opt-subj"]:checked');
+  const helper = document.getElementById("subj-helper");
+  helper.innerText = `ঐচ্ছিক তালিকা থেকে ৪টি বিষয় বেছে নিন (সিলেক্টেড: ${checkboxes.length}/4)।`;
+  if (checkboxes.length > 4) {
+    alert("আপনি সর্বোচ্চ ৪টি ঐচ্ছিক বিষয় বেছে নিতে পারবেন!");
+    event.target.checked = false;
+    validateSubjectCount();
+  }
+}
+
+// ১ম দিন: নতুন রেজিস্ট্রেশন
+function registerNewStudent() {
+  const name = document.getElementById("student-name").value.trim();
+  const phone = document.getElementById("student-phone").value.trim();
+  const canvas = document.getElementById("captured-canvas");
+  const optChecks = document.querySelectorAll('input[name="opt-subj"]:checked');
+
+  if (!name) { alert("আপনার পুরো নাম লিখুন!"); return; }
+  if (canvas.style.display === "none") { alert("বাধ্যতামূলক: লাইভ ক্যামেরা দিয়ে ছবি তুলুন!"); return; }
+  if (optChecks.length !== 4) { alert("ঐচ্ছিক তালিকা থেকে ঠিক ৪টি বিষয় বেছে নিন!"); return; }
+
+  const registerBtn = document.getElementById("btn-register");
+  registerBtn.innerText = "সংরক্ষণ হচ্ছে...";
+  registerBtn.disabled = true;
+
+  const photoBase64 = canvas.toDataURL("image/jpeg", 0.90);
+  const selected = ["bengali", "english"];
+  optChecks.forEach(c => selected.push(c.value));
+
+  const newRecord = {
+    name: name,
+    phone: phone,
+    photo: photoBase64,
+    subjects: selected,
+    subjectResults: {},
+    isCompleted: false,
+    registeredAt: new Date().toLocaleDateString('bn-IN') + ", " + new Date().toLocaleTimeString('bn-IN', { hour: '2-digit', minute: '2-digit' }),
+    timestamp: firebase.database.ServerValue.TIMESTAMP
+  };
+
+  const newRef = dbRef.push();
+  newRef.set(newRecord).then(() => {
+    currentStudentKey = newRef.key;
+    currentStudent = newRecord;
+    localStorage.setItem("hs_student_key", currentStudentKey);
+    if (liveStream) liveStream.getTracks().forEach(t => t.stop());
+    renderDashboard();
+  }).catch(err => {
+    console.error(err);
+    alert("ডেটা সেভ হতে সমস্যা হয়েছে!");
+    registerBtn.disabled = false;
+  });
+}
+
+function checkActiveSession() {
+  const savedKey = localStorage.getItem("hs_student_key");
+  if (savedKey) {
+    dbRef.child(savedKey).once("value").then(snap => {
+      if (snap.exists()) {
+        currentStudentKey = savedKey;
+        currentStudent = snap.val();
+        if (!currentStudent.subjectResults) currentStudent.subjectResults = {};
+        renderDashboard();
+      } else {
+        localStorage.removeItem("hs_student_key");
+      }
+    });
+  }
+}
+
+function logoutStudent() {
+  localStorage.removeItem("hs_student_key");
+  currentStudent = null;
+  currentStudentKey = null;
+  location.reload();
+}
+
+function renderDashboard() {
+  document.getElementById("registration-screen").style.display = "none";
+  document.getElementById("final-report").style.display = "none";
+  document.getElementById("exam-screen").style.display = "none";
+  document.getElementById("dashboard-screen").style.display = "block";
+
+  document.getElementById("dash-name").innerText = currentStudent.name;
+  document.getElementById("dash-phone").innerText = "রেজিস্টার্ড মোবাইল: " + currentStudent.phone;
+  document.getElementById("dash-photo").src = currentStudent.photo;
+
+  const listContainer = document.getElementById("dash-subject-list");
+  listContainer.innerHTML = "";
+  let doneCount = 0;
+
+  currentStudent.subjects.forEach(code => {
+    const res = currentStudent.subjectResults ? currentStudent.subjectResults[code] : undefined;
+    const isDone = (res !== undefined);
+    if (isDone) doneCount++;
+
+    const div = document.createElement("div");
+    div.className = "dash-subj-card";
+    div.innerHTML = `
+      <div>
+        <div style="font-weight: bold; font-size: 0.96rem;">${SUBJECT_NAMES[code]}</div>
+        <div style="font-size: 0.78rem; color:#64748b;">পূর্ণমান: ৪০ নম্বর</div>
+      </div>
+      <div style="text-align:right;">
+        ${isDone ? `
+          <span class="status-badge completed">সম্পন্ন ✔ (${res.score}/৪০)</span>
+          <span class="status-badge locked-txt">লকড (পরীক্ষা শেষ)</span>
+        ` : `
+          <button class="btn-primary" style="padding:7px 15px; font-size:0.85rem;" onclick="startSubjectExam('${code}')">পরীক্ষা শুরু করুন</button>
+        `}
+      </div>
+    `;
+    listContainer.appendChild(div);
+  });
+
+  if (doneCount === 6) {
+    document.getElementById("btn-view-final-sheet").style.display = "block";
+  }
+}
+
+// Fisher-Yates র্যান্ডমাইজেশন (প্রত্যেক ছাত্রের আলাদা আলাদা প্রশ্ন ও অপশন)
+function shuffle(array) {
+  let m = array.length, t, i;
+  while (m) {
+    i = Math.floor(Math.random() * m--);
+    t = array[m];
+    array[m] = array[i];
+    array[i] = t;
+  }
+  return array;
+}
+
+function startSubjectExam(subjectCode) {
+  // সাবমিট হওয়া পরীক্ষা আর দেওয়া যাবে না
+  if (currentStudent.subjectResults && currentStudent.subjectResults[subjectCode] !== undefined) {
+    alert("⚠️ এই বিষয়ের পরীক্ষা ইতিমধ্যে সম্পন্ন ও লক হয়ে গেছে! এটি আর দেওয়া যাবে না।");
+    return;
+  }
+
+  currentExamSubject = subjectCode;
+  document.getElementById("dashboard-screen").style.display = "none";
+  document.getElementById("exam-screen").style.display = "block";
+  document.getElementById("exam-current-subject").innerText = SUBJECT_NAMES[subjectCode];
+
+  const pool = masterQuestionPool[subjectCode] || masterQuestionPool["bengali"];
+  const shuffledPool = shuffle([...pool]);
+  currentQuestions = shuffledPool.map((q, idx) => {
+    const originalAns = q.o[q.a];
+    const shuffledOpts = shuffle([...q.o]);
+    return {
+      index: idx + 1,
+      q: q.q,
+      options: shuffledOpts,
+      correctIndex: shuffledOpts.indexOf(originalAns)
+    };
+  });
+
+  studentAnswers = {};
+  renderExamQuestions();
   startTimer();
 }
 
+function renderExamQuestions() {
+  const container = document.getElementById("questions-container");
+  container.innerHTML = "";
+
+  currentQuestions.forEach((item, qIdx) => {
+    const card = document.createElement("div");
+    card.className = "question-card";
+    card.innerHTML = `<div class="question-title">${qIdx + 1}. ${item.q.replace(/^[০-৯0-9]+\.\s*/, "")}</div>`;
+
+    const optBox = document.createElement("div");
+    item.options.forEach((optText, optIdx) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "option-btn";
+      btn.innerText = optText;
+      btn.onclick = () => {
+        studentAnswers[qIdx] = optIdx;
+        optBox.querySelectorAll(".option-btn").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+      };
+      optBox.appendChild(btn);
+    });
+    card.appendChild(optBox);
+    container.appendChild(card);
+  });
+}
+
 function startTimer() {
+  clearInterval(timerInterval);
+  timeRemaining = 90 * 60;
   timerInterval = setInterval(() => {
-    totalTimeSec--;
-    let hrs = Math.floor(totalTimeSec / 3600);
-    let mins = Math.floor((totalTimeSec % 3600) / 60);
-    let secs = totalTimeSec % 60;
+    timeRemaining--;
+    let h = Math.floor(timeRemaining / 3600);
+    let m = Math.floor((timeRemaining % 3600) / 60);
+    let s = timeRemaining % 60;
+    document.getElementById("exam-timer").innerText = 
+      `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 
-    document.getElementById("timer-display").innerText = 
-      `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-
-    if (totalTimeSec <= 0) {
+    if (timeRemaining <= 0) {
       clearInterval(timerInterval);
-      alert("সময় সমাপ্ত! পরীক্ষা জমা দেওয়া হলো।");
-      finishExam();
+      alert("সময় সমাপ্ত! এই বিষয়ের পরীক্ষা জমা হচ্ছে।");
+      submitExamSubject();
     }
   }, 1000);
 }
 
-function renderQuestions() {
-  const box = document.getElementById("questions-box");
-  box.innerHTML = "";
+// সাবমিট করলে স্থায়ী লক হবে
+function submitExamSubject() {
+  clearInterval(timerInterval);
+  let correct = 0;
+  let wrong = 0;
 
-  mockExamData.forEach((item) => {
-    const card = document.createElement("div");
-    card.className = "question-card";
+  currentQuestions.forEach((q, idx) => {
+    if (studentAnswers[idx] === undefined) {
+      wrong++;
+    } else if (studentAnswers[idx] === q.correctIndex) {
+      correct++;
+    } else {
+      wrong++;
+    }
+  });
 
-    const title = document.createElement("div");
-    title.className = "question-title";
-    title.innerText = item.q;
-    card.appendChild(title);
+  const subjectResult = {
+    score: correct,
+    correct: correct,
+    wrong: wrong,
+    total: currentQuestions.length
+  };
 
-    const optsDiv = document.createElement("div");
-    optsDiv.className = "options";
+  if (!currentStudent.subjectResults) currentStudent.subjectResults = {};
+  currentStudent.subjectResults[currentExamSubject] = subjectResult;
 
-    item.o.forEach((optText, optIdx) => {
-      const btn = document.createElement("button");
-      btn.className = "option-btn";
-      btn.type = "button";
-      btn.innerText = optText;
+  // Firebase-এ সাথে সাথে আপডেট ও লক
+  const updates = {};
+  updates[`hs_all_students/${currentStudentKey}/subjectResults/${currentExamSubject}`] = subjectResult;
 
-      btn.onclick = () => {
-        const allBtns = optsDiv.querySelectorAll(".option-btn");
-        allBtns.forEach(b => b.disabled = true);
+  // ৬টি শেষ হলে Best of 5 ক্যালকুলেট
+  if (Object.keys(currentStudent.subjectResults).length === 6) {
+    const resArr = Object.entries(currentStudent.subjectResults).map(([code, r]) => ({ code, score: r.score }));
+    resArr.sort((a, b) => b.score - a.score);
 
-        if (optIdx === item.a) {
-          btn.classList.add("correct");
-          btn.innerHTML = optText + " &nbsp; ✔";
-          userScore++;
-        } else {
-          btn.classList.add("wrong");
-          btn.innerHTML = optText + " &nbsp; ✖";
-          allBtns[item.a].classList.add("correct");
-          allBtns[item.a].innerHTML = item.o[item.a] + " &nbsp; ✔ (সঠিক)";
-        }
-      };
+    const best5 = resArr.slice(0, 5);
+    const total5 = best5.reduce((acc, curr) => acc + curr.score, 0);
+    const pct = ((total5 / 200) * 100).toFixed(1);
 
-      optsDiv.appendChild(btn);
-    });
+    updates[`hs_all_students/${currentStudentKey}/best5Total`] = total5;
+    updates[`hs_all_students/${currentStudentKey}/percentage`] = pct;
+    updates[`hs_all_students/${currentStudentKey}/isCompleted`] = true;
+    updates[`hs_all_students/${currentStudentKey}/completedAt`] = new Date().toLocaleDateString('bn-IN') + ", " + new Date().toLocaleTimeString('bn-IN', { hour: '2-digit', minute: '2-digit' });
+  }
 
-    card.appendChild(optsDiv);
-    box.appendChild(card);
+  firebase.database().ref().update(updates).then(() => {
+    alert(`✔ ${SUBJECT_NAMES[currentExamSubject]} পরীক্ষা সফলভাবে জমা হয়েছে! প্রাপ্ত নম্বর: ${correct}/৪০। এই বিষয়টি স্থায়ীভাবে লক হয়ে গেল।`);
+    renderDashboard();
+    loadPublicLeaderboard();
+  }).catch(err => {
+    console.error(err);
+    alert("ডেটা সেভ হতে সমস্যা হয়েছে, ইন্টারনেট চেক করুন!");
+    renderDashboard();
   });
 }
 
-function finishExam() {
-  clearInterval(timerInterval);
-  document.getElementById("top-bar").style.display = "none";
-  document.getElementById("quiz-area").style.display = "none";
+// চারকোনা ব্যক্তিগত ফলাফল বক্স
+function renderFinalMarksheet() {
+  document.getElementById("dashboard-screen").style.display = "none";
+  document.getElementById("final-report").style.display = "block";
 
-  const resultCard = document.getElementById("result-card");
-  resultCard.style.display = "block";
+  document.getElementById("report-name").innerText = currentStudent.name;
+  document.getElementById("report-photo").src = currentStudent.photo;
 
-  const pct = ((userScore / mockExamData.length) * 100).toFixed(1);
-  const now = new Date();
-  const timeFormatted = now.toLocaleDateString('bn-IN') + ", " + now.toLocaleTimeString('bn-IN', { hour: '2-digit', minute: '2-digit' });
+  const tbody = document.getElementById("report-table-body");
+  tbody.innerHTML = "";
 
-  document.getElementById("result-img").src = currentUser.photo;
-  document.getElementById("result-name").innerText = currentUser.name;
-  document.getElementById("result-score").innerText = `প্রাপ্ত নম্বর: ${userScore} / ৪০ (${pct}%)`;
-  document.getElementById("result-time-text").innerText = `জমা দেওয়ার সময়: ${timeFormatted}`;
+  const list = Object.entries(currentStudent.subjectResults).map(([code, r]) => ({
+    code,
+    score: r.score,
+    correct: r.correct,
+    wrong: r.wrong,
+    total: r.total
+  }));
+  list.sort((a, b) => b.score - a.score);
 
-  const syncMsg = document.getElementById("cloud-sync-status");
-  syncMsg.innerText = "ফলাফল ক্লাউডে সংরক্ষিত হচ্ছে...";
-  syncMsg.style.color = "#1a73e8";
+  let best5Sum = 0;
+  list.forEach((item, idx) => {
+    const isExtra = (idx === 5);
+    if (!isExtra) best5Sum += item.score;
 
-  const entry = {
-    name: String(currentUser.name),
-    photo: String(currentUser.photo),
-    score: Number(userScore),
-    pct: String(pct),
-    time: String(timeFormatted),
-    timestamp: firebase.database.ServerValue.TIMESTAMP
-  };
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td style="text-align:left; font-weight:600;">${SUBJECT_NAMES[item.code]}</td>
+      <td>${item.total || 40}</td>
+      <td class="correct-count">${item.correct}</td>
+      <td class="wrong-count">${item.wrong}</td>
+      <td style="font-weight:bold; color:#1e3a8a;">${item.score}</td>
+      <td>${isExtra ? `<span class="extra-tag">অতিরিক্ত (Extra)</span>` : `<span style="color:#16a34a; font-weight:bold;">গণনাযুক্ত ✔</span>`}</td>
+    `;
+    tbody.appendChild(tr);
+  });
 
-  // অফিশিয়াল SDK পুশ
-  dbRef.push(entry)
-    .then(() => {
-      syncMsg.innerText = "ক্লাউডে ফলাফল সফলভাবে সংরক্ষিত হয়েছে ✔";
-      syncMsg.style.color = "#34a853";
-    })
-    .catch((err) => {
-      console.error(err);
-      syncMsg.innerText = "ক্লাউড সংরক্ষণে সমস্যা! Firebase Rules চেক করুন।";
-      syncMsg.style.color = "#d93025";
-    });
+  const pct = ((best5Sum / 200) * 100).toFixed(1);
+  document.getElementById("best-5-score").innerText = `সেরা ৫টি বিষয়ের মোট নম্বর: ${best5Sum} / ২০০`;
+  document.getElementById("best-5-percentage").innerText = `চূড়ান্ত গ্রেড শতকরা: ${pct}%`;
 }
 
-function resetToHomeScreen() {
-  document.getElementById("result-card").style.display = "none";
-  document.getElementById("quiz-area").style.display = "none";
-  document.getElementById("top-bar").style.display = "none";
-
-  document.getElementById("user-name").value = "";
-  document.getElementById("user-photo").value = "";
-  document.getElementById("preview-img").style.display = "none";
-  
-  userScore = 0;
-  totalTimeSec = 90 * 60;
-  document.getElementById("timer-display").innerText = "০১:৩০:০০";
-  currentUser = { name: "", photo: DEFAULT_AVATAR };
-
-  document.getElementById("start-screen").style.display = "block";
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function returnToDashboard() {
+  document.getElementById("final-report").style.display = "none";
+  document.getElementById("dashboard-screen").style.display = "block";
 }
 
-// লাইভ ডেটা ফেচ ও রেন্ডার
-function fetchAndRenderRecords(targetId) {
-  const tbody = document.getElementById(targetId);
-  tbody.innerHTML = `<tr><td colspan="4" style="color:#666; padding:15px;">ক্লাউড থেকে ডেটা লোড হচ্ছে...</td></tr>`;
+// পাবলিক লাইভ র‍্যাংক বোর্ড
+function loadPublicLeaderboard() {
+  const tbody = document.getElementById("public-rank-body");
+  tbody.innerHTML = `<tr><td colspan="5" style="color:#64748b; padding:12px;">মেধা তালিকা লোড হচ্ছে...</td></tr>`;
 
-  dbRef.once("value")
-    .then((snapshot) => {
-      tbody.innerHTML = "";
-      if (!snapshot.exists()) {
-        tbody.innerHTML = `<tr><td colspan="4" style="color:#888; padding:15px;">কোনো রেকর্ড নেই (সব খালি)।</td></tr>`;
-        return;
+  dbRef.once("value").then(snap => {
+    tbody.innerHTML = "";
+    if (!snap.exists()) {
+      tbody.innerHTML = `<tr><td colspan="5" style="padding:12px; color:#64748b;">এখনও কোনো ফলাফল নেই।</td></tr>`;
+      return;
+    }
+
+    const completedStudents = [];
+    snap.forEach(c => {
+      const val = c.val();
+      if (val.isCompleted && val.best5Total !== undefined) {
+        completedStudents.push(val);
       }
-
-      const list = [];
-      snapshot.forEach((child) => {
-        const val = child.val();
-        if (val && val.name && val.name !== "undefined") {
-          list.push({ key: child.key, ...val });
-        }
-      });
-
-      list.reverse();
-
-      if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="color:#888; padding:15px;">কোনো বৈধ রেকর্ড নেই।</td></tr>`;
-        return;
-      }
-
-      list.forEach((item) => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><img class="table-user-img" src="${item.photo || DEFAULT_AVATAR}" alt="ছবি"></td>
-          <td style="text-align:left; padding-left:6px;">
-            <div style="font-weight:600; color:#202124;">${item.name}</div>
-            <span class="exam-time">🕒 ${item.time || ''}</span>
-          </td>
-          <td style="color:#1a73e8; font-weight:bold;">${item.score !== undefined ? item.score : 0} / ৪০</td>
-          <td style="font-weight:600;">${item.pct !== undefined ? item.pct : 0}%</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    })
-    .catch((err) => {
-      console.error(err);
-      tbody.innerHTML = `<tr><td colspan="4" style="color:#d93025; padding:15px;">ক্লাউড ডেটা লোড করা যায়নি!</td></tr>`;
     });
+
+    if (completedStudents.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="padding:12px; color:#64748b;">এখনও কোনো ছাত্রের ৬টি বিষয় সম্পন্ন হয়নি।</td></tr>`;
+      return;
+    }
+
+    completedStudents.sort((a, b) => b.best5Total - a.best5Total);
+
+    completedStudents.forEach((row, index) => {
+      const rank = index + 1;
+      let badgeClass = "rank-badge";
+      if (rank === 1) badgeClass += " rank-1";
+      else if (rank === 2) badgeClass += " rank-2";
+      else if (rank === 3) badgeClass += " rank-3";
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><span class="${badgeClass}">#${rank}</span></td>
+        <td><img src="${row.photo}" style="width:36px; height:36px; border-radius:50%; object-fit:cover;"></td>
+        <td style="text-align:left; font-weight:bold;">${row.name}</td>
+        <td style="font-weight:bold; color:#1e3a8a;">${row.best5Total} / ২০০</td>
+        <td style="font-weight:bold; color:#16a34a;">${row.percentage}%</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  });
 }
 
-function openStudentModal() {
-  fetchAndRenderRecords("student-table-body");
-  document.getElementById("student-modal").style.display = "flex";
-}
-function closeStudentModal() {
-  document.getElementById("student-modal").style.display = "none";
-}
-
-function showTeacherPasswordModal() {
-  document.getElementById("teacher-pin-input").value = "";
-  document.getElementById("password-modal").style.display = "flex";
-}
-function closePasswordModal() {
-  document.getElementById("password-modal").style.display = "none";
-}
-
-function checkTeacherPin() {
-  const pin = document.getElementById("teacher-pin-input").value;
-  if (pin === TEACHER_PIN) {
-    closePasswordModal();
-    fetchAndRenderRecords("teacher-table-body");
-    document.getElementById("teacher-modal").style.display = "flex";
-  } else {
-    alert("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।");
-  }
+// শিক্ষক প্যানেল ও সিলেক্টিভ ডিলিট
+function openTeacherModal() {
+  document.getElementById("teacher-modal").style.display = "flex";
 }
 function closeTeacherModal() {
   document.getElementById("teacher-modal").style.display = "none";
+  document.getElementById("admin-login-box").style.display = "block";
+  document.getElementById("admin-data-box").style.display = "none";
+  document.getElementById("admin-pin").value = "";
 }
 
-// সমস্ত ক্লাউড ডেটা ডিলিট করার ফাংশন
-function teacherDeleteAllRecords() {
-  if (confirm("আপনি কি নিশ্চিত যে ক্লাউড থেকে সমস্ত পরীক্ষার্থীর রেকর্ড সম্পূর্ণ মুছে ফেলতে চান?")) {
-    dbRef.remove()
-      .then(() => {
-        alert("সমস্ত রেকর্ড সফলভাবে ক্লাউড থেকে মুছে ফেলা হয়েছে!");
-        fetchAndRenderRecords("teacher-table-body");
-      })
-      .catch((err) => {
-        console.error(err);
-        alert("রেকর্ড ডিলিট করতে সমস্যা হয়েছে!");
-      });
+function verifyAdminPin() {
+  if (document.getElementById("admin-pin").value === "xyz1234") {
+    document.getElementById("admin-login-box").style.display = "none";
+    document.getElementById("admin-data-box").style.display = "block";
+    loadTeacherRecords();
+  } else {
+    alert("ভুল পিন!");
+  }
+}
+
+function loadTeacherRecords() {
+  const tbody = document.getElementById("admin-records-body");
+  tbody.innerHTML = `<tr><td colspan="6" style="color:#64748b; padding:12px;">লোড হচ্ছে...</td></tr>`;
+
+  dbRef.once("value").then(snap => {
+    tbody.innerHTML = "";
+    if (!snap.exists()) {
+      tbody.innerHTML = `<tr><td colspan="6" style="padding:12px;">কোনো রেকর্ড নেই।</td></tr>`;
+      return;
+    }
+
+    snap.forEach(child => {
+      const row = child.val();
+      const key = child.key;
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><input type="checkbox" class="student-select-cb" value="${key}"></td>
+        <td><img src="${row.photo}" style="width:38px; height:38px; border-radius:50%; object-fit:cover;"></td>
+        <td style="text-align:left;">
+          <b>${row.name}</b><br>
+          <span style="color:#1d4ed8; font-weight:bold;">📞 ${row.phone}</span><br>
+          <small style="color:#64748b;">${row.completedAt || 'চলমান'}</small>
+        </td>
+        <td style="font-weight:bold; color:#1e3a8a;">${row.best5Total !== undefined ? row.best5Total : '--'}/২০০</td>
+        <td style="font-weight:bold; color:#16a34a;">${row.percentage !== undefined ? row.percentage + '%' : '--'}</td>
+        <td>
+          <button style="background:#dc2626; color:white; border:none; padding:5px 8px; border-radius:4px; font-size:0.75rem; cursor:pointer;" onclick="deleteSingleStudent('${key}', '${row.phone}')">ডিলিট ✕</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  });
+}
+
+function toggleSelectAll(masterCb) {
+  const cbs = document.querySelectorAll(".student-select-cb");
+  cbs.forEach(cb => cb.checked = masterCb.checked);
+}
+
+function deleteSingleStudent(key, phone) {
+  if (confirm(`আপনি কি এই পরীক্ষার্থীকে (${phone}) ডিলিট করতে চান? ডিলিট করলে সে এই নম্বর দিয়ে পুনরায় প্রথম থেকে পরীক্ষা দিতে পারবে।`)) {
+    dbRef.child(key).remove().then(() => {
+      alert("পরীক্ষার্থী সফলভাবে অপসারিত হয়েছে!");
+      loadTeacherRecords();
+      loadPublicLeaderboard();
+    });
+  }
+}
+
+function deleteSelectedStudents() {
+  const selectedCbs = document.querySelectorAll(".student-select-cb:checked");
+  if (selectedCbs.length === 0) {
+    alert("অনুগ্রহ করে অন্তত একজন পরীক্ষার্থীকে সিলেক্ট করুন!");
+    return;
+  }
+
+  if (confirm(`আপনি কি নির্বাচিত ${selectedCbs.length} জন পরীক্ষার্থীর রেকর্ড ডিলিট করতে চান?`)) {
+    const promises = [];
+    selectedCbs.forEach(cb => {
+      promises.push(dbRef.child(cb.value).remove());
+    });
+
+    Promise.all(promises).then(() => {
+      alert("নির্বাচিত সকল রেকর্ড সফলভাবে ডিলিট হয়েছে!");
+      loadTeacherRecords();
+      loadPublicLeaderboard();
+    }).catch(e => console.error(e));
   }
 }
 </script>
