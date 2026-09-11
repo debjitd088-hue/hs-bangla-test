@@ -327,7 +327,7 @@
     </div>
     
     <div id="admin-login-box" style="margin-top:15px; text-align:center;">
-      <input type="password" id="admin-pin" placeholder="শিক্ষক পাসওয়ার্ড লিখুন (xyz1234)..." style="width:100%; padding:10px; border:1.5px solid #3b82f6; border-radius:6px; margin-bottom:10px; text-align:center;">
+      <input type="password" id="admin-pin" placeholder="শিক্ষক পাসওয়ার্ড লিখুন..." style="width:100%; padding:10px; border:1.5px solid #3b82f6; border-radius:6px; margin-bottom:10px; text-align:center;">
       <button class="btn-primary" style="padding:9px;" onclick="verifyAdminPin()">লগইন করুন</button>
     </div>
 
@@ -369,7 +369,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const dbRef = firebase.database().ref("hs_all_students");
 
-// শিক্ষক পাসওয়ার্ড সোজা ও সহজ করা হলো: 'xyz1234'
+// শিক্ষক পাসওয়ার্ড
 const TEACHER_PIN = "xyz1234";
 
 const SUBJECT_NAMES = {
@@ -1049,7 +1049,7 @@ function verifyAdminPin() {
     document.getElementById("admin-data-box").style.display = "block";
     loadTeacherRecords();
   } else {
-    alert("ভুল পাসওয়ার্ড! দয়া করে সঠিক পাসওয়ার্ড দিন (xyz1234)।");
+    alert("ভুল পাসওয়ার্ড! দয়া করে সঠিক পাসওয়ার্ড দিন।");
   }
 }
 
@@ -1068,7 +1068,6 @@ function loadTeacherRecords() {
       const row = child.val();
       const key = child.key;
 
-      // প্রতিটি বিষয়ের আলাদা ফলাফল সাজানো (অসমাপ্ত বা আংশিক পরীক্ষাগুলোও শিক্ষকের পোর্টালে দেখাবে)
       let subjectsHtml = "";
       if (row.subjectResults) {
         Object.entries(row.subjectResults).forEach(([subCode, res]) => {
